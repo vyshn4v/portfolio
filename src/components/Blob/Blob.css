@@ -1,7 +1,7 @@
 .blob-container {
   position: relative;
   width: 100%;
-  max-width: 540px;
+  max-width: 560px;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -16,25 +16,20 @@
   filter: drop-shadow(0 20px 40px rgba(13, 35, 34, 0.08));
 }
 
-/* Subtle, low-amplitude idle drift for the graphic paint gesture */
+/* Subtle graphic idle drift */
 .brush-gesture-group {
   transform-origin: 50% 50%;
   animation: brushIdleDrift 10s ease-in-out infinite alternate;
 }
 
-.brush-stroke-green {
-  transform-origin: 45% 45%;
-  animation: strokeDriftGreen 11s ease-in-out infinite alternate;
-}
-
-.brush-stroke-rust {
+.teal-brush-stroke {
   transform-origin: 50% 50%;
-  animation: strokeDriftRust 9s ease-in-out infinite alternate;
+  animation: strokeBreatheTeal 9s ease-in-out infinite alternate;
 }
 
-.brush-stroke-orange {
-  transform-origin: 52% 52%;
-  animation: strokeDriftOrange 8.5s ease-in-out infinite alternate;
+.orange-brush-accent {
+  transform-origin: 48% 52%;
+  animation: strokeBreatheOrange 8s ease-in-out infinite alternate;
 }
 
 @keyframes brushIdleDrift {
@@ -42,46 +37,35 @@
     transform: translate(0px, 0px) rotate(0deg);
   }
   50% {
-    transform: translate(4px, -5px) rotate(1deg);
+    transform: translate(4px, -6px) rotate(1deg);
   }
   100% {
     transform: translate(-3px, 4px) rotate(-1deg);
   }
 }
 
-@keyframes strokeDriftGreen {
+@keyframes strokeBreatheTeal {
   0% {
-    transform: translate(0px, 0px) rotate(0deg) scale(1);
+    transform: scale(1) rotate(0deg);
   }
   100% {
-    transform: translate(-4px, 3px) rotate(-1.5deg) scale(1.01);
+    transform: scale(1.015) rotate(-0.8deg);
   }
 }
 
-@keyframes strokeDriftRust {
+@keyframes strokeBreatheOrange {
   0% {
-    transform: translate(0px, 0px) rotate(0deg) scale(1);
+    transform: scale(1) rotate(0deg);
   }
   100% {
-    transform: translate(3px, -4px) rotate(1.2deg) scale(0.99);
+    transform: scale(1.02) rotate(1.2deg);
   }
 }
 
-@keyframes strokeDriftOrange {
-  0% {
-    transform: translate(0px, 0px) rotate(0deg) scale(1);
-  }
-  100% {
-    transform: translate(-2px, -3px) rotate(-0.8deg) scale(1.01);
-  }
-}
-
-/* Reduced motion disables drift */
 @media (prefers-reduced-motion: reduce) {
   .brush-gesture-group,
-  .brush-stroke-green,
-  .brush-stroke-rust,
-  .brush-stroke-orange {
+  .teal-brush-stroke,
+  .orange-brush-accent {
     animation: none !important;
   }
 }

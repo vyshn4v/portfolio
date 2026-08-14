@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
+import { profile } from '../../data/profile';
 import './Navigation.css';
 
 interface NavigationProps {
@@ -8,7 +9,7 @@ interface NavigationProps {
 }
 
 const navItems = [
-  { label: 'ABOUT', href: '#about' },
+  { label: 'ABOUT', href: '#about', active: true },
   { label: 'EXPERIENCE', href: '#experience' },
   { label: 'WORK', href: '#projects' },
   { label: 'EXPERTISE', href: '#skills' },
@@ -34,37 +35,49 @@ export const Navigation: React.FC<NavigationProps> = ({ delay = 1.2 }) => {
       }}
     >
       <div className="container nav-container">
+        {/* Brand Logo */}
         <div className="nav-brand">
-          <a href="#" className="nav-logo" aria-label="Vyshnav P C Home">
-            <span>VYSHNAV P C</span>
+          <a href="#" className="nav-logo" aria-label="Vyshnav Home">
+            <span>Vyshnav</span>
+            <span className="logo-dot">.</span>
           </a>
-          <div className="status-badge" title="Status: Available for SDE / Backend roles">
-            <span className="status-dot" />
-            <span>AVAILABLE FOR ROLES</span>
-          </div>
         </div>
 
-        <nav className="nav-links" aria-label="Main Navigation">
+        {/* Center Pill-Style Navigation */}
+        <nav className="nav-center-links" aria-label="Main Navigation">
           {navItems.map((item) => (
-            <a key={item.label} href={item.href} className="nav-link">
-              {item.label}
+            <a
+              key={item.label}
+              href={item.href}
+              className={`nav-item-link ${item.active ? 'active-pill' : ''}`}
+            >
+              {item.active ? `( ${item.label} )` : item.label}
             </a>
           ))}
         </nav>
 
-        <a href="#contact" className="nav-cta">
-          <span>CONTACT</span>
-          <ArrowUpRight size={14} />
-        </a>
+        {/* Right Phone Contact */}
+        <div className="nav-right-contact">
+          <a href={`tel:${profile.phone.replace(/\s+/g, '')}`} className="nav-phone-text">
+            {profile.phone}
+          </a>
+          <a
+            href={`tel:${profile.phone.replace(/\s+/g, '')}`}
+            className="nav-round-btn"
+            aria-label="Call Vyshnav"
+          >
+            <Phone size={15} />
+          </a>
 
-        <button
-          className="mobile-toggle"
-          onClick={toggleMenu}
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isOpen}
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <button
+            className="mobile-toggle"
+            onClick={toggleMenu}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isOpen}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -80,15 +93,19 @@ export const Navigation: React.FC<NavigationProps> = ({ delay = 1.2 }) => {
               <a
                 key={item.label}
                 href={item.href}
-                className="nav-link"
+                className="nav-item-link"
                 onClick={closeMenu}
               >
                 {item.label}
               </a>
             ))}
-            <a href="#contact" className="nav-cta" onClick={closeMenu}>
-              <span>GET IN TOUCH</span>
-              <ArrowUpRight size={14} />
+            <a
+              href={`tel:${profile.phone.replace(/\s+/g, '')}`}
+              className="nav-item-link"
+              onClick={closeMenu}
+              style={{ color: 'var(--color-orange)' }}
+            >
+              Call: {profile.phone}
             </a>
           </motion.div>
         )}
