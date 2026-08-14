@@ -12,14 +12,14 @@ export const DomainScannerSurface: React.FC = () => {
           <span className="window-dot green" />
         </div>
 
-        <div className="surface-url-bar">
+        <div className="surface-url-bar" title="https://domainscanner.vyshnavpc.com/scan">
           <Lock size={12} className="surface-url-icon" />
-          <span>https://api.domainscanner.vyshnavpc.com/v1/scan</span>
+          <span>domainscanner.vyshnavpc.com/scan</span>
         </div>
 
         <div className="pipeline-tag" style={{ color: 'var(--color-teal-dark)', fontWeight: 600 }}>
           <span className="pipeline-dot" style={{ backgroundColor: '#61C454' }} />
-          <span>SYSTEM ONLINE</span>
+          <span>ONLINE</span>
         </div>
       </div>
 
@@ -76,7 +76,7 @@ export const DomainScannerSurface: React.FC = () => {
       <div className="surface-pipeline-bar">
         <div className="pipeline-tag">
           <Radio size={12} color="var(--color-orange)" />
-          <span>RabbitMQ Async Queue: 0.14ms</span>
+          <span>RabbitMQ Async: 0.14ms</span>
         </div>
 
         <div className="pipeline-tag">
@@ -86,7 +86,7 @@ export const DomainScannerSurface: React.FC = () => {
 
         <div className="pipeline-tag">
           <Server size={12} color="var(--color-ink-muted)" />
-          <span>Oracle Cloud · Docker · PM2</span>
+          <span>Oracle Cloud · Docker</span>
         </div>
       </div>
     </div>
