@@ -39,12 +39,8 @@
   gap: clamp(40px, 6vw, 88px);
 }
 
-.project-showcase-row.reverse {
-  direction: rtl;
-}
-
-.project-showcase-row.reverse > * {
-  direction: ltr;
+.project-showcase-row.reversed {
+  grid-template-columns: 1.05fr 0.95fr;
 }
 
 /* Left/Right Narrative Info */
@@ -85,6 +81,15 @@
   height: 6px;
   border-radius: 50%;
   background-color: currentColor;
+}
+
+.status-beacon.pulse {
+  animation: beaconPulse 2s infinite ease-in-out;
+}
+
+@keyframes beaconPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
 }
 
 .project-title {
@@ -164,6 +169,21 @@
   box-shadow: 0 6px 20px rgba(215, 114, 12, 0.25);
 }
 
+.project-dev-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background-color: rgba(198, 190, 165, 0.18);
+  border: 1px dashed rgba(198, 190, 165, 0.6);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-light);
+  width: fit-content;
+  margin-top: 4px;
+}
+
 /* ============================================================
    MINI PRODUCT SURFACE: Domain Scanner
    ============================================================ */
@@ -223,7 +243,6 @@
   color: var(--color-teal-dark);
 }
 
-/* Risk Score & Audit Header */
 .surface-audit-header {
   display: flex;
   align-items: center;
@@ -274,7 +293,6 @@
   opacity: 0.8;
 }
 
-/* Checks Grid */
 .surface-checks-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -313,7 +331,6 @@
   color: var(--color-ink-muted);
 }
 
-/* Pipeline Telemetry Footer */
 .surface-pipeline-bar {
   display: flex;
   align-items: center;
@@ -338,9 +355,147 @@
   background-color: var(--color-orange);
 }
 
+/* ============================================================
+   TECHNICAL DIAGRAM: QStack Architecture Map
+   ============================================================ */
+.qstack-diagram {
+  background-color: #0A1C1B;
+  color: var(--color-bg);
+  border: 1px solid rgba(47, 105, 100, 0.4);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(10, 28, 27, 0.2);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.qstack-blueprint-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, #738F8A 1px, transparent 1px),
+    linear-gradient(to bottom, #738F8A 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.qstack-diagram-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(115, 143, 138, 0.2);
+  padding-bottom: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.qstack-diagram-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-orange-warm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qstack-arch-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.arch-layer-card {
+  background: rgba(15, 37, 36, 0.7);
+  border: 1px solid rgba(115, 143, 138, 0.25);
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color var(--duration-fast) var(--ease-micro);
+}
+
+.arch-layer-card:hover {
+  border-color: var(--color-orange-warm);
+}
+
+.arch-layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.layer-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-beige);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.layer-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background-color: rgba(215, 114, 12, 0.2);
+  color: var(--color-orange-warm);
+  font-weight: 600;
+}
+
+.layer-nodes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.arch-node-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(13, 35, 34, 0.9);
+  border: 1px solid rgba(115, 143, 138, 0.3);
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-bg);
+}
+
+.node-chip-highlight {
+  border-color: var(--color-orange);
+  color: var(--color-orange-warm);
+}
+
+.qstack-diagram-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(115, 143, 138, 0.2);
+  padding-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-green);
+  position: relative;
+  z-index: 2;
+}
+
 /* Responsive */
 @media (max-width: 960px) {
-  .project-showcase-row {
+  .project-showcase-row,
+  .project-showcase-row.reversed {
     grid-template-columns: 1fr;
     gap: 40px;
   }
