@@ -51,15 +51,16 @@ export const Footer: React.FC = () => {
           )}
         </div>
 
-        {/* Right: Back to Top Trigger */}
+        {/* Right: Circular Back to Top Bubble */}
         <div className="footer-right">
           <button
             onClick={scrollToTop}
-            className="footer-back-top"
-            aria-label="Back to top of page"
+            className="footer-bubble-btn"
+            aria-label="Back to top"
+            title="Back to top"
           >
-            <span>BACK TO TOP</span>
-            <ArrowUp size={13} />
+            <ArrowUp size={15} />
+            <span>TOP</span>
           </button>
         </div>
       </div>
