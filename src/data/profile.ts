@@ -1,6 +1,6 @@
 export interface Link {
   label: string;
-  url: string; // TODO placeholders stay TODO until the real URL is confirmed
+  url: string;
 }
 
 export interface EducationEntry {
@@ -41,8 +41,9 @@ export const profile: Profile = {
   summary:
     "Backend-focused developer with 2 years of production experience building Node.js/NestJS services for insurtech platforms. Designed a decision engine handling 1,000-2,000 requests/minute for automated policy workflows and led backend delivery through production deployment. Experienced in REST APIs, asynchronous workflows with RabbitMQ, Redis caching, PostgreSQL/MongoDB, Docker, Kubernetes, and end-to-end service ownership.",
   links: [
+    { label: "GitHub", url: "https://github.com/vyshn4v" },
+    { label: "LeetCode", url: "https://leetcode.com/u/vyshn4v" },
     { label: "LinkedIn", url: "TODO_LINKEDIN_URL" },
-    { label: "GitHub", url: "TODO_GITHUB_URL" },
     { label: "Portfolio", url: "https://vyshnavpc.com" },
   ],
   education: [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import { profile } from '../../data/profile';
 import './Footer.css';
 
@@ -9,6 +9,9 @@ export const Footer: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const githubLink = profile.links.find((l) => l.label === 'GitHub');
+  const leetcodeLink = profile.links.find((l) => l.label === 'LeetCode');
 
   return (
     <footer className="footer-container" aria-label="Site Footer">
@@ -20,12 +23,32 @@ export const Footer: React.FC = () => {
           <span className="footer-center">© {currentYear}</span>
         </div>
 
-        {/* Center: Technical Stack Note */}
-        <div className="footer-center">
-          <span>STACK:</span>
-          <span className="footer-stack-badge">
-            React · TypeScript · Vite · Framer Motion
-          </span>
+        {/* Center: Quick Dev Profiles */}
+        <div className="footer-links-group">
+          {githubLink && !githubLink.url.includes('TODO') && (
+            <a
+              href={githubLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-profile-link"
+              aria-label="GitHub Profile"
+            >
+              <span>GITHUB</span>
+              <ArrowUpRight size={11} />
+            </a>
+          )}
+          {leetcodeLink && !leetcodeLink.url.includes('TODO') && (
+            <a
+              href={leetcodeLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-profile-link"
+              aria-label="LeetCode Profile"
+            >
+              <span>LEETCODE</span>
+              <ArrowUpRight size={11} />
+            </a>
+          )}
         </div>
 
         {/* Right: Back to Top Trigger */}
