@@ -6,6 +6,8 @@ interface PreloaderProps {
   onComplete?: () => void;
 }
 
+const PRELOADER_EASE = [0.76, 0, 0.24, 1] as const;
+
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [isDone, setIsDone] = useState(false);
@@ -39,7 +41,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           initial={{ y: 0 }}
           exit={{
             y: '-100%',
-            transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] },
+            transition: { duration: 0.6, ease: PRELOADER_EASE },
           }}
           aria-hidden="true"
         >

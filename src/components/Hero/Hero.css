@@ -1,0 +1,227 @@
+.hero-section {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: clamp(60px, 8vh, 120px);
+  padding-bottom: clamp(40px, 6vh, 80px);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 80px);
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.hero-eyebrow-container {
+  overflow: hidden;
+  margin-bottom: clamp(16px, 3vh, 28px);
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--color-orange);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-bottom: clamp(24px, 4vh, 40px);
+}
+
+.hero-title-line-wrap {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 4px;
+}
+
+.hero-title-line {
+  display: block;
+}
+
+.hero-support-wrap {
+  overflow: hidden;
+  margin-bottom: clamp(24px, 4vh, 40px);
+}
+
+.hero-support {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-ink-light);
+  max-width: 540px;
+}
+
+.hero-support strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.hero-tech-stack-pill {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.hero-tech-tag {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  background-color: rgba(198, 190, 165, 0.25);
+  border: 1px solid rgba(198, 190, 165, 0.6);
+  border-radius: 2px;
+  color: var(--color-ink);
+  letter-spacing: 0.02em;
+}
+
+.hero-splash-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-footer-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-top: clamp(32px, 5vh, 60px);
+  border-top: 1px solid rgba(198, 190, 165, 0.4);
+  margin-top: auto;
+}
+
+.hero-location-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero-location-info span:first-child {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.hero-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-light);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-micro);
+}
+
+.hero-scroll-hint:hover {
+  color: var(--color-orange);
+}
+
+.scroll-line-indicator {
+  width: 32px;
+  height: 2px;
+  background-color: var(--color-ink-muted);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-line-indicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-orange);
+  animation: scrollLineSlide 2.4s infinite ease-in-out;
+}
+
+@keyframes scrollLineSlide {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
+}
+
+/* Tablet Layout */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: auto;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .hero-title {
+    font-size: var(--text-hero-mobile);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+  }
+
+  .hero-splash-container {
+    order: -1;
+    max-width: 300px;
+    margin: 0 auto 16px;
+  }
+
+  .hero-footer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}

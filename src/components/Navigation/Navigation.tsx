@@ -14,6 +14,8 @@ const navItems = [
   { label: 'EXPERTISE', href: '#skills' },
 ];
 
+const NAV_EASE = [0.16, 1, 0.3, 1] as const;
+
 export const Navigation: React.FC<NavigationProps> = ({ delay = 1.2 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +30,7 @@ export const Navigation: React.FC<NavigationProps> = ({ delay = 1.2 }) => {
       transition={{
         duration: 0.8,
         delay,
-        ease: [0.16, 1, 0.3, 1],
+        ease: NAV_EASE,
       }}
     >
       <div className="container nav-container">
