@@ -3,6 +3,7 @@ import { Preloader } from './components/Preloader/Preloader';
 import { Navigation } from './components/Navigation/Navigation';
 import { Hero } from './components/Hero/Hero';
 import { Marquee } from './components/Marquee/Marquee';
+import { About } from './components/About/About';
 
 export const App: React.FC = () => {
   const [, setPreloaderComplete] = useState(false);
@@ -16,6 +17,7 @@ export const App: React.FC = () => {
       <main id="main-content" style={{ paddingTop: '80px' }}>
         <Hero />
         <Marquee />
+        <About />
       </main>
     </div>
   );
