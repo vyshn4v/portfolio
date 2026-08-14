@@ -1,0 +1,351 @@
+.projects-section {
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+  position: relative;
+  border-bottom: 1px solid rgba(198, 190, 165, 0.35);
+  background-color: var(--color-bg);
+}
+
+.projects-header-block {
+  margin-bottom: clamp(48px, 6vh, 80px);
+}
+
+.projects-heading-wrap {
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.projects-section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-section-title);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(64px, 10vh, 120px);
+}
+
+/* Individual Project Showcase Row */
+.project-showcase-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(40px, 6vw, 88px);
+}
+
+.project-showcase-row.reverse {
+  direction: rtl;
+}
+
+.project-showcase-row.reverse > * {
+  direction: ltr;
+}
+
+/* Left/Right Narrative Info */
+.project-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.project-status-badge.live {
+  background-color: rgba(47, 105, 100, 0.12);
+  color: var(--color-teal-dark);
+  border: 1px solid rgba(47, 105, 100, 0.3);
+}
+
+.project-status-badge.in-dev {
+  background-color: rgba(215, 114, 12, 0.12);
+  color: var(--color-orange);
+  border: 1px solid rgba(215, 114, 12, 0.3);
+}
+
+.status-beacon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+  line-height: 1;
+}
+
+.project-stack-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-stack-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  background-color: rgba(198, 190, 165, 0.22);
+  border: 1px solid rgba(198, 190, 165, 0.5);
+  border-radius: 3px;
+  color: var(--color-ink);
+}
+
+.project-bullets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.project-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  line-height: 1.6;
+  color: var(--color-ink-light);
+}
+
+.project-bullet-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-orange);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.project-live-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: var(--color-ink);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  width: fit-content;
+  margin-top: 8px;
+  transition: all var(--duration-fast) var(--ease-micro);
+}
+
+.project-live-btn:hover {
+  background-color: var(--color-orange);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(215, 114, 12, 0.25);
+}
+
+/* ============================================================
+   MINI PRODUCT SURFACE: Domain Scanner
+   ============================================================ */
+.domain-surface {
+  background-color: var(--color-white);
+  border: 1px solid rgba(198, 190, 165, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(13, 35, 34, 0.06);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.surface-window-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(198, 190, 165, 0.3);
+  padding-bottom: 14px;
+}
+
+.window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.window-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.window-dot.red { background-color: #EE6A5F; }
+.window-dot.yellow { background-color: #F5BD4F; }
+.window-dot.green { background-color: #61C454; }
+
+.surface-url-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-bg);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-ink-light);
+  border: 1px solid rgba(198, 190, 165, 0.4);
+  flex: 1;
+  max-width: 320px;
+  margin: 0 12px;
+}
+
+.surface-url-icon {
+  color: var(--color-teal-dark);
+}
+
+/* Risk Score & Audit Header */
+.surface-audit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(47, 105, 100, 0.05);
+  border: 1px solid rgba(47, 105, 100, 0.15);
+  border-radius: 6px;
+  padding: 14px 18px;
+}
+
+.audit-target-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.target-host {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-ink);
+}
+
+.audit-timestamp {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-ink-muted);
+}
+
+.score-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  background-color: var(--color-teal-dark);
+  color: var(--color-white);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.score-num {
+  font-size: 18px;
+}
+
+.score-total {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* Checks Grid */
+.surface-checks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.surface-check-card {
+  background-color: var(--color-bg);
+  border: 1px solid rgba(198, 190, 165, 0.35);
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.check-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.check-status-pill {
+  color: var(--color-teal-dark);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.check-card-detail {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-ink-muted);
+}
+
+/* Pipeline Telemetry Footer */
+.surface-pipeline-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid rgba(198, 190, 165, 0.3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-ink-muted);
+}
+
+.pipeline-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pipeline-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-orange);
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .project-showcase-row {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .surface-checks-grid {
+    grid-template-columns: 1fr;
+  }
+}
