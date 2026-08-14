@@ -1,6 +1,6 @@
 .footer-container {
-  padding-top: 40px;
-  padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  padding-top: 24px;
+  padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
   background-color: var(--color-bg);
   border-top: 1px solid rgba(198, 190, 165, 0.4);
   position: relative;
@@ -10,19 +10,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 20px;
 }
 
 .footer-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
 .footer-brand {
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--color-ink);
   letter-spacing: -0.02em;
@@ -30,7 +30,7 @@
 
 .footer-role {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-ink-muted);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -38,14 +38,14 @@
 
 .footer-center {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-ink-light);
 }
 
 .footer-links-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -57,7 +57,7 @@
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 999px;
   background-color: rgba(198, 190, 165, 0.2);
   border: 1px solid rgba(198, 190, 165, 0.45);
@@ -75,7 +75,7 @@
 .footer-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 
 /* Floating-style Bubble Back to Top */
@@ -120,7 +120,7 @@
   .footer-inner {
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 16px;
   }
 
   .footer-right {
