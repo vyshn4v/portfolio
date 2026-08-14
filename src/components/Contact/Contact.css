@@ -1,6 +1,6 @@
 .contact-section {
-  padding-top: clamp(48px, 6vh, 96px);
-  padding-bottom: clamp(32px, 4vh, 56px);
+  padding-top: clamp(40px, 5vh, 80px);
+  padding-bottom: clamp(16px, 2.5vh, 32px);
   position: relative;
   background-color: var(--color-bg);
 }
@@ -9,10 +9,10 @@
   background-color: var(--color-ink);
   color: var(--color-bg);
   border-radius: 8px;
-  padding: clamp(48px, 7vw, 96px);
+  padding: clamp(32px, 5vw, 64px);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(13, 35, 34, 0.15);
+  box-shadow: 0 20px 50px rgba(13, 35, 34, 0.12);
 }
 
 /* Restrained Orange Organic Accent Shape inside dark panel */
@@ -33,7 +33,7 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: clamp(40px, 5vh, 64px);
+  gap: clamp(24px, 3.5vh, 44px);
 }
 
 .contact-eyebrow {
@@ -54,9 +54,9 @@
 
 .contact-heading {
   font-family: var(--font-display);
-  font-size: clamp(40px, 6.5vw, 88px);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  font-size: clamp(36px, 5.5vw, 76px);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--color-bg);
@@ -66,23 +66,23 @@
 /* Contact Details & Channels Grid */
 .contact-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: start;
-  gap: clamp(32px, 5vw, 72px);
-  padding-top: 32px;
+  gap: clamp(28px, 4vw, 56px);
+  padding-top: 24px;
   border-top: 1px solid rgba(247, 246, 240, 0.15);
 }
 
 .contact-primary-channels {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .contact-channel-item {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .channel-label {
@@ -96,13 +96,13 @@
 
 .channel-action-link {
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.8vw, 36px);
+  font-size: clamp(18px, 2.4vw, 32px);
   font-weight: 700;
   color: var(--color-bg);
   letter-spacing: -0.03em;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   transition: color var(--duration-fast) var(--ease-micro);
   width: fit-content;
 }
@@ -123,20 +123,20 @@
 .contact-links-col {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .contact-links-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .profile-link-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 12px 18px;
   background: rgba(247, 246, 240, 0.04);
   border: 1px solid rgba(247, 246, 240, 0.1);
   border-radius: 4px;
@@ -153,7 +153,7 @@
   align-items: center;
   gap: 10px;
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--color-bg);
 }
@@ -186,26 +186,31 @@
 /* Responsive */
 @media (max-width: 860px) {
   .contact-panel {
-    padding: 32px 24px;
+    padding: 24px 20px;
   }
 
   .contact-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 }
 
 @media (max-width: 640px) {
+  .contact-section {
+    padding-top: 32px;
+    padding-bottom: 16px;
+  }
+
   .contact-panel {
-    padding: 28px 18px;
+    padding: 22px 16px;
   }
 
   .contact-heading {
-    font-size: clamp(32px, 8vw, 48px);
+    font-size: clamp(28px, 7.5vw, 42px);
   }
 
   .channel-action-link {
-    font-size: clamp(17px, 4.5vw, 24px);
+    font-size: clamp(16px, 4.2vw, 22px);
     word-break: break-all;
   }
 }
