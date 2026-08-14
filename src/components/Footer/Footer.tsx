@@ -10,6 +10,7 @@ export const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const linkedinLink = profile.links.find((l) => l.label === 'LinkedIn');
   const githubLink = profile.links.find((l) => l.label === 'GitHub');
   const leetcodeLink = profile.links.find((l) => l.label === 'LeetCode');
 
@@ -25,6 +26,18 @@ export const Footer: React.FC = () => {
 
         {/* Center: Quick Dev Profiles */}
         <div className="footer-links-group">
+          {linkedinLink && !linkedinLink.url.includes('TODO') && (
+            <a
+              href={linkedinLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-profile-link"
+              aria-label="LinkedIn Profile"
+            >
+              <span>LINKEDIN</span>
+              <ArrowUpRight size={11} />
+            </a>
+          )}
           {githubLink && !githubLink.url.includes('TODO') && (
             <a
               href={githubLink.url}
