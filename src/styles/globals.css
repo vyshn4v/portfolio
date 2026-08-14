@@ -56,6 +56,7 @@ img, svg {
   max-width: 100%;
 }
 
+/* Visible Keyboard Focus Ring */
 :focus-visible {
   outline: 2px solid var(--color-orange);
   outline-offset: 3px;
@@ -92,7 +93,7 @@ img, svg {
   position: relative;
 }
 
-/* Reduced Motion */
+/* Full Accessibility: Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
