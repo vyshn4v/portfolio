@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Cpu } from 'lucide-react';
 import { profile } from '../../data/profile';
-import { Blob } from '../Blob/Blob';
 import './Hero.css';
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
@@ -25,7 +24,7 @@ export const Hero: React.FC = () => {
           <div className="hero-left-col">
             <motion.div
               className="eyebrow"
-              style={{ marginBottom: '12px' }}
+              style={{ marginBottom: '16px' }}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.3, ease: EASE_OUT }}
@@ -69,13 +68,6 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* ============================================================
-              CENTER COLUMN: Acrylic Dry-Brush Stroke Gesture
-             ============================================================ */}
-          <div className="hero-center-col">
-            <Blob delay={1.8} />
-          </div>
-
-          {/* ============================================================
               RIGHT COLUMN: Narrative Quote, Circular Stamp & Tech Pills
              ============================================================ */}
           <div className="hero-right-col">
@@ -95,7 +87,7 @@ export const Hero: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.8, ease: EASE_OUT }}
             >
               <div className="hero-circular-stamp" aria-hidden="true">
-                <Cpu size={26} className="hero-stamp-inner-icon" />
+                <Cpu size={30} className="hero-stamp-inner-icon" />
               </div>
               <div className="hero-stamp-caption">
                 SDE-I · BACKEND &amp; DISTRIBUTED SYSTEMS
