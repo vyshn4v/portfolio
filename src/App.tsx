@@ -4,6 +4,7 @@ import { Navigation } from './components/Navigation/Navigation';
 import { Hero } from './components/Hero/Hero';
 import { Marquee } from './components/Marquee/Marquee';
 import { About } from './components/About/About';
+import { Experience } from './components/Experience/Experience';
 
 export const App: React.FC = () => {
   const [, setPreloaderComplete] = useState(false);
@@ -18,6 +19,7 @@ export const App: React.FC = () => {
         <Hero />
         <Marquee />
         <About />
+        <Experience />
       </main>
     </div>
   );
