@@ -1,6 +1,6 @@
 .footer-container {
   padding-top: 40px;
-  padding-bottom: 48px;
+  padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
   background-color: var(--color-bg);
   border-top: 1px solid rgba(198, 190, 165, 0.4);
   position: relative;
