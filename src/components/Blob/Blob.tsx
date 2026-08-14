@@ -14,9 +14,9 @@ export const Blob: React.FC<BlobProps> = ({ delay = 1.8 }) => {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const { normalizedX, normalizedY } = useMousePosition();
 
-  // Desktop cursor parallax (12-20px)
-  const parallaxX = isDesktop ? normalizedX * 18 : 0;
-  const parallaxY = isDesktop ? normalizedY * 18 : 0;
+  // Desktop subtle cursor parallax (10-18px)
+  const parallaxX = isDesktop ? normalizedX * 16 : 0;
+  const parallaxY = isDesktop ? normalizedY * 16 : 0;
 
   return (
     <motion.div
@@ -33,152 +33,174 @@ export const Blob: React.FC<BlobProps> = ({ delay = 1.8 }) => {
         scale: { duration: 1.2, delay, ease: EASE_OUT },
         opacity: { duration: 1.2, delay, ease: EASE_OUT },
         rotate: { duration: 1.2, delay, ease: EASE_OUT },
-        x: { type: 'spring', damping: 30, stiffness: 180, mass: 0.6 },
-        y: { type: 'spring', damping: 30, stiffness: 180, mass: 0.6 },
+        x: { type: 'spring', damping: 32, stiffness: 160, mass: 0.6 },
+        y: { type: 'spring', damping: 32, stiffness: 160, mass: 0.6 },
       }}
-      aria-label="Abstract organic fluid splash illustration"
+      aria-label="Hand-painted brush stroke gesture"
     >
       <svg
-        viewBox="0 0 560 560"
+        viewBox="0 0 600 600"
         className="blob-svg"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id="splashOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          {/* SVG turbulence + displacement filter for authentic rough/torn paper and brush edges */}
+          <filter id="tornBrushEdge" x="-15%" y="-15%" width="130%" height="130%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.04 0.07"
+              numOctaves="3"
+              result="noise"
+              seed="12"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="15"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+
+          <filter id="subtleBrushEdge" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.05 0.09"
+              numOctaves="2"
+              result="noise2"
+              seed="27"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise2"
+              scale="10"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+
+          <linearGradient id="brushOrangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="var(--color-orange-warm)" />
-            <stop offset="50%" stopColor="var(--color-orange)" />
-            <stop offset="100%" stopColor="var(--color-rust)" />
+            <stop offset="40%" stopColor="var(--color-orange)" />
+            <stop offset="100%" stopColor="#C95F06" />
           </linearGradient>
 
-          <linearGradient id="splashGreen" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--color-green)" />
-            <stop offset="100%" stopColor="#8EAAA4" />
-          </linearGradient>
-
-          <linearGradient id="splashRust" x1="10%" y1="20%" x2="90%" y2="90%">
+          <linearGradient id="brushRustGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="var(--color-rust)" />
             <stop offset="100%" stopColor="#8A320C" />
           </linearGradient>
-
-          <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="8" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
         </defs>
 
-        {/* --- Background Ambient Glow / Shadow Layer --- */}
-        <g className="blob-layer-back">
-          {/* Broad soft sand splash */}
-          <path
-            d="M 170,90 C 290,40 440,70 480,180 C 520,290 490,420 390,480 C 290,540 140,500 70,400 C 0,300 20,150 170,90 Z"
-            fill="var(--color-beige)"
-            opacity="0.3"
-            style={{ mixBlendMode: 'multiply' }}
-          />
-        </g>
+        <g className="brush-gesture-group">
+          {/* ============================================================
+              PASS 1: Secondary Muted Green Stroke (~ -25° diagonal sweep)
+              Layered behind for depth, subtle translucent undertone
+             ============================================================ */}
+          <g className="brush-stroke-green" filter="url(#subtleBrushEdge)">
+            <path
+              d="M 110,380 
+                 L 175,295 
+                 L 330,175 
+                 L 435,115 
+                 L 485,95 
+                 L 510,135 
+                 L 455,175 
+                 L 310,285 
+                 L 190,385 
+                 L 125,435 
+                 Z"
+              fill="var(--color-green)"
+              opacity="0.75"
+              style={{ mixBlendMode: 'multiply' }}
+            />
+            {/* Dry-brush bristle trails along the green stroke */}
+            <path
+              d="M 470,85 L 530,120 M 100,405 L 140,445"
+              stroke="var(--color-green)"
+              strokeWidth="4"
+              strokeLinecap="square"
+              opacity="0.6"
+            />
+          </g>
 
-        {/* --- Sage Green Fluid Tendril & Counter-Weight Layer --- */}
-        <g className="blob-layer-green">
-          <path
-            d="M 120,140 C 210,90 320,110 370,190 C 420,270 380,380 300,430 C 220,480 110,450 60,370 C 10,290 30,190 120,140 Z"
-            fill="url(#splashGreen)"
-            opacity="0.8"
-            style={{ mixBlendMode: 'multiply' }}
-          />
-        </g>
+          {/* ============================================================
+              PASS 2: Secondary Deep Rust Stroke (~ +15° diagonal angle)
+              Broad, heavy, dry-paint marker texture layered across
+             ============================================================ */}
+          <g className="brush-stroke-rust" filter="url(#tornBrushEdge)">
+            <path
+              d="M 85,210 
+                 L 220,245 
+                 L 395,305 
+                 L 505,370 
+                 L 490,445 
+                 L 430,440 
+                 L 275,375 
+                 L 145,305 
+                 L 70,265 
+                 Z"
+              fill="url(#brushRustGrad)"
+              opacity="0.82"
+              style={{ mixBlendMode: 'multiply' }}
+            />
+            {/* Dry bristle streaks */}
+            <path
+              d="M 60,250 L 110,270 M 470,415 L 525,450"
+              stroke="var(--color-rust)"
+              strokeWidth="5"
+              strokeLinecap="butt"
+              opacity="0.7"
+            />
+          </g>
 
-        {/* --- Deep Burnt Rust Foundation Layer --- */}
-        <g className="blob-layer-rust">
-          {/* Main asymmetrical body with dynamic fluid lobes */}
-          <path
-            d="M 210,120 C 330,80 430,130 460,240 C 490,350 420,450 310,460 C 200,470 120,410 100,310 C 80,210 110,150 210,120 Z"
-            fill="url(#splashRust)"
-            opacity="0.92"
-            style={{ mixBlendMode: 'multiply' }}
-          />
-        </g>
+          {/* ============================================================
+              PASS 3: Primary Bold Orange Marker Swipe (~ -45° diagonal)
+              The main, confident foreground gesture across the hero space
+             ============================================================ */}
+          <g className="brush-stroke-orange" filter="url(#tornBrushEdge)">
+            {/* Main broad diagonal stroke with varied thickness and torn edges */}
+            <path
+              d="M 135,120 
+                 L 245,175 
+                 L 390,275 
+                 L 490,390 
+                 L 460,475 
+                 L 395,490 
+                 L 270,395 
+                 L 165,280 
+                 L 90,175 
+                 Z"
+              fill="url(#brushOrangeGrad)"
+              opacity="0.96"
+            />
 
-        {/* --- Primary Vibrant Orange Splash Form --- */}
-        <g className="blob-layer-orange">
-          {/* Expressive fluid organic splash with organic sweeping tendrils */}
-          <path
-            d="M 230,135 C 340,100 420,155 435,255 C 450,355 375,435 270,430 C 165,425 125,345 135,245 C 145,155 155,160 230,135 Z"
-            fill="url(#splashOrange)"
-            opacity="0.98"
-          />
+            {/* Inner warm highlighter layer / fiber texture gap */}
+            <path
+              d="M 170,165 
+                 L 270,235 
+                 L 380,335 
+                 L 440,430 
+                 L 415,455 
+                 L 360,425 
+                 L 260,325 
+                 L 165,225 
+                 Z"
+              fill="var(--color-orange-warm)"
+              opacity="0.85"
+            />
 
-          {/* Upper extended fluid crest */}
-          <path
-            d="M 310,145 C 360,110 405,130 415,185 C 425,240 370,260 330,240 C 290,220 280,170 310,145 Z"
-            fill="var(--color-orange-warm)"
-            opacity="0.9"
-          />
-        </g>
-
-        {/* --- Warm Amber Inner Detail & Handcrafted Organic Gestures --- */}
-        <g className="blob-layer-accent">
-          {/* Center illuminated amber lobe */}
-          <path
-            d="M 260,190 C 330,160 380,200 385,270 C 390,340 335,380 270,380 C 205,380 185,320 195,260 C 205,200 215,210 260,190 Z"
-            fill="var(--color-orange-warm)"
-            opacity="0.75"
-          />
-
-          {/* Sweeping editorial vector calligraphic cut */}
-          <path
-            d="M 220,230 C 280,195 330,225 350,285 C 370,345 325,370 285,385"
-            stroke="var(--color-bg)"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            fill="none"
-            opacity="0.8"
-          />
-
-          {/* Secondary micro organic accent */}
-          <circle cx="340" cy="230" r="6" fill="var(--color-bg)" opacity="0.7" />
-        </g>
-
-        {/* --- Orbiting Paint Splash Droplets & Splatter Particles --- */}
-        {/* Droplet 1: Top right outer splash drop */}
-        <g className="droplet-1">
-          <ellipse
-            cx="475"
-            cy="140"
-            rx="14"
-            ry="18"
-            transform="rotate(25 475 140)"
-            fill="var(--color-orange)"
-            opacity="0.9"
-          />
-        </g>
-
-        {/* Droplet 2: Small upper splatter bead */}
-        <g className="droplet-2">
-          <circle cx="430" cy="85" r="7" fill="var(--color-rust)" opacity="0.85" />
-        </g>
-
-        {/* Droplet 3: Bottom left trailing droplet */}
-        <g className="droplet-3">
-          <ellipse
-            cx="95"
-            cy="410"
-            rx="12"
-            ry="16"
-            transform="rotate(-30 95 410)"
-            fill="var(--color-orange-warm)"
-            opacity="0.9"
-          />
-        </g>
-
-        {/* Droplet 4: Far left tiny ink splatter speck */}
-        <g className="droplet-4">
-          <circle cx="65" cy="270" r="6" fill="var(--color-green)" opacity="0.85" />
-        </g>
-
-        {/* Droplet 5: Bottom right accent droplet */}
-        <g className="droplet-5">
-          <circle cx="435" cy="460" r="10" fill="var(--color-orange)" opacity="0.9" />
-          <circle cx="460" cy="485" r="4.5" fill="var(--color-rust)" opacity="0.75" />
+            {/* Confident dry-brush bristle tails at both ends */}
+            <path
+              d="M 105,100 L 155,145 
+                 M 80,140 L 125,175 
+                 M 470,470 L 515,510 
+                 M 445,495 L 485,530"
+              stroke="var(--color-orange)"
+              strokeWidth="6"
+              strokeLinecap="square"
+              opacity="0.9"
+            />
+          </g>
         </g>
       </svg>
     </motion.div>

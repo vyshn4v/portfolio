@@ -82,9 +82,14 @@ layout change.
 - Left-aligned oversized type, organic splash on the right at ~40–50% of
   hero width, warm off-white background, scroll hint at the bottom.
 - Populate from `profile.ts`: eyebrow, `heroHeading`, `heroSupport`.
-- `Blob/`: layered SVG/CSS organic shapes in orange, rust, muted green,
-  beige — irregular paths, not a circle. Continuous 6–10s low-amplitude
-  drift; desktop-only cursor parallax of 10–20px.
+- `Blob/`: a rough, hand-painted brush-stroke swipe — NOT a portrait, NOT a
+  soft rounded blob cluster. 2–3 overlapping diagonal marker/highlighter
+  passes at slightly different angles, jagged torn edges (not smooth
+  Bezier curves), reading as one confident gesture across the hero space.
+  Primary pass in `--color-orange`, one or two secondary passes in
+  `--color-rust` / `--color-green` layered behind/across it for depth.
+  It occupies the hero the way a portrait normally would — it's the sole
+  visual anchor, just a paint gesture instead of a photo.
 - Follow the hero timing sequence and hero/splash motion specs in
   `resources/design-tokens.md` exactly (entrance times and easing).
 - **Stop.** Confirm the hero before the marquee.
@@ -179,8 +184,9 @@ any unchecked items — don't silently fix and move on, list them first.
 
 ## Non-negotiable rules (apply in every phase)
 
-- No portrait or photo of a person, anywhere. The organic splash is the
-  only visual anchor for identity.
+- No portrait or photo of a person, anywhere. The brush-stroke splash is
+  the only visual anchor for identity — a paint gesture, not a soft blob
+  cluster and not a photo backdrop.
 - No resume fact is invented or softened — dates, the request-volume
   figure, award names, stack names all come from `content.ts` verbatim.
 - No content is hardcoded into a component — it comes from `data/*.ts`.
@@ -193,7 +199,7 @@ any unchecked items — don't silently fix and move on, list them first.
 ## Definition of done
 
 - [ ] Exact resume content populated from `content.ts`, nothing invented
-- [ ] No portrait/photo anywhere; the organic splash carries the hero
+- [ ] No portrait/photo anywhere; the brush-stroke splash carries the hero
 - [ ] Hero, experience, and project copy read as editorial, not card-grid
 - [ ] Domain Scanner and QStack each have bespoke visual storytelling
 - [ ] All professional/credential links preserved where supplied, `TODO`
