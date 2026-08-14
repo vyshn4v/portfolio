@@ -98,7 +98,7 @@
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--color-ink);
-  line-height: 1;
+  line-height: 1.05;
 }
 
 .project-stack-pills {
@@ -192,7 +192,7 @@
   border: 1px solid rgba(198, 190, 165, 0.5);
   border-radius: 8px;
   box-shadow: 0 12px 40px rgba(13, 35, 34, 0.06);
-  padding: 24px;
+  padding: clamp(16px, 3vw, 24px);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -206,6 +206,8 @@
   justify-content: space-between;
   border-bottom: 1px solid rgba(198, 190, 165, 0.3);
   padding-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .window-dots {
@@ -235,8 +237,7 @@
   color: var(--color-ink-light);
   border: 1px solid rgba(198, 190, 165, 0.4);
   flex: 1;
-  max-width: 320px;
-  margin: 0 12px;
+  min-width: 200px;
 }
 
 .surface-url-icon {
@@ -251,6 +252,8 @@
   border: 1px solid rgba(47, 105, 100, 0.15);
   border-radius: 6px;
   padding: 14px 18px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .audit-target-info {
@@ -340,6 +343,8 @@
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--color-ink-muted);
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .pipeline-tag {
@@ -364,7 +369,7 @@
   border: 1px solid rgba(47, 105, 100, 0.4);
   border-radius: 8px;
   box-shadow: 0 12px 40px rgba(10, 28, 27, 0.2);
-  padding: 24px;
+  padding: clamp(16px, 3vw, 24px);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -394,6 +399,8 @@
   padding-bottom: 12px;
   position: relative;
   z-index: 2;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .qstack-diagram-title {
@@ -419,7 +426,7 @@
   background: rgba(15, 37, 36, 0.7);
   border: 1px solid rgba(115, 143, 138, 0.25);
   border-radius: 6px;
-  padding: 12px 16px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -434,6 +441,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .layer-name {
@@ -490,17 +499,26 @@
   color: var(--color-green);
   position: relative;
   z-index: 2;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-/* Responsive */
-@media (max-width: 960px) {
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 1024px) {
   .project-showcase-row,
   .project-showcase-row.reversed {
     grid-template-columns: 1fr;
     gap: 40px;
   }
+}
 
+@media (max-width: 640px) {
   .surface-checks-grid {
     grid-template-columns: 1fr;
+  }
+
+  .surface-pipeline-bar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
