@@ -1,6 +1,6 @@
 .footer-container {
-  padding-top: 16px;
-  padding-bottom: max(14px, env(safe-area-inset-bottom, 14px));
+  padding-top: 18px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
   background-color: var(--color-bg);
   border-top: 1px solid rgba(198, 190, 165, 0.4);
   position: relative;
@@ -42,6 +42,13 @@
   color: var(--color-ink-light);
 }
 
+/* Action Row containing Profile Links and TOP Bubble on the Same Level */
+.footer-action-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .footer-links-group {
   display: flex;
   align-items: center;
@@ -56,13 +63,14 @@
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  padding: 4px 10px;
+  letter-spacing: 0.05em;
+  padding: 5px 10px;
   border-radius: 999px;
   background-color: rgba(198, 190, 165, 0.2);
   border: 1px solid rgba(198, 190, 165, 0.45);
   color: var(--color-teal-dark);
   transition: all var(--duration-fast) var(--ease-micro);
+  white-space: nowrap;
 }
 
 .footer-profile-link:hover {
@@ -75,7 +83,7 @@
 .footer-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex-shrink: 0;
 }
 
 /* Floating-style Bubble Back to Top */
@@ -83,28 +91,29 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 6px 14px;
+  gap: 5px;
+  padding: 5px 12px;
   border-radius: 999px;
   background-color: var(--color-white);
   color: var(--color-ink);
   border: 1.5px solid rgba(198, 190, 165, 0.7);
-  box-shadow: 0 3px 10px rgba(13, 35, 34, 0.06);
+  box-shadow: 0 2px 8px rgba(13, 35, 34, 0.05);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: all var(--duration-fast) var(--ease-micro);
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .footer-bubble-btn:hover {
   background-color: var(--color-ink);
   color: var(--color-bg);
   border-color: var(--color-ink);
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 6px 18px rgba(13, 35, 34, 0.12);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 14px rgba(13, 35, 34, 0.1);
 }
 
 .footer-bubble-btn svg {
@@ -115,7 +124,7 @@
   transform: translateY(-2px);
 }
 
-/* Responsive */
+/* Tablet & Mobile Breakpoints */
 @media (max-width: 860px) {
   .footer-inner {
     flex-direction: column;
@@ -123,8 +132,25 @@
     gap: 14px;
   }
 
-  .footer-right {
+  .footer-action-row {
     width: 100%;
-    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .footer-links-group {
+    gap: 6px;
+  }
+
+  .footer-profile-link {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .footer-bubble-btn {
+    font-size: 10px;
+    padding: 4px 10px;
   }
 }
