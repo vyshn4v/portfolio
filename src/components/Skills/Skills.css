@@ -1,0 +1,105 @@
+.skills-section {
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+  position: relative;
+  border-bottom: 1px solid rgba(198, 190, 165, 0.35);
+  background-color: var(--color-bg);
+}
+
+.skills-header-block {
+  margin-bottom: clamp(48px, 6vh, 80px);
+}
+
+.skills-heading-wrap {
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.skills-section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-section-title);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+/* Editorial Grouped List Layout */
+.skills-categories-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-category-row {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  align-items: baseline;
+  gap: clamp(24px, 4vw, 64px);
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(198, 190, 165, 0.35);
+  transition: background-color var(--duration-fast) var(--ease-micro);
+}
+
+.skill-category-row:first-child {
+  border-top: 1px solid rgba(198, 190, 165, 0.35);
+}
+
+.category-meta-col {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.category-index {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-orange);
+}
+
+.category-name {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+}
+
+/* Skills Items Cloud / Pill Row */
+.category-items-col {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-pill {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  background-color: var(--color-white);
+  border: 1px solid rgba(198, 190, 165, 0.5);
+  border-radius: 4px;
+  color: var(--color-ink);
+  letter-spacing: 0.02em;
+  transition: all var(--duration-fast) var(--ease-micro);
+  user-select: none;
+}
+
+.skill-pill:hover {
+  background-color: var(--color-ink);
+  color: var(--color-bg);
+  border-color: var(--color-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 35, 34, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 840px) {
+  .skill-category-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px 0;
+  }
+}
