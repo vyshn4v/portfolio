@@ -1,0 +1,106 @@
+.philosophy-section {
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+  position: relative;
+  border-bottom: 1px solid rgba(198, 190, 165, 0.35);
+  background-color: var(--color-bg);
+}
+
+.philosophy-header-block {
+  margin-bottom: clamp(48px, 6vh, 80px);
+}
+
+.philosophy-heading-wrap {
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.philosophy-section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-section-title);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+/* 2-Column Editorial Grid for Principles */
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+}
+
+.philosophy-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  background-color: var(--color-white);
+  border: 1px solid rgba(198, 190, 165, 0.4);
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(13, 35, 34, 0.03);
+  transition: transform var(--duration-fast) var(--ease-micro),
+              box-shadow var(--duration-fast) var(--ease-micro),
+              border-color var(--duration-fast) var(--ease-micro);
+}
+
+.philosophy-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-orange);
+  box-shadow: 0 8px 30px rgba(13, 35, 34, 0.07);
+}
+
+.philosophy-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.philosophy-num {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-orange);
+}
+
+.philosophy-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 2px;
+  background-color: rgba(47, 105, 100, 0.1);
+  color: var(--color-teal-dark);
+}
+
+.philosophy-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.philosophy-body {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  line-height: 1.65;
+  color: var(--color-ink-light);
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .philosophy-card {
+    padding: 24px;
+  }
+}
