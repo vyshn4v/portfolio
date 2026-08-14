@@ -8,6 +8,7 @@ import { Experience } from './components/Experience/Experience';
 import { Projects } from './components/Projects/Projects';
 import { Skills } from './components/Skills/Skills';
 import { Philosophy } from './components/Philosophy/Philosophy';
+import { Certifications } from './components/Certifications/Certifications';
 
 export const App: React.FC = () => {
   const [, setPreloaderComplete] = useState(false);
@@ -26,6 +27,7 @@ export const App: React.FC = () => {
         <Projects />
         <Skills />
         <Philosophy />
+        <Certifications />
       </main>
     </div>
   );
