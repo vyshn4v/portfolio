@@ -8,15 +8,15 @@ const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 
 export const Hero: React.FC = () => {
   const handleScrollClick = () => {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    const marqueeSection = document.querySelector('.marquee-container');
+    if (marqueeSection) {
+      marqueeSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
     <section className="hero-section" id="hero" aria-label="Hero Introduction">
-      <div className="container">
+      <div className="container hero-inner">
         <div className="hero-layout-grid">
           {/* ============================================================
               LEFT COLUMN: Greeting, Email Link & Scale Metric
@@ -24,7 +24,7 @@ export const Hero: React.FC = () => {
           <div className="hero-left-col">
             <motion.div
               className="eyebrow"
-              style={{ marginBottom: '16px' }}
+              style={{ marginBottom: '12px' }}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.3, ease: EASE_OUT }}
@@ -87,7 +87,7 @@ export const Hero: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.8, ease: EASE_OUT }}
             >
               <div className="hero-circular-stamp" aria-hidden="true">
-                <Cpu size={30} className="hero-stamp-inner-icon" />
+                <Cpu size={28} className="hero-stamp-inner-icon" />
               </div>
               <div className="hero-stamp-caption">
                 SDE-I · BACKEND &amp; DISTRIBUTED SYSTEMS
@@ -128,7 +128,7 @@ export const Hero: React.FC = () => {
             onClick={handleScrollClick}
             role="button"
             tabIndex={0}
-            aria-label="Scroll down to Explore"
+            aria-label="Scroll to explore marquee and projects"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 handleScrollClick();
