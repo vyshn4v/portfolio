@@ -84,6 +84,7 @@ export const Projects: React.FC = () => {
 
               {/* Right Column: Illustrative Mini Product Surface */}
               <motion.div
+                className="project-surface-wrap"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
@@ -105,8 +106,9 @@ export const Projects: React.FC = () => {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, ease: EASE_OUT }}
             >
-              {/* Left Column: Architecture Map */}
+              {/* Left Column (Desktop) / Second (Mobile): Architecture Map */}
               <motion.div
+                className="project-surface-wrap"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
@@ -115,7 +117,7 @@ export const Projects: React.FC = () => {
                 <QStackArchitectureMap />
               </motion.div>
 
-              {/* Right Column: Narrative Details */}
+              {/* Right Column (Desktop) / First (Mobile): Narrative Details */}
               <div className="project-info-col">
                 <div className="project-status-badge in-dev">
                   <span className="status-beacon pulse" />
