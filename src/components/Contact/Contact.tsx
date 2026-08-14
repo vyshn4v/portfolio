@@ -30,9 +30,9 @@ export const Contact: React.FC = () => {
       <div className="container">
         <motion.div
           className="contact-panel"
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.8, ease: EASE_OUT }}
         >
           {/* Restrained Organic Orange Shape in Dark Theme */}
@@ -55,9 +55,9 @@ export const Contact: React.FC = () => {
             <div className="contact-heading-wrap">
               <motion.h2
                 className="contact-heading"
-                initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
-                whileInView={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
-                viewport={{ once: true, margin: '-40px' }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.8, ease: EASE_OUT }}
               >
                 LET'S BUILD SOMETHING USEFUL.

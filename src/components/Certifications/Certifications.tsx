@@ -17,9 +17,9 @@ export const Certifications: React.FC = () => {
           <div className="certifications-heading-wrap">
             <motion.h2
               className="certifications-section-heading"
-              initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
-              whileInView={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               CERTIFICATIONS &amp; EDUCATION.
@@ -34,10 +34,10 @@ export const Certifications: React.FC = () => {
              ============================================================ */}
           <motion.div
             className="cert-group-col"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.8, ease: EASE_OUT }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, ease: EASE_OUT }}
           >
             <div className="cert-col-title">
               <Award size={16} />
@@ -81,10 +81,10 @@ export const Certifications: React.FC = () => {
              ============================================================ */}
           <motion.div
             className="cert-group-col"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
           >
             <div className="cert-col-title">
               <GraduationCap size={16} />

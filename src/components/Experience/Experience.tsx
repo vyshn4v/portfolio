@@ -16,9 +16,9 @@ export const Experience: React.FC = () => {
           <div className="experience-heading-wrap">
             <motion.h2
               className="experience-section-heading"
-              initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
-              whileInView={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               PROFESSIONAL EXPERIENCE.
@@ -32,10 +32,10 @@ export const Experience: React.FC = () => {
             <motion.div
               key={`${entry.company}-${index}`}
               className="experience-row"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.8, ease: EASE_OUT }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               {/* Left Column: Role, Company, Period & Awards */}
               <div className="experience-meta-col">
@@ -68,12 +68,12 @@ export const Experience: React.FC = () => {
                     <motion.li
                       key={bIdx}
                       className="experience-bullet-item"
-                      initial={{ opacity: 0, y: 15 }}
+                      initial={{ opacity: 0, y: 12 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-40px' }}
+                      viewport={{ once: true, amount: 0.1 }}
                       transition={{
                         duration: 0.5,
-                        delay: bIdx * 0.06,
+                        delay: bIdx * 0.05,
                         ease: EASE_OUT,
                       }}
                     >

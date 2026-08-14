@@ -16,10 +16,10 @@ export const About: React.FC = () => {
              ============================================================ */}
           <motion.div
             className="about-cards-col"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.8, ease: EASE_OUT }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, ease: EASE_OUT }}
           >
             <div className="about-feature-card">
               <div className="feature-icon-box icon-box-teal">
@@ -63,9 +63,9 @@ export const About: React.FC = () => {
             <div className="about-heading-wrap">
               <motion.h2
                 className="about-section-heading"
-                initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
-                whileInView={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
-                viewport={{ once: true, margin: '-50px' }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, ease: EASE_OUT }}
               >
                 ARCHITECTING RELIABLE BACKEND SYSTEMS.
@@ -76,8 +76,8 @@ export const About: React.FC = () => {
               className="about-paragraphs"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.7, delay: 0.15, ease: EASE_OUT }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
             >
               <p>
                 {profile.summary}
@@ -89,8 +89,8 @@ export const About: React.FC = () => {
               className="about-metrics-row"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.7, delay: 0.25, ease: EASE_OUT }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
             >
               <div className="metric-item">
                 <span className="metric-value">1,000–2,000</span>

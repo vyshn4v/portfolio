@@ -21,9 +21,9 @@ export const Projects: React.FC = () => {
           <div className="projects-heading-wrap">
             <motion.h2
               className="projects-section-heading"
-              initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
-              whileInView={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               SELECTED WORK.
@@ -38,10 +38,10 @@ export const Projects: React.FC = () => {
           {domainScanner && (
             <motion.div
               className="project-showcase-row"
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.8, ease: EASE_OUT }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               {/* Left Column: Narrative Details */}
               <div className="project-info-col">
@@ -84,10 +84,10 @@ export const Projects: React.FC = () => {
 
               {/* Right Column: Illustrative Mini Product Surface */}
               <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
               >
                 <DomainScannerSurface />
               </motion.div>
@@ -100,17 +100,17 @@ export const Projects: React.FC = () => {
           {qstack && (
             <motion.div
               className="project-showcase-row reversed"
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.8, ease: EASE_OUT }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               {/* Left Column: Architecture Map */}
               <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
               >
                 <QStackArchitectureMap />
               </motion.div>

@@ -41,9 +41,9 @@ export const Philosophy: React.FC = () => {
           <div className="philosophy-heading-wrap">
             <motion.h2
               className="philosophy-section-heading"
-              initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
-              whileInView={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               ENGINEERING PHILOSOPHY.
@@ -57,10 +57,10 @@ export const Philosophy: React.FC = () => {
             <motion.div
               key={item.num}
               className="philosophy-card"
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, delay: index * 0.1, ease: EASE_OUT }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.08, ease: EASE_OUT }}
             >
               <div className="philosophy-card-header">
                 <span className="philosophy-num">{item.num}.</span>

@@ -15,9 +15,9 @@ export const Skills: React.FC = () => {
           <div className="skills-heading-wrap">
             <motion.h2
               className="skills-section-heading"
-              initial={{ clipPath: 'inset(100% 0 0 0)', opacity: 0 }}
-              whileInView={{ clipPath: 'inset(0% 0 0 0)', opacity: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, ease: EASE_OUT }}
             >
               TECHNICAL EXPERTISE.
@@ -33,8 +33,8 @@ export const Skills: React.FC = () => {
               className="skill-category-row"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, delay: index * 0.08, ease: EASE_OUT }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.05, ease: EASE_OUT }}
             >
               {/* Category Name & Index */}
               <div className="category-meta-col">
