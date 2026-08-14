@@ -1,0 +1,196 @@
+.contact-section {
+  padding-top: clamp(60px, 8vh, 120px);
+  padding-bottom: clamp(60px, 8vh, 120px);
+  position: relative;
+  background-color: var(--color-bg);
+}
+
+.contact-panel {
+  background-color: var(--color-ink);
+  color: var(--color-bg);
+  border-radius: 8px;
+  padding: clamp(48px, 7vw, 96px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(13, 35, 34, 0.15);
+}
+
+/* Restrained Orange Organic Accent Shape inside dark panel */
+.contact-organic-shape {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 480px;
+  height: 480px;
+  pointer-events: none;
+  opacity: 0.22;
+  filter: blur(20px);
+  z-index: 1;
+}
+
+.contact-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vh, 64px);
+}
+
+.contact-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-orange-warm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-heading-wrap {
+  overflow: hidden;
+}
+
+.contact-heading {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6.5vw, 88px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-bg);
+  max-width: 900px;
+}
+
+/* Contact Details & Channels Grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: start;
+  gap: clamp(32px, 5vw, 72px);
+  padding-top: 32px;
+  border-top: 1px solid rgba(247, 246, 240, 0.15);
+}
+
+.contact-primary-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contact-channel-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.channel-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-beige);
+}
+
+.channel-action-link {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.8vw, 36px);
+  font-weight: 700;
+  color: var(--color-bg);
+  letter-spacing: -0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: color var(--duration-fast) var(--ease-micro);
+  width: fit-content;
+}
+
+.channel-action-link:hover {
+  color: var(--color-orange-warm);
+}
+
+.channel-action-link svg {
+  transition: transform var(--duration-fast) var(--ease-micro);
+}
+
+.channel-action-link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* Socials & Professional Links Column */
+.contact-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contact-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-link-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(247, 246, 240, 0.04);
+  border: 1px solid rgba(247, 246, 240, 0.1);
+  border-radius: 4px;
+  transition: all var(--duration-fast) var(--ease-micro);
+}
+
+.profile-link-card.active:hover {
+  background: rgba(247, 246, 240, 0.08);
+  border-color: var(--color-orange-warm);
+}
+
+.link-label-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-bg);
+}
+
+.pending-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  background-color: rgba(230, 165, 77, 0.15);
+  color: var(--color-orange-warm);
+  border: 1px dashed rgba(230, 165, 77, 0.4);
+}
+
+.active-pill-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  background-color: rgba(47, 105, 100, 0.3);
+  color: #8EAAA4;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .contact-panel {
+    padding: 32px 24px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
