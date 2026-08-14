@@ -10,6 +10,7 @@ import { Skills } from './components/Skills/Skills';
 import { Philosophy } from './components/Philosophy/Philosophy';
 import { Certifications } from './components/Certifications/Certifications';
 import { Contact } from './components/Contact/Contact';
+import { Footer } from './components/Footer/Footer';
 
 export const App: React.FC = () => {
   const [, setPreloaderComplete] = useState(false);
@@ -31,6 +32,8 @@ export const App: React.FC = () => {
         <Certifications />
         <Contact />
       </main>
+
+      <Footer />
     </div>
   );
 };
