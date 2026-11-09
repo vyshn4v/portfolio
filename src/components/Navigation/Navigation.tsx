@@ -38,8 +38,7 @@ export const Navigation: React.FC<NavigationProps> = ({ delay = 1.2 }) => {
         {/* Brand Logo */}
         <div className="nav-brand">
           <a href="#" className="nav-logo" aria-label="Vyshnav Home">
-            <span>Vyshnav</span>
-            <span className="logo-dot">.</span>
+            <img src="/navbar_logo.png" alt="Vyshnav" className="nav-logo-img" />
           </a>
         </div>
 

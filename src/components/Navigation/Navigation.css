@@ -32,7 +32,15 @@
   letter-spacing: -0.03em;
   color: var(--color-ink);
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
+}
+
+.nav-logo-img {
+  height: 40px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
 }
 
 .nav-logo span.logo-dot {

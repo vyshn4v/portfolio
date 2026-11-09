@@ -5,6 +5,16 @@ export interface SkillGroup {
 
 export const skills: SkillGroup[] = [
   {
+    category: "AI & Agents",
+    items: [
+      "Generative AI",
+      "Agentic AI Workflows",
+      "LLM Integration",
+      "Prompt Engineering",
+      "LangChain",
+    ],
+  },
+  {
     category: "Backend",
     items: [
       "Node.js",

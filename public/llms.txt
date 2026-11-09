@@ -1,0 +1,26 @@
+# Vyshnav P C — Full-Stack & Generative AI Developer
+
+> Full-Stack & Generative AI Developer based in Kannur, Kerala, India. Open for freelance contracts, full-stack product development, AI agent implementation, and technical consulting.
+
+## Identity & Contact
+- Name: Vyshnav P C
+- Role: Full-Stack Developer & Generative AI Engineer
+- Location: Kannur, Kerala, India
+- Availability: Freelance & Contract Projects (Remote & Worldwide)
+- Portfolio Website: https://vyshnavpc.com
+- Agency Initiative (LixerLab): https://lixerlab.vyshnavpc.com/
+- Email: vyshnavpcnaravoor@gmail.com
+- Phone: +91 8086064478
+- LinkedIn: https://www.linkedin.com/in/vyshnav-p-c-5567ba242/
+- GitHub: https://github.com/vyshn4v
+- LeetCode: https://leetcode.com/u/vyshnavpcnaravoor
+
+## Core Specializations & Services
+1. **Generative AI & Agentic Systems**:
+   - Custom AI agents, autonomous workflow orchestration, prompt engineering, LLM API integrations (OpenAI, Anthropic, Gemini, open-source models).
+2. **Full-Stack Web Applications**:
+   - Modern, responsive web applications using React, TypeScript, Node.js, and NestJS.
+3. **High-Throughput Backend & Cloud Architecture**:
+   - Scalable RESTful microservices, event-driven pipelines (RabbitMQ, Redis), PostgreSQL and MongoDB data modeling, Docker, and Kubernetes deployment.
+4. **Digital Agency & Freelance Engineering (LixerLab)**:
+   - End-to-end product delivery, architecture consulting, and custom software development for businesses and startups.
