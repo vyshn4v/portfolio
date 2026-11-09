@@ -13,10 +13,7 @@ export const Footer: React.FC = () => {
   const linkedinLink = profile.links.find((l) => l.label === 'LinkedIn');
   const githubLink = profile.links.find((l) => l.label === 'GitHub');
   const leetcodeLink = profile.links.find((l) => l.label === 'LeetCode');
-  const lixerLabLink = profile.links.find((l) => l.label === 'LixerLab') || {
-    label: 'LixerLab',
-    url: 'https://lixerlab.vyshnavpc.com/',
-  };
+  const lixerLabLink = profile.links.find((l) => l.label === 'LixerLab');
 
   return (
     <footer className="footer-container" aria-label="Site Footer">
@@ -48,7 +45,7 @@ export const Footer: React.FC = () => {
             <span className="footer-col-title">SERVICES</span>
             <div className="footer-agency-card">
               <a
-                href={lixerLabLink.url}
+                href={lixerLabLink?.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="agency-card-link"
