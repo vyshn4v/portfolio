@@ -81,6 +81,14 @@ export const SectionNav: React.FC = () => {
     setIsOpen((prev) => !prev);
   };
 
+  const handlePillKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsOpen((prev) => !prev);
+    }
+  };
+
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -123,6 +131,7 @@ export const SectionNav: React.FC = () => {
             <motion.div
               key="compact"
               onClick={handlePillClick}
+              onKeyDown={handlePillKeyDown}
               className="quick-nav-pill-vertical"
               initial={{ opacity: 0, scale: 0.94, x: 8 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}

@@ -45,6 +45,11 @@
   transform: translateX(-3px);
 }
 
+.quick-nav-pill-vertical:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
 .pill-dot-wrap {
   display: flex;
   align-items: center;
