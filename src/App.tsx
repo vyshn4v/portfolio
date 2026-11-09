@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Preloader } from './components/Preloader/Preloader';
 import { Navigation } from './components/Navigation/Navigation';
+import { SectionNav } from './components/SectionNav/SectionNav';
 import { Hero } from './components/Hero/Hero';
 import { Marquee } from './components/Marquee/Marquee';
 import { About } from './components/About/About';
@@ -20,6 +21,7 @@ export const App: React.FC = () => {
       <div className="grain-overlay" aria-hidden="true" />
       <Preloader onComplete={() => setPreloaderComplete(true)} />
       <Navigation delay={1.2} />
+      <SectionNav />
 
       <main id="main-content" style={{ paddingTop: '80px' }}>
         <Hero />
