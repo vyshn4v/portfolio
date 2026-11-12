@@ -52,7 +52,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
 
           <div className="preloader-center">
             <span className="preloader-role">Backend Developer</span>
-            <h1 className="preloader-name">VYSHNAV P C</h1>
+            <span className="preloader-name">VYSHNAV P C</span>
           </div>
 
           <div className="preloader-footer">

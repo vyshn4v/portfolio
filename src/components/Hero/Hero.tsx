@@ -40,6 +40,7 @@ export const Hero: React.FC = () => {
             >
               Hey There,
               <span className="hero-name-highlight">I'm Vyshnav</span>
+              <span className="hero-sr-title"> — Full-Stack &amp; Generative AI Developer</span>
             </motion.h1>
 
             <motion.a
