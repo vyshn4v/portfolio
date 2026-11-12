@@ -85,6 +85,15 @@ export const Footer: React.FC = () => {
               <a href="#skills" className="footer-nav-link">Expertise</a>
               <a href="#certifications" className="footer-nav-link">Certifications</a>
               <a href="#contact" className="footer-nav-link">Contact</a>
+              <a
+                href="/Resume_vyshnavPC.pdf"
+                download="Resume_vyshnavPC.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-nav-link"
+              >
+                Resume (PDF)
+              </a>
             </nav>
           </div>
 

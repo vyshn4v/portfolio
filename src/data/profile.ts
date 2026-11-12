@@ -44,6 +44,7 @@ export const profile: Profile = {
     { label: "LinkedIn", url: "https://www.linkedin.com/in/vyshnav-p-c-5567ba242/" },
     { label: "GitHub", url: "https://github.com/vyshn4v" },
     { label: "LeetCode", url: "https://leetcode.com/u/vyshnavpcnaravoor" },
+    { label: "Resume", url: "/Resume_vyshnavPC.pdf" },
     { label: "LixerLab", url: "https://lixerlab.vyshnavpc.com/" },
     { label: "Portfolio", url: "https://portfolio.vyshnavpc.com" },
   ],

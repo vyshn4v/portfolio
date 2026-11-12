@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Phone, Download } from 'lucide-react';
 import { profile } from '../../data/profile';
 import './Navigation.css';
 
@@ -55,8 +55,20 @@ export const Navigation: React.FC<NavigationProps> = ({ delay = 1.2 }) => {
           ))}
         </nav>
 
-        {/* Right Phone Contact */}
+        {/* Right Phone Contact & Resume Button */}
         <div className="nav-right-contact">
+          <a
+            href="/Resume_vyshnavPC.pdf"
+            download="Resume_vyshnavPC.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-resume-btn"
+            aria-label="Download Resume (PDF)"
+          >
+            <Download size={13} />
+            <span>RESUME</span>
+          </a>
+
           <a href={`tel:${profile.phone.replace(/\s+/g, '')}`} className="nav-phone-text">
             {profile.phone}
           </a>
@@ -98,6 +110,17 @@ export const Navigation: React.FC<NavigationProps> = ({ delay = 1.2 }) => {
                 {item.label}
               </a>
             ))}
+            <a
+              href="/Resume_vyshnavPC.pdf"
+              download="Resume_vyshnavPC.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-item-link nav-resume-mobile-link"
+              onClick={closeMenu}
+            >
+              <Download size={15} style={{ marginRight: '8px', verticalAlign: 'middle', display: 'inline' }} />
+              Download Resume
+            </a>
             <a
               href={`tel:${profile.phone.replace(/\s+/g, '')}`}
               className="nav-item-link"

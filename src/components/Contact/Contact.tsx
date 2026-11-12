@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Globe, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, Globe, ExternalLink, Download } from 'lucide-react';
 import { profile } from '../../data/profile';
 import './Contact.css';
 
@@ -103,12 +103,14 @@ export const Contact: React.FC = () => {
                     const isLeetCode = link.label === 'LeetCode';
                     const isLinkedIn = link.label === 'LinkedIn';
                     const isPortfolio = link.label === 'Portfolio';
+                    const isResume = link.label === 'Resume';
 
                     const renderIcon = () => {
                       if (isGitHub) return <GithubIcon />;
                       if (isLeetCode) return <LeetCodeIcon />;
                       if (isLinkedIn) return <LinkedinIcon />;
                       if (isPortfolio) return <Globe size={16} />;
+                      if (isResume) return <Download size={16} />;
                       return <ExternalLink size={16} />;
                     };
 
@@ -132,8 +134,9 @@ export const Contact: React.FC = () => {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        download={isResume ? 'Resume_vyshnavPC.pdf' : undefined}
                         className="profile-link-card active"
-                        aria-label={`Visit ${link.label} profile`}
+                        aria-label={isResume ? 'Download Resume (PDF)' : `Visit ${link.label} profile`}
                       >
                         <div className="link-label-group">
                           <span style={{ color: 'var(--color-orange-warm)', display: 'inline-flex' }}>
@@ -142,7 +145,7 @@ export const Contact: React.FC = () => {
                           <span>{link.label}</span>
                         </div>
                         <span className="active-pill-tag">
-                          <span>VISIT</span>
+                          <span>{isResume ? 'DOWNLOAD' : 'VISIT'}</span>
                           <ArrowUpRight size={12} style={{ display: 'inline', marginLeft: 4 }} />
                         </span>
                       </a>

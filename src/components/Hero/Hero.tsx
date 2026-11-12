@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Cpu } from 'lucide-react';
+import { ArrowDown, Cpu, Download } from 'lucide-react';
 import { profile } from '../../data/profile';
 import './Hero.css';
 
@@ -43,15 +43,31 @@ export const Hero: React.FC = () => {
               <span className="hero-sr-title"> — Full-Stack &amp; Generative AI Developer</span>
             </motion.h1>
 
-            <motion.a
-              href={`mailto:${profile.email}`}
-              className="hero-email-link"
+            <motion.div
+              className="hero-cta-group"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1.6, ease: EASE_OUT }}
             >
-              {profile.email}
-            </motion.a>
+              <a
+                href="/Resume_vyshnavPC.pdf"
+                download="Resume_vyshnavPC.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-resume-btn"
+                aria-label="Download Vyshnav P C Resume (PDF)"
+              >
+                <Download size={15} />
+                <span>DOWNLOAD RESUME</span>
+              </a>
+
+              <a
+                href={`mailto:${profile.email}`}
+                className="hero-email-link"
+              >
+                {profile.email}
+              </a>
+            </motion.div>
 
             <motion.div
               className="hero-stat-block"
