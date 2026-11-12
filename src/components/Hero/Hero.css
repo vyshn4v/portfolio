@@ -66,21 +66,59 @@
   display: block;
 }
 
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: clamp(24px, 3.5vh, 40px);
+}
+
+.hero-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-ink);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--color-ink);
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(13, 35, 34, 0.12);
+  transition: all var(--duration-fast) var(--ease-micro);
+}
+
+.hero-resume-btn:hover {
+  background-color: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(230, 81, 0, 0.25);
+}
+
+.hero-resume-btn:active {
+  transform: translateY(0);
+}
+
 .hero-email-link {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--color-orange);
+  color: var(--color-ink-light);
   text-decoration: underline;
   text-underline-offset: 6px;
   text-decoration-thickness: 1.5px;
-  margin-bottom: clamp(24px, 3.5vh, 40px);
-  transition: opacity var(--duration-fast) var(--ease-micro);
+  transition: color var(--duration-fast) var(--ease-micro);
 }
 
 .hero-email-link:hover {
-  opacity: 0.8;
+  color: var(--color-orange);
 }
 
 .hero-stat-block {
@@ -280,8 +318,9 @@
     margin-bottom: 16px;
   }
 
-  .hero-email-link {
+  .hero-cta-group {
     margin-bottom: 24px;
+    gap: 12px;
   }
 
   .hero-footer-bar {
