@@ -102,3 +102,44 @@ img, svg {
     scroll-behavior: auto !important;
   }
 }
+
+/* Fallback semantic content for crawlers & no-JS clients */
+.initial-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  font-family: var(--font-body, system-ui, -apple-system, sans-serif);
+  color: var(--color-ink);
+  line-height: 1.6;
+}
+
+.initial-content header,
+.initial-content section,
+.initial-content article {
+  margin-bottom: 32px;
+}
+
+.initial-content h1 {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.initial-content h2 {
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.initial-content h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.initial-content p {
+  margin-bottom: 12px;
+}
