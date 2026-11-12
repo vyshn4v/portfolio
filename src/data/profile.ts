@@ -45,7 +45,7 @@ export const profile: Profile = {
     { label: "GitHub", url: "https://github.com/vyshn4v" },
     { label: "LeetCode", url: "https://leetcode.com/u/vyshnavpcnaravoor" },
     { label: "LixerLab", url: "https://lixerlab.vyshnavpc.com/" },
-    { label: "Portfolio", url: "https://vyshnavpc.com" },
+    { label: "Portfolio", url: "https://portfolio.vyshnavpc.com" },
   ],
   education: [
     {
