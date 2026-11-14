@@ -54,6 +54,36 @@ const formatStatus = (data: { node?: string; status?: string }): string => {
   }
 };
 
+// Guarded sessionStorage helper falling back safely to in-memory state
+const safeSessionStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window === 'undefined') return null;
+      return sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem(key, value);
+      }
+    } catch {
+      // In-memory fallback on storage failure
+    }
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem(key);
+      }
+    } catch {
+      // In-memory fallback on storage failure
+    }
+  },
+};
+
 interface AIChatProps {
   isReady?: boolean;
 }
@@ -63,12 +93,19 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   const [input, setInput] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  const activeAbortControllerRef = useRef<AbortController | null>(null);
+  const activeRequestIdRef = useRef<number>(0);
+
   const [conversationId, setConversationId] = useState<string>(() => {
-    const saved = sessionStorage.getItem('vyshnav_chat_conv_id');
-    if (saved) return saved;
     try {
-      const generated = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `conv-${Date.now()}`;
-      sessionStorage.setItem('vyshnav_chat_conv_id', generated);
+      const saved = safeSessionStorage.getItem('vyshnav_chat_conv_id');
+      if (saved) return saved;
+      const generated =
+        typeof crypto !== 'undefined' && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `conv-${Date.now()}`;
+      safeSessionStorage.setItem('vyshnav_chat_conv_id', generated);
       return generated;
     } catch {
       return `conv-${Date.now()}`;
@@ -76,13 +113,16 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   });
 
   const [messages, setMessages] = useState<Message[]>(() => {
-    const saved = sessionStorage.getItem('vyshnav_yoho_messages');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        // ignore fallback
+    try {
+      const saved = safeSessionStorage.getItem('vyshnav_yoho_messages');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
       }
+    } catch {
+      // Continue using in-memory state on storage failure
     }
     return [
       {
@@ -321,17 +361,25 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   };
 
   useEffect(() => {
-    sessionStorage.setItem('vyshnav_yoho_messages', JSON.stringify(messages));
+    try {
+      safeSessionStorage.setItem('vyshnav_yoho_messages', JSON.stringify(messages));
+    } catch {
+      // Retain in-memory messages state on storage failure
+    }
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isOpen]);
 
   useEffect(() => {
-    if (conversationId) {
-      sessionStorage.setItem('vyshnav_chat_conv_id', conversationId);
-    } else {
-      sessionStorage.removeItem('vyshnav_chat_conv_id');
+    try {
+      if (conversationId) {
+        safeSessionStorage.setItem('vyshnav_chat_conv_id', conversationId);
+      } else {
+        safeSessionStorage.removeItem('vyshnav_chat_conv_id');
+      }
+    } catch {
+      // Retain in-memory conversation state on storage failure
     }
   }, [conversationId]);
 
@@ -341,9 +389,19 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     }
   }, [isOpen]);
 
-  const handleSend = async (textToSend?: string) => {
+  const handleSend = async (textToSend?: string): Promise<boolean> => {
     const query = (textToSend || input).trim();
-    if (!query || isLoading) return;
+    if (!query || isLoading) return false;
+
+    // Abort and invalidate any active in-flight request
+    if (activeAbortControllerRef.current) {
+      activeAbortControllerRef.current.abort();
+      activeAbortControllerRef.current = null;
+    }
+
+    const abortController = new AbortController();
+    activeAbortControllerRef.current = abortController;
+    const currentRequestId = ++activeRequestIdRef.current;
 
     setError(null);
     setInput('');
@@ -403,25 +461,37 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             Accept: 'text/event-stream',
           },
           body: JSON.stringify(payload),
+          signal: abortController.signal,
         });
 
         if (streamResponse.ok && streamResponse.body) {
           const reader = streamResponse.body.getReader();
           const decoder = new TextDecoder('utf-8');
           let buffer = '';
+          // Move currentEvent outside the reader loop so its value persists across chunks
+          let currentEvent = 'message';
 
           while (true) {
+            if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+              try { reader.cancel(); } catch { /* ignore */ }
+              return false;
+            }
+
             const { done, value } = await reader.read();
             if (done) break;
+
+            if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+              return false;
+            }
 
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split('\n');
             buffer = lines.pop() || '';
 
-            let currentEvent = 'message';
             for (const rawLine of lines) {
               const line = rawLine.trim();
               if (!line) {
+                // Reset only when parser reaches the event delimiter (blank line)
                 currentEvent = 'message';
                 continue;
               }
@@ -433,6 +503,10 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                 const dataStr = line.slice(5).trim();
                 try {
                   const data = JSON.parse(dataStr);
+
+                  if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+                    return false;
+                  }
 
                   if (currentEvent === 'status') {
                     if (data.status) {
@@ -512,8 +586,15 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
           }
         }
       } catch (streamErr) {
+        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+          return false;
+        }
         console.warn('SSE stream error, trying standard fallback:', streamErr);
         streamSucceeded = false;
+      }
+
+      if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+        return false;
       }
 
       // If SSE did not produce content or failed, fallback to standard endpoint
@@ -525,13 +606,23 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload),
+          signal: abortController.signal,
         });
+
+        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+          return false;
+        }
 
         if (!fallbackResponse.ok) {
           throw new Error(`Server returned HTTP ${fallbackResponse.status}`);
         }
 
         const data = await fallbackResponse.json();
+
+        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+          return false;
+        }
+
         const botReply = data.reply || data.message || data.response || 'No response received.';
 
         if (data.conversationId) {
@@ -566,7 +657,11 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
           )
         );
       }
+      return true;
     } catch (err: unknown) {
+      if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+        return false;
+      }
       const errMsg = err instanceof Error ? err.message : 'Failed to reach AI service';
       setError(errMsg);
       setMessages((prev) =>
@@ -581,8 +676,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             : m
         )
       );
+      return false;
     } finally {
-      setIsLoading(false);
+      if (activeRequestIdRef.current === currentRequestId) {
+        activeAbortControllerRef.current = null;
+        setIsLoading(false);
+      }
     }
   };
 
@@ -602,12 +701,20 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   };
 
   const handleResetConversation = () => {
+    // Abort or invalidate any active request from handleSend
+    if (activeAbortControllerRef.current) {
+      activeAbortControllerRef.current.abort();
+      activeAbortControllerRef.current = null;
+    }
+    activeRequestIdRef.current++;
+    setIsLoading(false);
+
     const newConvId =
       typeof crypto !== 'undefined' && crypto.randomUUID
         ? crypto.randomUUID()
         : `conv-${Date.now()}`;
     setConversationId(newConvId);
-    sessionStorage.setItem('vyshnav_chat_conv_id', newConvId);
+    safeSessionStorage.setItem('vyshnav_chat_conv_id', newConvId);
     setMessages([
       {
         id: `welcome-${Date.now()}`,
@@ -910,7 +1017,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                           <ScheduleFormWidget
                             uiAction={msg.uiAction}
                             onSubmit={(messageText) => handleSend(messageText)}
-                            isLoading={isLoading && Boolean(msg.isStreaming)}
+                            isLoading={isLoading}
                           />
                         )}
 
@@ -919,7 +1026,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                           <OtpWidget
                             uiAction={msg.uiAction}
                             onSubmit={(code) => handleSend(code)}
-                            isLoading={isLoading && Boolean(msg.isStreaming)}
+                            isLoading={isLoading}
                           />
                         )}
                       </div>

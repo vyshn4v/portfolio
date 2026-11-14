@@ -24,7 +24,7 @@ export interface UIAction {
 
 interface OtpWidgetProps {
   uiAction: UIAction;
-  onSubmit: (code: string) => void;
+  onSubmit: (code: string) => Promise<boolean> | boolean | void;
   isLoading?: boolean;
 }
 
@@ -42,6 +42,7 @@ export const OtpWidget: React.FC<OtpWidgetProps> = ({
     return Array(length).fill('');
   });
 
+  const [isPending, setIsPending] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(Boolean(uiAction.submitted));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -55,17 +56,32 @@ export const OtpWidget: React.FC<OtpWidgetProps> = ({
     }
   }, [isSubmitted, uiAction.submitted]);
 
-  const triggerSubmit = (code: string) => {
-    if (code.length === length && !isSubmitted) {
-      setIsSubmitted(true);
-      uiAction.submitted = true;
-      uiAction.submittedValue = code;
-      onSubmit(code);
+  const triggerSubmit = async (code: string) => {
+    if (code.length === length && !isSubmitted && !isPending) {
+      setIsPending(true);
+      try {
+        const result = await onSubmit(code);
+        if (result !== false) {
+          setIsSubmitted(true);
+          uiAction.submitted = true;
+          uiAction.submittedValue = code;
+        } else {
+          setIsSubmitted(false);
+          delete uiAction.submitted;
+          delete uiAction.submittedValue;
+        }
+      } catch {
+        setIsSubmitted(false);
+        delete uiAction.submitted;
+        delete uiAction.submittedValue;
+      } finally {
+        setIsPending(false);
+      }
     }
   };
 
   const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isSubmitted || isLoading) return;
+    if (isSubmitted || isLoading || isPending) return;
     const val = e.target.value.replace(/\D/g, ''); // Digits only
 
     if (!val) {
@@ -94,7 +110,7 @@ export const OtpWidget: React.FC<OtpWidgetProps> = ({
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (isSubmitted || isLoading) return;
+    if (isSubmitted || isLoading || isPending) return;
 
     if (e.key === 'Backspace') {
       if (digits[index]) {
@@ -195,7 +211,7 @@ export const OtpWidget: React.FC<OtpWidgetProps> = ({
             pattern="[0-9]*"
             maxLength={1}
             value={digit}
-            disabled={isSubmitted || isLoading}
+            disabled={isSubmitted || isLoading || isPending}
             onChange={(e) => handleChange(index, e)}
             onKeyDown={(e) => handleKeyDown(index, e)}
             className={`otp-digit-input ${digit ? 'has-value' : ''} ${
@@ -218,11 +234,11 @@ export const OtpWidget: React.FC<OtpWidgetProps> = ({
             <button
               type="button"
               onClick={handleManualSubmit}
-              disabled={!isFull || isLoading}
+              disabled={!isFull || isLoading || isPending}
               className="otp-submit-btn"
               aria-label="Verify Code"
             >
-              {isLoading ? (
+              {isLoading || isPending ? (
                 <>
                   <Loader2 size={13} className="spin-icon" />
                   <span>Verifying...</span>

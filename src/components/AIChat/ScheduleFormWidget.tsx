@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Calendar, User, Mail, Phone, MessageSquare, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Calendar, User, Mail, Phone, MessageSquare, ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
 import type { UIAction, FormField } from './OtpWidget';
 import './ScheduleFormWidget.css';
 
@@ -13,7 +13,7 @@ const BASE_FIELDS: FormField[] = [
 
 interface ScheduleFormWidgetProps {
   uiAction: UIAction;
-  onSubmit: (formattedMessage: string) => void;
+  onSubmit: (formattedMessage: string) => Promise<boolean> | boolean | void;
   isLoading?: boolean;
 }
 
@@ -42,6 +42,7 @@ export const ScheduleFormWidget: React.FC<ScheduleFormWidgetProps> = ({
     return initial;
   });
 
+  const [isPending, setIsPending] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(Boolean(uiAction.submitted));
   const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -50,9 +51,9 @@ export const ScheduleFormWidget: React.FC<ScheduleFormWidgetProps> = ({
     if (validationError) setValidationError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitted || isLoading) return;
+    if (isSubmitted || isLoading || isPending) return;
 
     // Validate required fields
     for (const f of fields) {
@@ -81,10 +82,42 @@ export const ScheduleFormWidget: React.FC<ScheduleFormWidgetProps> = ({
       messageText += `. Reason for meeting: ${reasonVal}`;
     }
 
-    setIsSubmitted(true);
-    uiAction.submitted = true;
-    uiAction.submittedValue = `${nameVal} (${emailVal})`;
-    onSubmit(messageText);
+    // Include values for all configured fields, using each field's name or label to identify its value
+    const standardFields = new Set(['name', 'email', 'phone', 'reason']);
+    const extraParts: string[] = [];
+    fields.forEach((f) => {
+      if (!standardFields.has(f.name)) {
+        const val = (formData[f.name] || '').trim();
+        if (val) {
+          const identifier = f.label || f.name;
+          extraParts.push(`${identifier}: ${val}`);
+        }
+      }
+    });
+
+    if (extraParts.length > 0) {
+      messageText += (messageText ? '. ' : '') + extraParts.join(', ');
+    }
+
+    setIsPending(true);
+    try {
+      const result = await onSubmit(messageText);
+      if (result !== false) {
+        setIsSubmitted(true);
+        uiAction.submitted = true;
+        uiAction.submittedValue = `${nameVal} (${emailVal})`;
+      } else {
+        setIsSubmitted(false);
+        delete uiAction.submitted;
+        delete uiAction.submittedValue;
+      }
+    } catch {
+      setIsSubmitted(false);
+      delete uiAction.submitted;
+      delete uiAction.submittedValue;
+    } finally {
+      setIsPending(false);
+    }
   };
 
   const renderFieldIcon = (fieldName: string) => {
@@ -143,7 +176,7 @@ export const ScheduleFormWidget: React.FC<ScheduleFormWidgetProps> = ({
                       value={formData[field.name] || ''}
                       onChange={(e) => handleChange(field.name, e.target.value)}
                       placeholder={field.placeholder || `Enter ${field.label || field.name}`}
-                      disabled={isLoading || isSubmitted}
+                      disabled={isLoading || isSubmitted || isPending}
                       className="schedule-field-textarea"
                     />
                   ) : (
@@ -152,7 +185,7 @@ export const ScheduleFormWidget: React.FC<ScheduleFormWidgetProps> = ({
                       value={formData[field.name] || ''}
                       onChange={(e) => handleChange(field.name, e.target.value)}
                       placeholder={field.placeholder || `Enter ${field.label || field.name}`}
-                      disabled={isLoading || isSubmitted}
+                      disabled={isLoading || isSubmitted || isPending}
                       required={field.required}
                       className="schedule-field-input"
                     />
@@ -170,11 +203,20 @@ export const ScheduleFormWidget: React.FC<ScheduleFormWidgetProps> = ({
             <span className="schedule-hint">Vyshnav responds within 24 hours</span>
             <button
               type="submit"
-              disabled={isLoading || isSubmitted}
+              disabled={isLoading || isSubmitted || isPending}
               className="schedule-submit-btn"
             >
-              <span>Continue</span>
-              <ArrowRight size={13} />
+              {isPending ? (
+                <>
+                  <Loader2 size={13} className="spin-icon" />
+                  <span>Submitting...</span>
+                </>
+              ) : (
+                <>
+                  <span>Continue</span>
+                  <ArrowRight size={13} />
+                </>
+              )}
             </button>
           </div>
         </form>

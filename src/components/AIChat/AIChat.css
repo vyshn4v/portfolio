@@ -153,8 +153,8 @@
   overflow: hidden;
   pointer-events: auto;
   isolation: isolate;
-  min-width: 400px;
-  min-height: 480px;
+  min-width: min(400px, calc(100vw - 32px));
+  min-height: min(480px, calc(100vh - 80px));
   max-width: calc(100vw - 24px);
   max-height: calc(100vh - 24px);
   /* Hardware acceleration for butter-smooth 120Hz/144Hz dragging & resizing */
