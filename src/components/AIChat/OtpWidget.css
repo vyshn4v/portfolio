@@ -1,0 +1,217 @@
+/* ============================================================
+   DYNAMIC IN-CHAT OTP WIDGET (Generative UI)
+   ============================================================ */
+
+.otp-widget-card {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: rgba(15, 37, 36, 0.05);
+  border: 1px solid rgba(15, 37, 36, 0.12);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  user-select: none;
+  transition: all var(--duration-fast) var(--ease-micro);
+}
+
+.otp-widget-card.is-confirmed {
+  background: rgba(16, 185, 129, 0.06);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.otp-widget-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.otp-widget-icon-wrap {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(215, 114, 12, 0.14);
+  color: var(--color-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.otp-widget-card.is-confirmed .otp-widget-icon-wrap {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+}
+
+.otp-icon-shield {
+  color: var(--color-orange);
+}
+
+.otp-icon-confirmed {
+  color: #10B981;
+}
+
+.otp-widget-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.otp-widget-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+
+.otp-widget-desc {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: rgba(15, 37, 36, 0.72);
+}
+
+/* ============================================================
+   DIGIT BOXES ROW
+   ============================================================ */
+
+.otp-boxes-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 2px 0;
+}
+
+.otp-digit-input {
+  width: 38px;
+  height: 46px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(15, 37, 36, 0.18);
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(15, 37, 36, 0.05);
+  transition: all var(--duration-fast) var(--ease-micro);
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 0;
+}
+
+.otp-digit-input:focus {
+  border-color: var(--color-orange);
+  box-shadow: 0 0 0 3px rgba(215, 114, 12, 0.2);
+  transform: translateY(-1px);
+}
+
+.otp-digit-input.has-value {
+  border-color: var(--color-ink);
+  background: #ffffff;
+}
+
+.otp-digit-input.is-locked {
+  background: rgba(15, 37, 36, 0.04);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #047857;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
+   FOOTER & ACTION
+   ============================================================ */
+
+.otp-widget-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.otp-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.otp-auto-hint {
+  font-size: 10.5px;
+  color: rgba(15, 37, 36, 0.55);
+  font-style: italic;
+}
+
+.otp-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all var(--duration-fast) var(--ease-micro);
+}
+
+.otp-submit-btn:hover:not(:disabled) {
+  background: var(--color-orange);
+  transform: translateY(-1px);
+}
+
+.otp-submit-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.otp-submitted-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Compact screens */
+@media (max-width: 420px) {
+  .otp-boxes-row {
+    gap: 5px;
+  }
+
+  .otp-digit-input {
+    width: 32px;
+    height: 40px;
+    font-size: 17px;
+  }
+}
