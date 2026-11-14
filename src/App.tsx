@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Preloader } from './components/Preloader/Preloader';
 import { Navigation } from './components/Navigation/Navigation';
 import { SectionNav } from './components/SectionNav/SectionNav';
@@ -12,14 +12,19 @@ import { Philosophy } from './components/Philosophy/Philosophy';
 import { Certifications } from './components/Certifications/Certifications';
 import { Contact } from './components/Contact/Contact';
 import { Footer } from './components/Footer/Footer';
+import { AIChat } from './components/AIChat/AIChat';
 
 export const App: React.FC = () => {
-  const [, setPreloaderComplete] = useState(false);
+  const [preloaderComplete, setPreloaderComplete] = useState(false);
+
+  const handlePreloaderComplete = useCallback(() => {
+    setPreloaderComplete(true);
+  }, []);
 
   return (
     <div className="app-root">
       <div className="grain-overlay" aria-hidden="true" />
-      <Preloader onComplete={() => setPreloaderComplete(true)} />
+      <Preloader onComplete={handlePreloaderComplete} />
       <Navigation delay={1.2} />
       <SectionNav />
 
@@ -36,6 +41,7 @@ export const App: React.FC = () => {
       </main>
 
       <Footer />
+      <AIChat isReady={preloaderComplete} />
     </div>
   );
 };

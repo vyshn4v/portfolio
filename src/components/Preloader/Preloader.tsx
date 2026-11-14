@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { profile } from '../../data/profile';
 import './Preloader.css';
 
 interface PreloaderProps {
@@ -11,6 +12,11 @@ const PRELOADER_EASE = [0.76, 0, 0.24, 1] as const;
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [isDone, setIsDone] = useState(false);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     const startTime = Date.now();
@@ -25,13 +31,13 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         clearInterval(interval);
         setTimeout(() => {
           setIsDone(true);
-          onComplete?.();
+          onCompleteRef.current?.();
         }, 100);
       }
     }, 16);
 
     return () => clearInterval(interval);
-  }, [onComplete]);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -51,8 +57,8 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           </div>
 
           <div className="preloader-center">
-            <span className="preloader-role">Backend Developer</span>
-            <span className="preloader-name">VYSHNAV P C</span>
+            <span className="preloader-role">Full-Stack &amp; Generative AI Developer</span>
+            <span className="preloader-name">{profile.name.toUpperCase()}</span>
           </div>
 
           <div className="preloader-footer">
