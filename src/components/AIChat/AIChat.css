@@ -805,6 +805,7 @@
 
 .chat-textarea {
   width: 100%;
+  field-sizing: content;
   border: none;
   background: transparent;
   padding: 2px 0;

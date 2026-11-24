@@ -11,10 +11,16 @@ html {
   scroll-behavior: smooth;
   background-color: var(--color-bg);
   color: var(--color-ink);
+  color-scheme: light;
+  scrollbar-gutter: stable;
+  overflow-wrap: break-word;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
 }
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow-x: hidden;
   background-color: var(--color-bg);

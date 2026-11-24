@@ -688,7 +688,8 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-    if (inputRef.current) {
+    // Graceful fallback for browsers without field-sizing: content support
+    if (inputRef.current && !CSS.supports?.('field-sizing', 'content')) {
       inputRef.current.style.height = 'auto';
       inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`;
     }
@@ -696,6 +697,10 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
+      // Prevent premature submission during active IME composition (e.g. CJK or accented input)
+      if (e.nativeEvent.isComposing || e.keyCode === 229) {
+        return;
+      }
       e.preventDefault();
       handleSend();
     }
