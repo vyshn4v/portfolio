@@ -36,12 +36,13 @@ export const Blob: React.FC<BlobProps> = ({ delay = 1.8 }) => {
         x: { type: 'spring', damping: 32, stiffness: 160, mass: 0.6 },
         y: { type: 'spring', damping: 32, stiffness: 160, mass: 0.6 },
       }}
-      aria-label="Artistic acrylic dry-brush stroke mark"
+      aria-hidden="true"
     >
       <svg
         viewBox="0 0 640 640"
         className="blob-svg"
         xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
       >
         <defs>
           {/* Authentic dry brush displacement filter */}
