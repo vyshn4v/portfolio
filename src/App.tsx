@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { Preloader } from './components/Preloader/Preloader';
 import { Navigation } from './components/Navigation/Navigation';
 import { SectionNav } from './components/SectionNav/SectionNav';
@@ -12,7 +12,11 @@ import { Philosophy } from './components/Philosophy/Philosophy';
 import { Certifications } from './components/Certifications/Certifications';
 import { Contact } from './components/Contact/Contact';
 import { Footer } from './components/Footer/Footer';
-import { AIChat } from './components/AIChat/AIChat';
+
+// Code-split AIChat so it doesn't block critical render path
+const AIChat = lazy(() =>
+  import('./components/AIChat/AIChat').then((m) => ({ default: m.AIChat }))
+);
 
 export const App: React.FC = () => {
   const [preloaderComplete, setPreloaderComplete] = useState(false);
@@ -31,17 +35,19 @@ export const App: React.FC = () => {
       <main id="main-content" style={{ paddingTop: '80px' }}>
         <Hero />
         <Marquee />
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
-        <Philosophy />
-        <Certifications />
-        <Contact />
+        <div className="section-deferred"><About /></div>
+        <div className="section-deferred"><Experience /></div>
+        <div className="section-deferred"><Projects /></div>
+        <div className="section-deferred"><Skills /></div>
+        <div className="section-deferred"><Philosophy /></div>
+        <div className="section-deferred"><Certifications /></div>
+        <div className="section-deferred"><Contact /></div>
       </main>
 
       <Footer />
-      <AIChat isReady={preloaderComplete} />
+      <Suspense fallback={null}>
+        <AIChat isReady={preloaderComplete} />
+      </Suspense>
     </div>
   );
 };
