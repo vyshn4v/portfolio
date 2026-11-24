@@ -24,9 +24,9 @@ export const Footer: React.FC = () => {
           <div className="footer-col footer-col-brand">
             <div className="footer-brand-header">
               <img src="/navbar_logo.png" alt={profile.name} className="footer-logo-img" />
-              <div className="footer-availability-badge">
+              <div className="footer-availability-badge" title={profile.availability}>
                 <span className="pulse-dot" />
-                <span>{profile.availability}</span>
+                <span>{profile.availabilityBadge}</span>
               </div>
             </div>
             <p className="footer-brand-bio">

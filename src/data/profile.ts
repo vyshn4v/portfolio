@@ -51,6 +51,8 @@ export interface Profile {
   headline: string;
   eyebrow: string;
   availability: string;
+  availabilityBadge: string;
+  relocation: string;
   heroHeading: string;
   heroSupport: string;
   location: string;
@@ -69,6 +71,8 @@ export const profile: Profile = {
   headline: "Backend & AI Integration Engineer | Full-Stack Systems",
   eyebrow: "BACKEND & AI INTEGRATION ENGINEER — KANNUR, KERALA",
   availability: "Immediate Joiner (0-Day Notice) | Open to Relocation / Remote",
+  availabilityBadge: "Immediate Joiner · 0-Day Notice",
+  relocation: "Open to Relocation / Remote",
   heroHeading: "BUILDING SYSTEMS THAT SCALE.",
   heroSupport: "Backend & Applied AI · Node.js · TypeScript · LangGraph.js · Multi-Agent RAG · PostgreSQL · Kubernetes",
   location: "Kannur, Kerala, India",

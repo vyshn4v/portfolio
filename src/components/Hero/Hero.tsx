@@ -26,9 +26,9 @@ export const Hero: React.FC = () => {
               <div className="eyebrow">
                 {profile.eyebrow}
               </div>
-              <div className="hero-availability-pill">
+              <div className="hero-availability-pill" title={profile.availability}>
                 <span className="pulse-dot" />
-                <span>{profile.availability}</span>
+                <span>{profile.availabilityBadge}</span>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export const Hero: React.FC = () => {
         >
           <div className="hero-location-info">
             <span>LOCATION:</span>
-            <strong>{profile.location}</strong>
+            <strong>{profile.location} · {profile.relocation}</strong>
           </div>
 
           <div
