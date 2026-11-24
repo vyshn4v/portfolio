@@ -70,9 +70,9 @@ export const About: React.FC = () => {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
             >
-              <p>
-                {profile.summary}
-              </p>
+              {(profile.about.paragraphs || [profile.summary]).map((para, idx) => (
+                <p key={idx}>{para}</p>
+              ))}
             </motion.div>
 
             {/* Scale Metrics from Resume Work */}

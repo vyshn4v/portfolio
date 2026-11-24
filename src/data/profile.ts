@@ -42,6 +42,7 @@ export interface AboutMetric {
 
 export interface AboutContent {
   heading: string;
+  paragraphs: string[];
   capabilities: AboutCapability[];
   metrics: AboutMetric[];
 }
@@ -117,6 +118,10 @@ export const profile: Profile = {
   },
   about: {
     heading: "ARCHITECTING RELIABLE BACKEND SYSTEMS.",
+    paragraphs: [
+      "Backend & Applied AI Engineer with 2 years of enterprise InsurTech delivery at Neutrinos, taking client solutions from presales proof-of-concept to production for Sun Life Philippines and Manulife. Experienced in architecting high-throughput decision APIs (1,000–2,000 req/min) and cutting deployment cycles through modular dynamic architectures.",
+      "Specialized in bridging robust Node.js/TypeScript backends with autonomous agentic AI workflows using LangGraph.js, Pinecone vector search, BullMQ background queues, and Kubernetes. Immediate joiner (0-day notice) available for remote roles or relocation opportunities.",
+    ],
     capabilities: [
       {
         id: "decision-apis",
