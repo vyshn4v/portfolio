@@ -16,16 +16,49 @@ export const About: React.FC = () => {
   return (
     <section className="about-section" id="about" aria-label="About Vyshnav">
       <div className="container">
-        <div className="about-grid">
-          {/* ============================================================
-              LEFT COLUMN: Impact & Scale Proof-Point Rail
-             ============================================================ */}
+        {/* ============================================================
+            TIER 1: Editorial Introduction (Heading Left, Narrative Right)
+           ============================================================ */}
+        <div className="about-intro-grid">
+          <div className="about-heading-col">
+            <div className="eyebrow" style={{ marginBottom: '16px' }}>
+              ENGINEERING SUMMARY
+            </div>
+            <motion.h2
+              className="about-section-heading"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, ease: EASE_OUT }}
+            >
+              {profile.about.heading}
+            </motion.h2>
+          </div>
+
+          <motion.div
+            className="about-narrative-col"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
+          >
+            {(profile.about.paragraphs || [profile.summary]).map((para, idx) => (
+              <p key={idx}>{para}</p>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ============================================================
+            TIER 2: Evidence & Capabilities (3 Metrics Left, 3 Capabilities Right)
+           ============================================================ */}
+        <div className="about-pillars-grid">
+          {/* Left Pillar: Proven Scale & Impact (3 Metric Cards) */}
           <motion.div
             className="about-metrics-col"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.7, ease: EASE_OUT }}
+            transition={{ duration: 0.7, delay: 0.15, ease: EASE_OUT }}
           >
             <div className="eyebrow" style={{ marginBottom: '16px' }}>
               PROVEN SCALE &amp; IMPACT
@@ -47,46 +80,18 @@ export const About: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* ============================================================
-              RIGHT COLUMN: Narrative & Engineering Focus
-             ============================================================ */}
-          <div className="about-narrative-col">
-            <div className="eyebrow" style={{ marginBottom: '12px' }}>
-              ENGINEERING SUMMARY
+          {/* Right Pillar: Core Capabilities (3 Capability Cards) */}
+          <motion.div
+            className="about-capabilities-col"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
+          >
+            <div className="eyebrow" style={{ marginBottom: '16px' }}>
+              CORE ARCHITECTURAL FOCUS
             </div>
-
-            <div className="about-heading-wrap">
-              <motion.h2
-                className="about-section-heading"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.7, ease: EASE_OUT }}
-              >
-                {profile.about.heading}
-              </motion.h2>
-            </div>
-
-            <motion.div
-              className="about-paragraphs"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
-            >
-              {(profile.about.paragraphs || [profile.summary]).map((para, idx) => (
-                <p key={idx}>{para}</p>
-              ))}
-            </motion.div>
-
-            {/* Core Capability Cards positioned cleanly below narrative */}
-            <motion.div
-              className="about-capabilities-list"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
-            >
+            <div className="about-capabilities-stack">
               {profile.about.capabilities.map((cap) => {
                 const meta = capabilityIconMap[cap.icon];
                 return (
@@ -101,8 +106,8 @@ export const About: React.FC = () => {
                   </div>
                 );
               })}
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

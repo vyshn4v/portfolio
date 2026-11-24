@@ -6,14 +6,63 @@
   background-color: var(--color-bg);
 }
 
-.about-grid {
+/* ============================================================
+   Tier 1: Editorial Introduction (Heading Left, Narrative Right)
+   ============================================================ */
+.about-intro-grid {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: clamp(40px, 6vw, 88px);
+  padding-bottom: clamp(40px, 5vh, 56px);
+  margin-bottom: clamp(40px, 5vh, 56px);
+  border-bottom: 1px solid rgba(198, 190, 165, 0.4);
+}
+
+.about-heading-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-section-title);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.about-narrative-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-narrative-col p {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+  color: var(--color-ink-light);
+}
+
+.about-narrative-col strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Tier 2: Evidence & Capabilities (3 Metrics Left, 3 Capabilities Right)
+   ============================================================ */
+.about-pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: start;
   gap: clamp(40px, 6vw, 88px);
 }
 
-/* Left Column: Proof-Point Rail */
+/* Left Pillar: Proven Scale & Impact */
 .about-metrics-col {
   display: flex;
   flex-direction: column;
@@ -29,7 +78,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 24px 28px;
+  padding: 22px 26px;
   background-color: var(--color-white);
   border: 1px solid rgba(198, 190, 165, 0.4);
   border-radius: 4px;
@@ -37,6 +86,8 @@
   transition: transform var(--duration-fast) var(--ease-micro),
               box-shadow var(--duration-fast) var(--ease-micro),
               border-color var(--duration-fast) var(--ease-micro);
+  min-height: 104px;
+  justify-content: center;
 }
 
 .metric-card:hover {
@@ -47,7 +98,7 @@
 
 .metric-value {
   font-family: var(--font-display);
-  font-size: clamp(34px, 4vw, 48px);
+  font-size: clamp(32px, 3.8vw, 44px);
   font-weight: 700;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -64,52 +115,16 @@
   color: var(--color-ink-muted);
 }
 
-/* Right Column: Narrative & Engineering Focus */
-.about-narrative-col {
+/* Right Pillar: Core Capabilities */
+.about-capabilities-col {
   display: flex;
   flex-direction: column;
 }
 
-.about-heading-wrap {
-  margin-bottom: 24px;
-}
-
-.about-section-heading {
-  font-family: var(--font-display);
-  font-size: var(--text-section-title);
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-ink);
-}
-
-.about-paragraphs {
+.about-capabilities-stack {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 32px;
-}
-
-.about-paragraphs p {
-  font-family: var(--font-body);
-  font-size: var(--text-body-lg);
-  line-height: 1.6;
-  color: var(--color-ink-light);
-}
-
-.about-paragraphs strong {
-  color: var(--color-ink);
-  font-weight: 600;
-}
-
-/* Core Capability Cards (Right Column) */
-.about-capabilities-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 32px;
-  border-top: 1px solid rgba(198, 190, 165, 0.4);
 }
 
 .about-feature-card {
@@ -124,6 +139,7 @@
   transition: transform var(--duration-fast) var(--ease-micro),
               box-shadow var(--duration-fast) var(--ease-micro),
               border-color var(--duration-fast) var(--ease-micro);
+  min-height: 104px;
 }
 
 .about-feature-card:hover {
@@ -179,32 +195,20 @@
   text-transform: uppercase;
 }
 
-/* Responsive */
+/* ============================================================
+   Responsive Breakpoints
+   ============================================================ */
 @media (max-width: 960px) {
-  .about-grid {
+  .about-intro-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+  }
+
+  .about-pillars-grid {
     grid-template-columns: 1fr;
     gap: 40px;
-  }
-
-  .about-narrative-col {
-    order: 1;
-  }
-
-  .about-metrics-col {
-    order: 2;
-  }
-
-  .about-metrics-stack {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-}
-
-@media (max-width: 768px) {
-  .about-metrics-stack {
-    grid-template-columns: 1fr;
-    gap: 16px;
   }
 }
 
@@ -214,11 +218,9 @@
     line-height: 1.08;
   }
 
-  .about-feature-card {
-    padding: 18px 20px;
-  }
-
+  .about-feature-card,
   .metric-card {
-    padding: 20px;
+    padding: 18px 20px;
+    min-height: auto;
   }
 }
