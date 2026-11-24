@@ -22,7 +22,7 @@ export const About: React.FC = () => {
         <div className="about-intro-grid">
           <div className="about-heading-col">
             <div className="eyebrow" style={{ marginBottom: '16px' }}>
-              ENGINEERING SUMMARY
+              {profile.about.eyebrow || 'ENGINEERING SUMMARY'}
             </div>
             <motion.h2
               className="about-section-heading"
@@ -61,7 +61,7 @@ export const About: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: EASE_OUT }}
           >
             <div className="eyebrow" style={{ marginBottom: '16px' }}>
-              PROVEN SCALE &amp; IMPACT
+              {profile.about.metricsLabel}
             </div>
             <div className="about-metrics-stack">
               {profile.about.metrics.map((metric, idx) => (
@@ -89,7 +89,7 @@ export const About: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
           >
             <div className="eyebrow" style={{ marginBottom: '16px' }}>
-              CORE ARCHITECTURAL FOCUS
+              {profile.about.capabilitiesLabel}
             </div>
             <div className="about-capabilities-stack">
               {profile.about.capabilities.map((cap) => {
