@@ -7,11 +7,12 @@
   --color-bg-subtle: #EDECE4;
   --color-ink: #0F2524;
   --color-ink-light: rgba(15, 37, 36, 0.72);
-  --color-ink-muted: rgba(15, 37, 36, 0.58);
+  --color-ink-muted: rgba(15, 37, 36, 0.65);
   --color-teal-dark: #204E4A;
   --color-teal: #2F6964;
   --color-green: #738F8A;
   --color-orange: #D7720C;
+  --color-orange-text: #A84805;
   --color-orange-warm: #E6A54D;
   --color-beige: #C6BEA5;
   --color-rust: #AE4818;

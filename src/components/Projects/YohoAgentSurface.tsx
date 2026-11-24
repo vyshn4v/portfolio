@@ -45,7 +45,7 @@ export const YohoAgentSurface: React.FC<YohoAgentSurfaceProps> = ({ data }) => {
           <Bot size={15} color="var(--color-teal)" />
           <span>{data.title}</span>
         </div>
-        <div className="layer-badge" style={{ backgroundColor: 'rgba(47, 105, 100, 0.3)', color: '#8EAAA4' }}>
+        <div className="layer-badge" style={{ backgroundColor: 'rgba(47, 105, 100, 0.4)', color: '#A7F3D0' }}>
           {data.badge}
         </div>
       </div>
