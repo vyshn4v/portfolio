@@ -11,10 +11,16 @@ html {
   scroll-behavior: smooth;
   background-color: var(--color-bg);
   color: var(--color-ink);
+  color-scheme: light;
+  scrollbar-gutter: stable;
+  overflow-wrap: break-word;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
 }
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   overflow-x: hidden;
   background-color: var(--color-bg);
@@ -30,7 +36,15 @@ body {
   pointer-events: none;
   z-index: var(--z-grain);
   opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Content visibility optimization for below-the-fold sections */
+.section-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
 }
 
 a {

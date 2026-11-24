@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/Monogram_icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#F7F6F0" />
 
     <!-- Primary SEO -->
@@ -39,19 +40,35 @@
     />
     <meta name="twitter:image" content="https://portfolio.vyshnavpc.com/navbar_logo.png" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts Resource Hints & Non-blocking Stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
 
     <!-- Structured Data (JSON-LD) for Search Engines & AI Crawlers -->
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Vyshnav P C","url":"https://portfolio.vyshnavpc.com/","image":"https://portfolio.vyshnavpc.com/navbar_logo.png","jobTitle":"Full-Stack & Generative AI Developer","description":"Full-Stack and Generative AI Developer based in Kannur, Kerala, India. Specializing in intelligent agentic AI systems, modern web apps, and distributed backend architectures. Available for freelance projects.","address":{"@type":"PostalAddress","addressLocality":"Kannur","addressRegion":"Kerala","addressCountry":"India"},"email":"vyshnavpcnaravoor@gmail.com","telephone":"+918086064478","sameAs":["https://www.linkedin.com/in/vyshnav-p-c-5567ba242/","https://github.com/vyshn4v","https://leetcode.com/u/vyshnavpcnaravoor"],"knowsAbout":["Full-Stack Web Development","Generative AI","Agentic AI Development","Node.js","NestJS","React","TypeScript","PostgreSQL","Distributed Systems","Cloud Architecture"]}</script>
   </head>
   <body>
-    <div id="root">
+    <div id="root"></div>
+    <noscript>
       <main class="initial-content">
         <header>
           <h1>Vyshnav P C — Full-Stack &amp; Generative AI Developer</h1>
@@ -110,7 +127,7 @@
           <p>Digital Agency: LixerLab (https://lixerlab.vyshnavpc.com/) | Live Portfolio: https://portfolio.vyshnavpc.com/</p>
         </section>
       </main>
-    </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

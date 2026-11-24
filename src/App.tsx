@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import { Preloader } from './components/Preloader/Preloader';
+import React, { Suspense, lazy } from 'react';
 import { Navigation } from './components/Navigation/Navigation';
 import { SectionNav } from './components/SectionNav/SectionNav';
 import { Hero } from './components/Hero/Hero';
@@ -12,20 +11,17 @@ import { Philosophy } from './components/Philosophy/Philosophy';
 import { Certifications } from './components/Certifications/Certifications';
 import { Contact } from './components/Contact/Contact';
 import { Footer } from './components/Footer/Footer';
-import { AIChat } from './components/AIChat/AIChat';
+
+// Code-split AIChat so it doesn't block critical render path
+const AIChat = lazy(() =>
+  import('./components/AIChat/AIChat').then((m) => ({ default: m.AIChat }))
+);
 
 export const App: React.FC = () => {
-  const [preloaderComplete, setPreloaderComplete] = useState(false);
-
-  const handlePreloaderComplete = useCallback(() => {
-    setPreloaderComplete(true);
-  }, []);
-
   return (
     <div className="app-root">
       <div className="grain-overlay" aria-hidden="true" />
-      <Preloader onComplete={handlePreloaderComplete} />
-      <Navigation delay={1.2} />
+      <Navigation delay={0} />
       <SectionNav />
 
       <main id="main-content" style={{ paddingTop: '80px' }}>
@@ -41,7 +37,9 @@ export const App: React.FC = () => {
       </main>
 
       <Footer />
-      <AIChat isReady={preloaderComplete} />
+      <Suspense fallback={null}>
+        <AIChat isReady={true} />
+      </Suspense>
     </div>
   );
 };

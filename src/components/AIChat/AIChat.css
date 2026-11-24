@@ -308,23 +308,6 @@
   cursor: grabbing;
 }
 
-.chat-header-grip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(247, 246, 240, 0.35);
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: color var(--duration-fast) var(--ease-micro),
-              background var(--duration-fast) var(--ease-micro);
-  pointer-events: none;
-}
-
-.chat-header:hover .chat-header-grip {
-  color: var(--color-orange-warm);
-  background: rgba(255, 255, 255, 0.06);
-}
-
 .chat-header-info {
   display: flex;
   align-items: center;
@@ -822,6 +805,7 @@
 
 .chat-textarea {
   width: 100%;
+  field-sizing: content;
   border: none;
   background: transparent;
   padding: 2px 0;

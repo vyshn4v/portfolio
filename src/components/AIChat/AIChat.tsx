@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, RotateCcw, AlertCircle, GripHorizontal, Maximize2, Minimize2, ArrowUp, Loader2 } from 'lucide-react';
+import { X, RotateCcw, AlertCircle, Maximize2, Minimize2, ArrowUp, Loader2 } from 'lucide-react';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { OtpWidget, type UIAction } from './OtpWidget';
 import { ScheduleFormWidget } from './ScheduleFormWidget';
@@ -662,14 +662,15 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
       if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
         return false;
       }
-      const errMsg = err instanceof Error ? err.message : 'Failed to reach AI service';
-      setError(errMsg);
+      console.error('AI chat error:', err);
+      const fallbackErrorMessage = 'Something went wrong, please try sometimes later.';
+      setError(fallbackErrorMessage);
       setMessages((prev) =>
         prev.map((m) =>
           m.id === botMessageId
             ? {
                 ...m,
-                text: `⚠️ Could not reach the AI agent at ${API_ENDPOINT}. Please make sure the backend server is running. (${errMsg})`,
+                text: fallbackErrorMessage,
                 statusText: undefined,
                 isStreaming: false,
               }
@@ -687,7 +688,8 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-    if (inputRef.current) {
+    // Graceful fallback for browsers without field-sizing: content support
+    if (inputRef.current && !CSS.supports?.('field-sizing', 'content')) {
       inputRef.current.style.height = 'auto';
       inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`;
     }
@@ -695,6 +697,10 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
+      // Prevent premature submission during active IME composition (e.g. CJK or accented input)
+      if (e.nativeEvent.isComposing || e.keyCode === 229) {
+        return;
+      }
       e.preventDefault();
       handleSend();
     }
@@ -934,12 +940,6 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                   </div>
                 </div>
               </div>
-
-              {!isMobile && (
-                <div className="chat-header-grip" aria-hidden="true">
-                  <GripHorizontal size={16} />
-                </div>
-              )}
 
               <div className="chat-header-actions">
                 {!isMobile && (
