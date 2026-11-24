@@ -5,34 +5,55 @@ export interface SkillGroup {
 
 export const skills: SkillGroup[] = [
   {
-    category: "AI & Agents",
+    category: "AI Engineering & Agents",
     items: [
       "Generative AI",
-      "Agentic AI Workflows",
-      "LLM Integration",
+      "LangGraph.js",
+      "Multi-Agent Systems",
+      "Retrieval-Augmented Generation (RAG)",
+      "Vector Search (Pinecone)",
+      "LLM Integration (OpenRouter)",
       "Prompt Engineering",
-      "LangChain",
     ],
   },
   {
-    category: "Backend",
+    category: "Backend & Auth",
     items: [
       "Node.js",
-      "NestJS",
-      "Express.js",
       "TypeScript",
+      "Express.js",
+      "NestJS",
       "REST API Design",
-      "Microservices Architecture",
+      "Microservices",
+      "SSO & RBAC",
       "JWT Authentication",
+      "Server-Sent Events (SSE)",
     ],
   },
-  { category: "Databases", items: ["PostgreSQL", "MongoDB", "Redis", "Prisma ORM"] },
   {
-    category: "Messaging & Integrations",
-    items: ["RabbitMQ", "Socket.IO", "Razorpay", "Twilio", "Cloudinary", "Nodemailer"],
+    category: "Databases & Storage",
+    items: [
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "Pinecone",
+      "Prisma ORM",
+    ],
   },
   {
-    category: "DevOps & Cloud",
+    category: "Messaging & Integrations",
+    items: [
+      "RabbitMQ",
+      "BullMQ",
+      "Socket.IO",
+      "Razorpay",
+      "Twilio",
+      "Cloudinary",
+      "Nodemailer",
+    ],
+  },
+  {
+    category: "Cloud & DevOps",
     items: [
       "Docker",
       "Docker Compose",
@@ -45,6 +66,25 @@ export const skills: SkillGroup[] = [
       "CI/CD",
     ],
   },
-  { category: "Frontend", items: ["React.js", "Redux Toolkit", "JavaScript", "Lit (Web Components)"] },
-  { category: "Tools", items: ["Git", "Postman", "Linux", "Agile/Scrum", "Metabase"] },
+  {
+    category: "Frontend",
+    items: [
+      "React.js",
+      "Redux Toolkit",
+      "JavaScript",
+      "Lit (Web Components)",
+    ],
+  },
+  {
+    category: "Tools & Practices",
+    items: [
+      "Git",
+      "Linux",
+      "Postman",
+      "Metabase",
+      "Copilot",
+      "OpenAI Codex",
+      "Antigravity",
+    ],
+  },
 ];

@@ -14,10 +14,43 @@ export interface LanguageEntry {
   level: string;
 }
 
+export interface HeroStat {
+  value: string;
+  label: string;
+}
+
+export interface HeroContent {
+  greeting: string;
+  nameHighlight: string;
+  srTitle: string;
+  quote: string;
+  stampCaption: string;
+  stat: HeroStat;
+}
+
+export interface AboutCapability {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: 'server' | 'layers' | 'git-branch';
+}
+
+export interface AboutMetric {
+  value: string;
+  label: string;
+}
+
+export interface AboutContent {
+  heading: string;
+  capabilities: AboutCapability[];
+  metrics: AboutMetric[];
+}
+
 export interface Profile {
   name: string;
   headline: string;
   eyebrow: string;
+  availability: string;
   heroHeading: string;
   heroSupport: string;
   location: string;
@@ -27,19 +60,22 @@ export interface Profile {
   links: Link[];
   education: EducationEntry[];
   languages: LanguageEntry[];
+  hero: HeroContent;
+  about: AboutContent;
 }
 
 export const profile: Profile = {
   name: "Vyshnav P C",
-  headline: "Full-Stack & Generative AI Developer | Freelancer in Kannur",
-  eyebrow: "FULL-STACK & GENERATIVE AI DEVELOPER — KANNUR, KERALA",
+  headline: "Backend & AI Integration Engineer | Full-Stack Systems",
+  eyebrow: "BACKEND & AI INTEGRATION ENGINEER — KANNUR, KERALA",
+  availability: "Immediate Joiner (0-Day Notice) | Open to Relocation / Remote",
   heroHeading: "BUILDING SYSTEMS THAT SCALE.",
-  heroSupport: "Generative AI · Agentic Workflows · Node.js · React · TypeScript · PostgreSQL",
+  heroSupport: "Backend & Applied AI · Node.js · TypeScript · LangGraph.js · Multi-Agent RAG · PostgreSQL · Kubernetes",
   location: "Kannur, Kerala, India",
   phone: "+91 8086064478",
   email: "vyshnavpcnaravoor@gmail.com",
   summary:
-    "Full-stack and Generative AI developer based in Kannur, Kerala with production experience engineering intelligent AI agents, modern web applications, and high-throughput backend services. Designed a decision engine handling 1,000–2,000 requests/minute for automated policy workflows and delivered resilient architectures with Node.js/NestJS, React, TypeScript, PostgreSQL, Redis, and Docker. Available for freelance projects, technical consulting, and digital agency collaborations via LixerLab.",
+    "Backend & Applied AI Engineer (2 years, enterprise InsurTech) with presales POC-to-production delivery for Sun Life Philippines and Manulife. Scaled Node.js/TypeScript decision APIs to 1,000–2,000 req/min, cut form deployment effort by 20%, and built multi-agent RAG systems with LangGraph.js, Pinecone, Redis, and Kubernetes. Immediate joiner open to remote or relocation opportunities.",
   links: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/vyshnav-p-c-5567ba242/" },
     { label: "GitHub", url: "https://github.com/vyshn4v" },
@@ -50,18 +86,66 @@ export const profile: Profile = {
   ],
   education: [
     {
-      program: "Full Stack Development Bootcamp (MERN Stack)",
-      institution: "Brototype",
-      period: "Dec 2022 - Nov 2023",
+      program: "BCA (Online)",
+      institution: "Manipal University Jaipur",
+      period: "Enrolled, Starting Jan 2027",
     },
     {
-      program: "Diploma in Graphic Design",
-      institution: "Sree Sankaracharya Institute",
-      period: "Dec 2018 - Nov 2020",
+      program: "Full Stack Development (MERN)",
+      institution: "Brototype",
+      period: "Dec 2022 – Nov 2023",
     },
   ],
   languages: [
     { name: "English", level: "Fluent" },
     { name: "Malayalam", level: "Native" },
   ],
+  hero: {
+    greeting: "Hey There,",
+    nameHighlight: "I'm Vyshnav",
+    srTitle: " — Backend & AI Integration Engineer",
+    quote: "I engineer high-throughput backend services, multi-agent AI systems, and resilient production workflows.",
+    stampCaption: "SDE-I · BACKEND & AI SYSTEMS",
+    stat: {
+      value: "2+",
+      label: "YEARS PRODUCTION\nEXPERIENCE",
+    },
+  },
+  about: {
+    heading: "ARCHITECTING RELIABLE BACKEND SYSTEMS.",
+    capabilities: [
+      {
+        id: "decision-apis",
+        title: "High-Throughput Decision APIs",
+        subtitle: "Node.js · REST · jBPM · 1,000–2,000 req/min",
+        icon: "server",
+      },
+      {
+        id: "multi-agent-rag",
+        title: "Multi-Agent AI & RAG Systems",
+        subtitle: "LangGraph.js · Pinecone · BullMQ · OpenRouter",
+        icon: "layers",
+      },
+      {
+        id: "cloud-devops",
+        title: "Cloud Delivery & DevOps",
+        subtitle: "Kubernetes · Docker · CI/CD · Microservices",
+        icon: "git-branch",
+      },
+    ],
+    metrics: [
+      {
+        value: "1,000–2,000",
+        label: "REQUESTS / MINUTE\nDECISION ENGINE ORCHESTRATION",
+      },
+      {
+        value: "20%",
+        label: "DEPLOYMENT EFFORT CUT\nDYNAMIC REACT FORMS",
+      },
+      {
+        value: "0-Day",
+        label: "NOTICE PERIOD\nIMMEDIATE JOINER",
+      },
+    ],
+  },
 };

@@ -49,7 +49,7 @@ export const Contact: React.FC = () => {
             <div className="contact-eyebrow">
               <span>GET IN TOUCH</span>
               <span>—</span>
-              <span>OPEN FOR SDE &amp; BACKEND ROLES</span>
+              <span>OPEN FOR BACKEND &amp; AI INTEGRATION ROLES</span>
             </div>
 
             <div className="contact-heading-wrap">
