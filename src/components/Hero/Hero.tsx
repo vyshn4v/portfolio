@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Cpu, Download } from 'lucide-react';
+import { ArrowDown, Cpu, Download, MapPin } from 'lucide-react';
 import { profile } from '../../data/profile';
 import './Hero.css';
 
@@ -129,8 +129,12 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.4, delay: 0.25, ease: EASE_OUT }}
         >
           <div className="hero-location-info">
-            <span>LOCATION:</span>
-            <strong>{profile.location} · {profile.relocation}</strong>
+            <MapPin size={13} className="hero-location-pin" aria-hidden="true" />
+            <span className="hero-location-text">
+              <strong className="hero-location-city">{profile.location}</strong>
+              <span className="hero-location-sep" aria-hidden="true">·</span>
+              <span className="hero-location-pref">{profile.relocation}</span>
+            </span>
           </div>
 
           <div
