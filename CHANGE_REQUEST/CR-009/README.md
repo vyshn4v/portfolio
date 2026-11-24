@@ -15,7 +15,7 @@ Completed
 ---
 
 ## Description
-This Change Request synchronizes the entire portfolio website's content, data tokens, skills, project storytelling, professional experience bullets, metrics, and academic/certification credentials with the updated resume file ([public/Resume_vyshnavPC.pdf](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/public/Resume_vyshnavPC.pdf)).
+This Change Request synchronizes the entire portfolio website's content, data tokens, skills, project storytelling, professional experience bullets, metrics, and academic/certification credentials with the updated resume file ([public/Resume_vyshnavPC.pdf](../../public/Resume_vyshnavPC.pdf)).
 
 ### Key Changes:
 1. **Profile & Positioning (`src/data/profile.ts`)**:
@@ -57,7 +57,7 @@ This Change Request synchronizes the entire portfolio website's content, data to
      - Stack: `TypeScript, LangGraph.js, OpenRouter, Pinecone, BullMQ, Redis, Server-Sent Events`
      - Storytelling bullets covering the 3-agent state-machine (intent classification, vector search, relevance validation) and the asynchronous consultation booking pipeline via BullMQ + Redis.
      - Attached live link (`https://portfolio.vyshnavpc.com`) and GitHub repo (`https://github.com/vyshn4v/YohoAiAgent`).
-   - Created [src/components/Projects/YohoAgentSurface.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Projects/YohoAgentSurface.tsx) displaying the interactive blueprint of the 3-agent state-machine and SSE telemetry.
+   - Created [src/components/Projects/YohoAgentSurface.tsx](../../src/components/Projects/YohoAgentSurface.tsx) displaying the interactive blueprint of the 3-agent state-machine and SSE telemetry.
    - Updated **Domain Scanner** with its verified GitHub repository (`https://github.com/vyshn4v/domainScannerModule`).
    - Added dual action button support in `Projects.tsx` and `Projects.css` allowing visitors to explore both live demos and GitHub source repositories.
 
@@ -70,19 +70,19 @@ This Change Request synchronizes the entire portfolio website's content, data to
 ---
 
 ## File Locations
-- [src/data/profile.ts](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/data/profile.ts)
-- [src/data/experience.ts](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/data/experience.ts)
-- [src/data/skills.ts](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/data/skills.ts)
-- [src/data/certifications.ts](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/data/certifications.ts)
-- [src/data/projects.ts](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/data/projects.ts)
-- [src/components/Projects/YohoAgentSurface.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Projects/YohoAgentSurface.tsx)
-- [src/components/Projects/index.ts](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Projects/index.ts)
-- [src/components/Projects/Projects.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Projects/Projects.tsx)
-- [src/components/Projects/Projects.css](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Projects/Projects.css)
-- [src/components/Hero/Hero.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Hero/Hero.tsx)
-- [src/components/Hero/Hero.css](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Hero/Hero.css)
-- [src/components/About/About.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/About/About.tsx)
-- [src/components/Footer/Footer.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Footer/Footer.tsx)
-- [src/components/Contact/Contact.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Contact/Contact.tsx)
-- [index.html](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/index.html)
-- [CHANGE_REQUEST/CR-009/README.md](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/CHANGE_REQUEST/CR-009/README.md)
+- [src/data/profile.ts](../../src/data/profile.ts)
+- [src/data/experience.ts](../../src/data/experience.ts)
+- [src/data/skills.ts](../../src/data/skills.ts)
+- [src/data/certifications.ts](../../src/data/certifications.ts)
+- [src/data/projects.ts](../../src/data/projects.ts)
+- [src/components/Projects/YohoAgentSurface.tsx](../../src/components/Projects/YohoAgentSurface.tsx)
+- [src/components/Projects/index.ts](../../src/components/Projects/index.ts)
+- [src/components/Projects/Projects.tsx](../../src/components/Projects/Projects.tsx)
+- [src/components/Projects/Projects.css](../../src/components/Projects/Projects.css)
+- [src/components/Hero/Hero.tsx](../../src/components/Hero/Hero.tsx)
+- [src/components/Hero/Hero.css](../../src/components/Hero/Hero.css)
+- [src/components/About/About.tsx](../../src/components/About/About.tsx)
+- [src/components/Footer/Footer.tsx](../../src/components/Footer/Footer.tsx)
+- [src/components/Contact/Contact.tsx](../../src/components/Contact/Contact.tsx)
+- [index.html](../../index.html)
+- [CHANGE_REQUEST/CR-009/README.md](./README.md)

@@ -33,9 +33,9 @@ export const Hero: React.FC = () => {
             </div>
 
             <h1 className="hero-greeting">
-              Hey There,
-              <span className="hero-name-highlight">I'm Vyshnav</span>
-              <span className="hero-sr-title"> — Backend &amp; AI Integration Engineer</span>
+              {profile.hero.greeting}
+              <span className="hero-name-highlight"> {profile.hero.nameHighlight}</span>
+              <span className="hero-sr-title">{profile.hero.srTitle}</span>
             </h1>
 
             <motion.div
@@ -70,11 +70,14 @@ export const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.15, ease: EASE_OUT }}
             >
-              <span className="hero-stat-number">2+</span>
+              <span className="hero-stat-number">{profile.hero.stat.value}</span>
               <span className="hero-stat-label">
-                YEARS PRODUCTION
-                <br />
-                EXPERIENCE
+                {profile.hero.stat.label.split('\n').map((line, idx) => (
+                  <React.Fragment key={idx}>
+                    {idx > 0 && <br />}
+                    {line}
+                  </React.Fragment>
+                ))}
               </span>
             </motion.div>
           </div>
@@ -84,7 +87,7 @@ export const Hero: React.FC = () => {
              ============================================================ */}
           <div className="hero-right-col">
             <div className="hero-quote-text">
-              I engineer high-throughput backend services, multi-agent AI systems, and resilient production workflows.
+              {profile.hero.quote}
             </div>
 
             <motion.div
@@ -97,7 +100,7 @@ export const Hero: React.FC = () => {
                 <Cpu size={28} className="hero-stamp-inner-icon" />
               </div>
               <div className="hero-stamp-caption">
-                SDE-I · BACKEND &amp; AI SYSTEMS
+                {profile.hero.stampCaption}
               </div>
             </motion.div>
 

@@ -14,6 +14,38 @@ export interface LanguageEntry {
   level: string;
 }
 
+export interface HeroStat {
+  value: string;
+  label: string;
+}
+
+export interface HeroContent {
+  greeting: string;
+  nameHighlight: string;
+  srTitle: string;
+  quote: string;
+  stampCaption: string;
+  stat: HeroStat;
+}
+
+export interface AboutCapability {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: 'server' | 'layers' | 'git-branch';
+}
+
+export interface AboutMetric {
+  value: string;
+  label: string;
+}
+
+export interface AboutContent {
+  heading: string;
+  capabilities: AboutCapability[];
+  metrics: AboutMetric[];
+}
+
 export interface Profile {
   name: string;
   headline: string;
@@ -28,6 +60,8 @@ export interface Profile {
   links: Link[];
   education: EducationEntry[];
   languages: LanguageEntry[];
+  hero: HeroContent;
+  about: AboutContent;
 }
 
 export const profile: Profile = {
@@ -66,4 +100,52 @@ export const profile: Profile = {
     { name: "English", level: "Fluent" },
     { name: "Malayalam", level: "Native" },
   ],
+  hero: {
+    greeting: "Hey There,",
+    nameHighlight: "I'm Vyshnav",
+    srTitle: " — Backend & AI Integration Engineer",
+    quote: "I engineer high-throughput backend services, multi-agent AI systems, and resilient production workflows.",
+    stampCaption: "SDE-I · BACKEND & AI SYSTEMS",
+    stat: {
+      value: "2+",
+      label: "YEARS PRODUCTION\nEXPERIENCE",
+    },
+  },
+  about: {
+    heading: "ARCHITECTING RELIABLE BACKEND SYSTEMS.",
+    capabilities: [
+      {
+        id: "decision-apis",
+        title: "High-Throughput Decision APIs",
+        subtitle: "Node.js · REST · jBPM · 1,000–2,000 req/min",
+        icon: "server",
+      },
+      {
+        id: "multi-agent-rag",
+        title: "Multi-Agent AI & RAG Systems",
+        subtitle: "LangGraph.js · Pinecone · BullMQ · OpenRouter",
+        icon: "layers",
+      },
+      {
+        id: "cloud-devops",
+        title: "Cloud Delivery & DevOps",
+        subtitle: "Kubernetes · Docker · CI/CD · Microservices",
+        icon: "git-branch",
+      },
+    ],
+    metrics: [
+      {
+        value: "1,000–2,000",
+        label: "REQUESTS / MINUTE\nDECISION ENGINE ORCHESTRATION",
+      },
+      {
+        value: "20%",
+        label: "DEPLOYMENT EFFORT CUT\nDYNAMIC REACT FORMS",
+      },
+      {
+        value: "0-Day",
+        label: "NOTICE PERIOD\nIMMEDIATE JOINER",
+      },
+    ],
+  },
 };

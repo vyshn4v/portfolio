@@ -23,5 +23,5 @@ Updated the LixerLab service card in the site footer to reposition LixerLab from
 ---
 
 ## File Locations
-- [src/components/Footer/Footer.tsx](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/src/components/Footer/Footer.tsx)
-- [CHANGE_REQUEST/CR-010/README.md](file:///D:/PERSONAL_TOOLS/PERSONAL_WEBSITE/CHANGE_REQUEST/CR-010/README.md)
+- [src/components/Footer/Footer.tsx](../../src/components/Footer/Footer.tsx)
+- [CHANGE_REQUEST/CR-010/README.md](./README.md)

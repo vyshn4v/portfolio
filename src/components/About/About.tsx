@@ -6,6 +6,12 @@ import './About.css';
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 
+const capabilityIconMap = {
+  server: { icon: <Server size={24} />, boxClass: 'icon-box-teal' },
+  layers: { icon: <Layers size={24} />, boxClass: 'icon-box-orange' },
+  'git-branch': { icon: <GitBranch size={24} />, boxClass: 'icon-box-rust' },
+};
+
 export const About: React.FC = () => {
   return (
     <section className="about-section" id="about" aria-label="About Vyshnav">
@@ -21,35 +27,20 @@ export const About: React.FC = () => {
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7, ease: EASE_OUT }}
           >
-            <div className="about-feature-card">
-              <div className="feature-icon-box icon-box-teal">
-                <Server size={24} />
-              </div>
-              <div className="feature-info">
-                <span className="feature-title">High-Throughput Decision APIs</span>
-                <span className="feature-sub">Node.js · REST · jBPM · 1,000–2,000 req/min</span>
-              </div>
-            </div>
-
-            <div className="about-feature-card">
-              <div className="feature-icon-box icon-box-orange">
-                <Layers size={24} />
-              </div>
-              <div className="feature-info">
-                <span className="feature-title">Multi-Agent AI &amp; RAG Systems</span>
-                <span className="feature-sub">LangGraph.js · Pinecone · BullMQ · OpenRouter</span>
-              </div>
-            </div>
-
-            <div className="about-feature-card">
-              <div className="feature-icon-box icon-box-rust">
-                <GitBranch size={24} />
-              </div>
-              <div className="feature-info">
-                <span className="feature-title">Cloud Delivery &amp; DevOps</span>
-                <span className="feature-sub">Kubernetes · Docker · CI/CD · Microservices</span>
-              </div>
-            </div>
+            {profile.about.capabilities.map((cap) => {
+              const meta = capabilityIconMap[cap.icon];
+              return (
+                <div key={cap.id} className="about-feature-card">
+                  <div className={`feature-icon-box ${meta.boxClass}`}>
+                    {meta.icon}
+                  </div>
+                  <div className="feature-info">
+                    <span className="feature-title">{cap.title}</span>
+                    <span className="feature-sub">{cap.subtitle}</span>
+                  </div>
+                </div>
+              );
+            })}
           </motion.div>
 
           {/* ============================================================
@@ -68,7 +59,7 @@ export const About: React.FC = () => {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, ease: EASE_OUT }}
               >
-                ARCHITECTING RELIABLE BACKEND SYSTEMS.
+                {profile.about.heading}
               </motion.h2>
             </div>
 
@@ -92,32 +83,19 @@ export const About: React.FC = () => {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
             >
-              <div className="metric-item">
-                <span className="metric-value">1,000–2,000</span>
-                <span className="metric-label">
-                  REQUESTS / MINUTE
-                  <br />
-                  DECISION ENGINE ORCHESTRATION
-                </span>
-              </div>
-
-              <div className="metric-item">
-                <span className="metric-value">20%</span>
-                <span className="metric-label">
-                  DEPLOYMENT EFFORT CUT
-                  <br />
-                  DYNAMIC REACT FORMS
-                </span>
-              </div>
-
-              <div className="metric-item">
-                <span className="metric-value">0-Day</span>
-                <span className="metric-label">
-                  NOTICE PERIOD
-                  <br />
-                  IMMEDIATE JOINER
-                </span>
-              </div>
+              {profile.about.metrics.map((metric, idx) => (
+                <div key={idx} className="metric-item">
+                  <span className="metric-value">{metric.value}</span>
+                  <span className="metric-label">
+                    {metric.label.split('\n').map((line, lIdx) => (
+                      <React.Fragment key={lIdx}>
+                        {lIdx > 0 && <br />}
+                        {line}
+                      </React.Fragment>
+                    ))}
+                  </span>
+                </div>
+              ))}
             </motion.div>
           </div>
         </div>

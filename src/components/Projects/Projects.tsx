@@ -117,7 +117,7 @@ export const Projects: React.FC = () => {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
               >
-                <YohoAgentSurface />
+                <YohoAgentSurface data={yohoAgent.architecture} />
               </motion.div>
             </motion.div>
           )}
