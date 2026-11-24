@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Col 2: Services & Agency */}
+          {/* Col 2: Services & Consultancy */}
           <div className="footer-col footer-col-services">
             <span className="footer-col-title">SERVICES</span>
             <div className="footer-agency-card">
@@ -49,18 +49,18 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="agency-card-link"
-                aria-label="LixerLab Agency Website"
+                aria-label="LixerLab Consultancy Website"
               >
                 <div className="agency-card-header">
                   <div className="agency-title-row">
                     <Sparkles size={14} className="agency-icon" />
                     <span className="agency-name">LixerLab</span>
-                    <span className="agency-badge">Agency</span>
+                    <span className="agency-badge">Consultancy</span>
                   </div>
                   <ArrowUpRight size={15} className="agency-arrow" />
                 </div>
                 <p className="agency-description">
-                  My digital agency initiative delivering full-stack solutions, high-performance backends, and digital products.
+                  My technical consultancy delivering full-stack systems, high-performance backends, and AI integrations.
                 </p>
                 <span className="agency-domain">lixerlab.vyshnavpc.com</span>
               </a>
