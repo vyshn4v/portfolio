@@ -6,43 +6,143 @@
   background-color: var(--color-bg);
 }
 
-.about-grid {
+/* ============================================================
+   Tier 1: Editorial Introduction (Heading Left, Narrative Right)
+   ============================================================ */
+.about-intro-grid {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 1fr 1fr;
   align-items: start;
-  gap: clamp(40px, 6vw, 96px);
+  gap: clamp(40px, 6vw, 88px);
+  padding-bottom: clamp(40px, 5vh, 56px);
+  margin-bottom: clamp(40px, 5vh, 56px);
+  border-bottom: 1px solid rgba(198, 190, 165, 0.4);
 }
 
-/* Left Column: Capability & Focus Cards */
-.about-cards-col {
+.about-heading-col {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
-.about-feature-card {
+.about-section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-section-title);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.about-narrative-col {
   display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 24px 28px;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-narrative-col p {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+  color: var(--color-ink-light);
+}
+
+.about-narrative-col strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Tier 2: Evidence & Capabilities (3 Metrics Left, 3 Capabilities Right)
+   ============================================================ */
+.about-pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: clamp(40px, 6vw, 88px);
+}
+
+/* Left Pillar: Proven Scale & Impact */
+.about-metrics-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-metrics-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Tier 2: Shared Responsive Card Geometry & Surface */
+.metric-card,
+.about-feature-card {
+  min-height: clamp(124px, 10.5vw, 136px);
+  padding: 20px 24px;
   background-color: var(--color-white);
   border: 1px solid rgba(198, 190, 165, 0.4);
   border-radius: 4px;
+  box-sizing: border-box;
   box-shadow: 0 4px 20px rgba(13, 35, 34, 0.03);
   transition: transform var(--duration-fast) var(--ease-micro),
               box-shadow var(--duration-fast) var(--ease-micro),
               border-color var(--duration-fast) var(--ease-micro);
 }
 
+.metric-card:hover,
 .about-feature-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(13, 35, 34, 0.07);
   border-color: var(--color-teal);
 }
 
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.metric-value {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3.8vw, 44px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--color-teal-dark);
+}
+
+.metric-label {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+/* Right Pillar: Core Capabilities */
+.about-capabilities-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-capabilities-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-feature-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .feature-icon-box {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -73,7 +173,7 @@
 
 .feature-title {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--color-ink);
   letter-spacing: -0.02em;
@@ -87,92 +187,20 @@
   text-transform: uppercase;
 }
 
-/* Right Column: Narrative & Scale Metrics */
-.about-narrative-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.about-heading-wrap {
-  margin-bottom: 24px;
-}
-
-.about-section-heading {
-  font-family: var(--font-display);
-  font-size: var(--text-section-title);
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-ink);
-}
-
-.about-paragraphs {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: clamp(32px, 5vh, 48px);
-}
-
-.about-paragraphs p {
-  font-family: var(--font-body);
-  font-size: var(--text-body-lg);
-  line-height: 1.6;
-  color: var(--color-ink-light);
-}
-
-.about-paragraphs strong {
-  color: var(--color-ink);
-  font-weight: 600;
-}
-
-/* Metrics Row */
-.about-metrics-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-  padding-top: 32px;
-  border-top: 1px solid rgba(198, 190, 165, 0.4);
-}
-
-.metric-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.metric-value {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 4.5vw, 56px);
-  font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  color: var(--color-teal-dark);
-}
-
-.metric-label {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-/* Responsive */
+/* ============================================================
+   Responsive Breakpoints
+   ============================================================ */
 @media (max-width: 960px) {
-  .about-grid {
+  .about-intro-grid {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 32px;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
   }
 
-  .about-cards-col {
-    order: 2;
-  }
-
-  .about-narrative-col {
-    order: 1;
+  .about-pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
 }
 
@@ -182,12 +210,9 @@
     line-height: 1.08;
   }
 
-  .about-metrics-row {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .about-feature-card {
-    padding: 20px;
+  .about-feature-card,
+  .metric-card {
+    padding: 18px 20px;
+    min-height: auto;
   }
 }

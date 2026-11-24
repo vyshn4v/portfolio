@@ -28,10 +28,10 @@ const MAX_WINDOW_WIDTH = 780;
 const MAX_WINDOW_HEIGHT = 840;
 
 const QUICK_PROMPTS = [
-  'What are the main technical skills of Vyshnav?',
-  'Schedule a meeting with Vyshnav',
-  'Tell me about the Domain Scanner project',
   'What did Vyshnav build at Neutrinos?',
+  'How was Yoho AI-Agent architected?',
+  'Tell me about the Domain Scanner SaaS platform',
+  'Schedule a technical consultation with Vyshnav',
 ];
 
 const formatStatus = (data: { node?: string; status?: string }): string => {
@@ -128,7 +128,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
       {
         id: 'welcome-1',
         sender: 'assistant',
-        text: "👋 Hi, I am Yoho! I will help you to know Vyshnav's details and schedule meetings with him.",
+        text: "👋 Hi! I'm Yoho, Vyshnav's autonomous AI assistant. I can answer questions about his backend architecture, enterprise InsurTech delivery at Neutrinos, and tech stack—or help you schedule a technical consultation.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ];

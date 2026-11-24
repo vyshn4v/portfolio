@@ -306,13 +306,36 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-ink-muted);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
-.hero-location-info strong {
+.hero-location-pin {
+  color: var(--color-orange-text);
+  flex-shrink: 0;
+}
+
+.hero-location-text {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  line-height: 1.4;
+}
+
+.hero-location-city {
   color: var(--color-ink);
   font-weight: 600;
+}
+
+.hero-location-sep {
+  color: var(--color-ink-muted);
+  opacity: 0.6;
+}
+
+.hero-location-pref {
+  color: var(--color-ink-light);
+  font-weight: 500;
 }
 
 .hero-scroll-hint {
@@ -326,11 +349,23 @@
   text-transform: uppercase;
   color: var(--color-ink-light);
   cursor: pointer;
-  transition: color var(--duration-fast) var(--ease-micro);
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: all var(--duration-fast) var(--ease-micro);
+  user-select: none;
 }
 
 .hero-scroll-hint:hover {
   color: var(--color-orange);
+  background-color: rgba(230, 81, 0, 0.06);
+}
+
+.hero-scroll-hint:hover .hero-scroll-arrow {
+  transform: translateY(2px);
+}
+
+.hero-scroll-arrow {
+  transition: transform var(--duration-fast) var(--ease-micro);
 }
 
 .scroll-line-indicator {
@@ -377,6 +412,19 @@
     padding-bottom: 24px;
   }
 
+  .hero-eyebrow-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .hero-eyebrow-row .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+
   .hero-greeting {
     font-size: var(--text-hero-mobile);
     margin-bottom: 16px;
@@ -388,9 +436,41 @@
   }
 
   .hero-footer-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
     padding-top: 16px;
+  }
+
+  .hero-location-info {
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+    width: 100%;
+  }
+
+  .hero-location-pin {
+    margin-top: 2px;
+  }
+
+  .hero-location-text {
+    display: inline;
+  }
+
+  .hero-location-sep {
+    margin: 0 4px;
+  }
+
+  .hero-scroll-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-eyebrow-row {
+    gap: 6px;
+  }
+
+  .hero-availability-pill {
+    padding: 4px 11px;
+    font-size: 11px;
   }
 }

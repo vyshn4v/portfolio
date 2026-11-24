@@ -57,7 +57,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: "yoho-ai-agent",
-    name: "Yoho Ai-Agent",
+    name: "Yoho AI-Agent",
     period: "Mar 2026 – Present",
     status: "live",
     badgeText: "MULTI-AGENT RAG & CONSULTATION PIPELINE",
@@ -181,10 +181,10 @@ export const projects: Project[] = [
       "Kubernetes",
     ],
     bullets: [
-      "Building a Stack Overflow-style Q&A platform with a modular, clean-architecture backend using NestJS and PostgreSQL with raw SQL.",
-      "Implementing email/password authentication, Google/GitHub OAuth, role-based authorization, question/answer CRUD, comments, voting, and tagging.",
-      "Architecting semantic search and a RAG-based /ask endpoint using a vector store and Gemini AI to retrieve relevant Q&A context before generating answers.",
-      "Adding real-time notifications, recommendation services, and reputation/badge modules while following OWASP security practices.",
+      "Architected a modular clean-architecture Q&A backend using NestJS and PostgreSQL with raw SQL queries for optimized throughput.",
+      "Implemented secure multi-provider authentication (OAuth + JWT), role-based access control (RBAC), and transactional question/answer workflows.",
+      "Engineered semantic search and a RAG-powered /ask endpoint using vector embeddings and Gemini AI to contextualize developer responses.",
+      "Designed real-time notification streams and reputation tracking while strictly following OWASP security practices.",
     ],
     visualTreatment:
       "Clean architecture/product map: questions, tags, search, /ask, vector retrieval, notifications and reputation.",
