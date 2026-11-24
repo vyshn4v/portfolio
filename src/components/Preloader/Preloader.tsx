@@ -19,22 +19,31 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   }, [onComplete]);
 
   useEffect(() => {
-    // If user prefers reduced motion or is being audited by Lighthouse / headless runner, bypass immediately
+    // If user prefers reduced motion, is being audited, or has already seen it this session, bypass immediately
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isLighthouse =
       typeof navigator !== 'undefined' &&
       /Lighthouse|PageSpeed|HeadlessChrome/i.test(navigator.userAgent);
+    const hasSeenPreloader =
+      typeof sessionStorage !== 'undefined' &&
+      sessionStorage.getItem('portfolio_preloader_seen');
 
-    if (prefersReducedMotion || isLighthouse) {
+    if (prefersReducedMotion || isLighthouse || hasSeenPreloader) {
       setIsDone(true);
       onCompleteRef.current?.();
       return;
     }
 
+    try {
+      sessionStorage.setItem('portfolio_preloader_seen', 'true');
+    } catch {
+      // sessionStorage might fail in strict private browsing; proceed gracefully
+    }
+
     const startTime = Date.now();
-    const duration = 750; // Optimized duration
+    const duration = 400; // Snappy 400ms
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -46,9 +55,9 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         setTimeout(() => {
           setIsDone(true);
           onCompleteRef.current?.();
-        }, 50);
+        }, 30);
       }
-    }, 32); // 32ms (~30fps) instead of 16ms to prevent main-thread thrashing
+    }, 32);
 
     return () => clearInterval(interval);
   }, []);
@@ -61,7 +70,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           initial={{ y: 0 }}
           exit={{
             y: '-100%',
-            transition: { duration: 0.6, ease: PRELOADER_EASE },
+            transition: { duration: 0.35, ease: PRELOADER_EASE },
           }}
           aria-hidden="true"
         >

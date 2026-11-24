@@ -1,5 +1,4 @@
-import React, { useState, useCallback, Suspense, lazy } from 'react';
-import { Preloader } from './components/Preloader/Preloader';
+import React, { Suspense, lazy } from 'react';
 import { Navigation } from './components/Navigation/Navigation';
 import { SectionNav } from './components/SectionNav/SectionNav';
 import { Hero } from './components/Hero/Hero';
@@ -19,34 +18,27 @@ const AIChat = lazy(() =>
 );
 
 export const App: React.FC = () => {
-  const [preloaderComplete, setPreloaderComplete] = useState(false);
-
-  const handlePreloaderComplete = useCallback(() => {
-    setPreloaderComplete(true);
-  }, []);
-
   return (
     <div className="app-root">
       <div className="grain-overlay" aria-hidden="true" />
-      <Preloader onComplete={handlePreloaderComplete} />
-      <Navigation delay={1.2} />
+      <Navigation delay={0} />
       <SectionNav />
 
       <main id="main-content" style={{ paddingTop: '80px' }}>
         <Hero />
         <Marquee />
-        <div className="section-deferred"><About /></div>
-        <div className="section-deferred"><Experience /></div>
-        <div className="section-deferred"><Projects /></div>
-        <div className="section-deferred"><Skills /></div>
-        <div className="section-deferred"><Philosophy /></div>
-        <div className="section-deferred"><Certifications /></div>
-        <div className="section-deferred"><Contact /></div>
+        <About />
+        <Experience />
+        <Projects />
+        <Skills />
+        <Philosophy />
+        <Certifications />
+        <Contact />
       </main>
 
       <Footer />
       <Suspense fallback={null}>
-        <AIChat isReady={preloaderComplete} />
+        <AIChat isReady={true} />
       </Suspense>
     </div>
   );

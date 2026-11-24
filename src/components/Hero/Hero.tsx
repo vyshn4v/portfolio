@@ -22,32 +22,21 @@ export const Hero: React.FC = () => {
               LEFT COLUMN: Greeting, Email Link & Scale Metric
              ============================================================ */}
           <div className="hero-left-col">
-            <motion.div
-              className="eyebrow"
-              style={{ marginBottom: '12px' }}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.3, ease: EASE_OUT }}
-            >
+            <div className="eyebrow" style={{ marginBottom: '12px' }}>
               {profile.eyebrow}
-            </motion.div>
+            </div>
 
-            <motion.h1
-              className="hero-greeting"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 1.45, ease: EASE_OUT }}
-            >
+            <h1 className="hero-greeting">
               Hey There,
               <span className="hero-name-highlight">I'm Vyshnav</span>
               <span className="hero-sr-title"> — Full-Stack &amp; Generative AI Developer</span>
-            </motion.h1>
+            </h1>
 
             <motion.div
               className="hero-cta-group"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 1.6, ease: EASE_OUT }}
+              transition={{ duration: 0.4, delay: 0.05, ease: EASE_OUT }}
             >
               <a
                 href="/Resume_vyshnavPC.pdf"
@@ -71,9 +60,9 @@ export const Hero: React.FC = () => {
 
             <motion.div
               className="hero-stat-block"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 1.7, ease: EASE_OUT }}
+              transition={{ duration: 0.4, delay: 0.15, ease: EASE_OUT }}
             >
               <span className="hero-stat-number">2+</span>
               <span className="hero-stat-label">
@@ -88,20 +77,15 @@ export const Hero: React.FC = () => {
               RIGHT COLUMN: Narrative Quote, Circular Stamp & Tech Pills
              ============================================================ */}
           <div className="hero-right-col">
-            <motion.div
-              className="hero-quote-text"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 1.6, ease: EASE_OUT }}
-            >
+            <div className="hero-quote-text">
               I engineer high-throughput backend services, resilient distributed workflows, and end-to-end production systems.
-            </motion.div>
+            </div>
 
             <motion.div
               className="hero-stamp-wrapper"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 1.8, ease: EASE_OUT }}
+              transition={{ duration: 0.5, delay: 0.1, ease: EASE_OUT }}
             >
               <div className="hero-circular-stamp" aria-hidden="true">
                 <Cpu size={28} className="hero-stamp-inner-icon" />
@@ -113,9 +97,9 @@ export const Hero: React.FC = () => {
 
             <motion.div
               className="hero-tech-pills"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.9, ease: EASE_OUT }}
+              transition={{ duration: 0.4, delay: 0.2, ease: EASE_OUT }}
             >
               {profile.heroSupport.split('·').map((tech) => (
                 <span key={tech.trim()} className="hero-tech-tag">
@@ -131,9 +115,9 @@ export const Hero: React.FC = () => {
            ============================================================ */}
         <motion.div
           className="hero-footer-bar"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 2.0, ease: EASE_OUT }}
+          transition={{ duration: 0.4, delay: 0.25, ease: EASE_OUT }}
         >
           <div className="hero-location-info">
             <span>LOCATION:</span>
