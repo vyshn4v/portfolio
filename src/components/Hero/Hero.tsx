@@ -8,9 +8,9 @@ const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 
 export const Hero: React.FC = () => {
   const handleScrollClick = () => {
-    const marqueeSection = document.querySelector('.marquee-container');
-    if (marqueeSection) {
-      marqueeSection.scrollIntoView({ behavior: 'smooth' });
+    const nextSection = document.querySelector('#about') || document.querySelector('.marquee-container');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -142,16 +142,16 @@ export const Hero: React.FC = () => {
             onClick={handleScrollClick}
             role="button"
             tabIndex={0}
-            aria-label="Scroll to explore marquee and projects"
+            aria-label="Scroll to explore about and featured projects"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 handleScrollClick();
               }
             }}
           >
-            <span>SCROLL TO EXPLORE</span>
-            <div className="scroll-line-indicator" />
-            <ArrowDown size={14} />
+            <span className="hero-scroll-text">SCROLL TO EXPLORE</span>
+            <div className="scroll-line-indicator" aria-hidden="true" />
+            <ArrowDown size={14} className="hero-scroll-arrow" aria-hidden="true" />
           </div>
         </motion.div>
       </div>

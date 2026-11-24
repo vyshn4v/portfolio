@@ -349,11 +349,23 @@
   text-transform: uppercase;
   color: var(--color-ink-light);
   cursor: pointer;
-  transition: color var(--duration-fast) var(--ease-micro);
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: all var(--duration-fast) var(--ease-micro);
+  user-select: none;
 }
 
 .hero-scroll-hint:hover {
   color: var(--color-orange);
+  background-color: rgba(230, 81, 0, 0.06);
+}
+
+.hero-scroll-hint:hover .hero-scroll-arrow {
+  transform: translateY(2px);
+}
+
+.hero-scroll-arrow {
+  transition: transform var(--duration-fast) var(--ease-micro);
 }
 
 .scroll-line-indicator {
@@ -425,9 +437,10 @@
 
   .hero-footer-bar {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-    padding-top: 16px;
+    align-items: center;
+    gap: 16px;
+    padding-top: 18px;
+    width: 100%;
   }
 
   .hero-location-info {
@@ -435,6 +448,7 @@
     gap: 6px;
     font-size: 11px;
     line-height: 1.5;
+    width: 100%;
   }
 
   .hero-location-pin {
@@ -447,6 +461,49 @@
 
   .hero-location-sep {
     margin: 0 4px;
+  }
+
+  .hero-scroll-hint {
+    align-self: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 20px;
+    background-color: var(--color-white);
+    border: 1px solid rgba(198, 190, 165, 0.45);
+    border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(13, 35, 34, 0.04);
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--color-ink);
+  }
+
+  .hero-scroll-hint:active {
+    transform: translateY(1px);
+    background-color: rgba(230, 81, 0, 0.08);
+  }
+
+  .scroll-line-indicator {
+    display: none;
+  }
+
+  .hero-scroll-arrow {
+    animation: bounceDown 2s infinite ease-in-out;
+  }
+
+  @keyframes bounceDown {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scroll-arrow {
+      animation: none;
+    }
   }
 }
 
