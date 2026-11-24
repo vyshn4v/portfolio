@@ -18,33 +18,37 @@ export const About: React.FC = () => {
       <div className="container">
         <div className="about-grid">
           {/* ============================================================
-              LEFT COLUMN: Core Capabilities & Focus Blocks
+              LEFT COLUMN: Impact & Scale Proof-Point Rail
              ============================================================ */}
           <motion.div
-            className="about-cards-col"
+            className="about-metrics-col"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7, ease: EASE_OUT }}
           >
-            {profile.about.capabilities.map((cap) => {
-              const meta = capabilityIconMap[cap.icon];
-              return (
-                <div key={cap.id} className="about-feature-card">
-                  <div className={`feature-icon-box ${meta.boxClass}`}>
-                    {meta.icon}
-                  </div>
-                  <div className="feature-info">
-                    <span className="feature-title">{cap.title}</span>
-                    <span className="feature-sub">{cap.subtitle}</span>
-                  </div>
+            <div className="eyebrow" style={{ marginBottom: '16px' }}>
+              PROVEN SCALE &amp; IMPACT
+            </div>
+            <div className="about-metrics-stack">
+              {profile.about.metrics.map((metric, idx) => (
+                <div key={idx} className="metric-card">
+                  <span className="metric-value">{metric.value}</span>
+                  <span className="metric-label">
+                    {metric.label.split('\n').map((line, lIdx) => (
+                      <React.Fragment key={lIdx}>
+                        {lIdx > 0 && <br />}
+                        {line}
+                      </React.Fragment>
+                    ))}
+                  </span>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </motion.div>
 
           {/* ============================================================
-              RIGHT COLUMN: Narrative & Request-Scale Metrics
+              RIGHT COLUMN: Narrative & Engineering Focus
              ============================================================ */}
           <div className="about-narrative-col">
             <div className="eyebrow" style={{ marginBottom: '12px' }}>
@@ -75,27 +79,28 @@ export const About: React.FC = () => {
               ))}
             </motion.div>
 
-            {/* Scale Metrics from Resume Work */}
+            {/* Core Capability Cards positioned cleanly below narrative */}
             <motion.div
-              className="about-metrics-row"
+              className="about-capabilities-list"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
             >
-              {profile.about.metrics.map((metric, idx) => (
-                <div key={idx} className="metric-item">
-                  <span className="metric-value">{metric.value}</span>
-                  <span className="metric-label">
-                    {metric.label.split('\n').map((line, lIdx) => (
-                      <React.Fragment key={lIdx}>
-                        {lIdx > 0 && <br />}
-                        {line}
-                      </React.Fragment>
-                    ))}
-                  </span>
-                </div>
-              ))}
+              {profile.about.capabilities.map((cap) => {
+                const meta = capabilityIconMap[cap.icon];
+                return (
+                  <div key={cap.id} className="about-feature-card">
+                    <div className={`feature-icon-box ${meta.boxClass}`}>
+                      {meta.icon}
+                    </div>
+                    <div className="feature-info">
+                      <span className="feature-title">{cap.title}</span>
+                      <span className="feature-sub">{cap.subtitle}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </motion.div>
           </div>
         </div>
