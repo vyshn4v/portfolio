@@ -62,9 +62,9 @@ This Change Request synchronizes the entire portfolio website's content, data to
    - Added dual action button support in `Projects.tsx` and `Projects.css` allowing visitors to explore both live demos and GitHub source repositories.
 
 6. **Hero, About, Footer & SEO Sections**:
-   - `Hero.tsx` & `Hero.css`: Added "Immediate Joiner (0-Day Notice)" availability pill, updated SR title and quotes to Backend & AI Integration Engineer.
+   - `Hero.tsx` & `Hero.css`: Added "Immediate Joiner (0-Day Notice)" availability pill harmonized with `var(--color-ink)` typography, neutral translucent border/background, and a live emerald green pulsing beacon (`#16A34A`), eliminating the prior color clash. Updated SR title and quotes to Backend & AI Integration Engineer.
    - `About.tsx`: Updated feature cards (Decision APIs, Multi-Agent RAG, Cloud DevOps) and metrics (1,000–2,000 req/min, 20% form deployment reduction, 0-day notice).
-   - `Footer.tsx` & `Contact.tsx`: Updated availability badge, bio, and target roles.
+   - `Footer.tsx` & `Contact.tsx`: Synchronized availability badge with the same neutral ink and green beacon styling, bio, and target roles.
    - `index.html`: Updated page title, meta description, OpenGraph, Twitter cards, JSON-LD Schema.org Person metadata, and `<noscript>` static crawler fallback.
 
 ---

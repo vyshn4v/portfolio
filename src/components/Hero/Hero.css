@@ -50,16 +50,46 @@
 .hero-availability-pill {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 3px 10px;
-  background-color: rgba(47, 105, 100, 0.12);
-  border: 1px solid rgba(47, 105, 100, 0.3);
+  gap: 8px;
+  padding: 4px 12px;
+  background-color: rgba(15, 37, 36, 0.04);
+  border: 1px solid rgba(15, 37, 36, 0.14);
   border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--color-teal-dark);
+  color: var(--color-ink);
+  transition: all var(--duration-fast) var(--ease-micro);
+}
+
+.hero-availability-pill:hover {
+  background-color: rgba(15, 37, 36, 0.08);
+  border-color: rgba(15, 37, 36, 0.25);
+}
+
+.hero-availability-pill .pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #16A34A;
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+  animation: pulse-ring-green 2s infinite ease-in-out;
+}
+
+@keyframes pulse-ring-green {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
 }
 
 .hero-greeting {
