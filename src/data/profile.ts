@@ -18,6 +18,7 @@ export interface Profile {
   name: string;
   headline: string;
   eyebrow: string;
+  availability: string;
   heroHeading: string;
   heroSupport: string;
   location: string;
@@ -31,15 +32,16 @@ export interface Profile {
 
 export const profile: Profile = {
   name: "Vyshnav P C",
-  headline: "Full-Stack & Generative AI Developer | Freelancer in Kannur",
-  eyebrow: "FULL-STACK & GENERATIVE AI DEVELOPER — KANNUR, KERALA",
+  headline: "Backend & AI Integration Engineer | Full-Stack Systems",
+  eyebrow: "BACKEND & AI INTEGRATION ENGINEER — KANNUR, KERALA",
+  availability: "Immediate Joiner (0-Day Notice) | Open to Relocation / Remote",
   heroHeading: "BUILDING SYSTEMS THAT SCALE.",
-  heroSupport: "Generative AI · Agentic Workflows · Node.js · React · TypeScript · PostgreSQL",
+  heroSupport: "Backend & Applied AI · Node.js · TypeScript · LangGraph.js · Multi-Agent RAG · PostgreSQL · Kubernetes",
   location: "Kannur, Kerala, India",
   phone: "+91 8086064478",
   email: "vyshnavpcnaravoor@gmail.com",
   summary:
-    "Full-stack and Generative AI developer based in Kannur, Kerala with production experience engineering intelligent AI agents, modern web applications, and high-throughput backend services. Designed a decision engine handling 1,000–2,000 requests/minute for automated policy workflows and delivered resilient architectures with Node.js/NestJS, React, TypeScript, PostgreSQL, Redis, and Docker. Available for freelance projects, technical consulting, and digital agency collaborations via LixerLab.",
+    "Backend & Applied AI Engineer (2 years, enterprise InsurTech) with presales POC-to-production delivery for Sun Life Philippines and Manulife. Scaled Node.js/TypeScript decision APIs to 1,000–2,000 req/min, cut form deployment effort by 20%, and built multi-agent RAG systems with LangGraph.js, Pinecone, Redis, and Kubernetes. Immediate joiner open to remote or relocation opportunities.",
   links: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/vyshnav-p-c-5567ba242/" },
     { label: "GitHub", url: "https://github.com/vyshn4v" },
@@ -50,14 +52,14 @@ export const profile: Profile = {
   ],
   education: [
     {
-      program: "Full Stack Development Bootcamp (MERN Stack)",
-      institution: "Brototype",
-      period: "Dec 2022 - Nov 2023",
+      program: "BCA (Online)",
+      institution: "Manipal University Jaipur",
+      period: "Enrolled, Starting Jan 2027",
     },
     {
-      program: "Diploma in Graphic Design",
-      institution: "Sree Sankaracharya Institute",
-      period: "Dec 2018 - Nov 2020",
+      program: "Full Stack Development (MERN)",
+      institution: "Brototype",
+      period: "Dec 2022 – Nov 2023",
     },
   ],
   languages: [

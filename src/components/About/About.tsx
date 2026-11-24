@@ -26,8 +26,8 @@ export const About: React.FC = () => {
                 <Server size={24} />
               </div>
               <div className="feature-info">
-                <span className="feature-title">High-Throughput Backend</span>
-                <span className="feature-sub">Node.js · NestJS · PostgreSQL · REST</span>
+                <span className="feature-title">High-Throughput Decision APIs</span>
+                <span className="feature-sub">Node.js · REST · jBPM · 1,000–2,000 req/min</span>
               </div>
             </div>
 
@@ -36,8 +36,8 @@ export const About: React.FC = () => {
                 <Layers size={24} />
               </div>
               <div className="feature-info">
-                <span className="feature-title">Asynchronous Event Pipelines</span>
-                <span className="feature-sub">RabbitMQ · Redis Caching · Resilient Queues</span>
+                <span className="feature-title">Multi-Agent AI &amp; RAG Systems</span>
+                <span className="feature-sub">LangGraph.js · Pinecone · BullMQ · OpenRouter</span>
               </div>
             </div>
 
@@ -47,7 +47,7 @@ export const About: React.FC = () => {
               </div>
               <div className="feature-info">
                 <span className="feature-title">Cloud Delivery &amp; DevOps</span>
-                <span className="feature-sub">Kubernetes · Docker · Zero-Downtime Migrations</span>
+                <span className="feature-sub">Kubernetes · Docker · CI/CD · Microservices</span>
               </div>
             </div>
           </motion.div>
@@ -102,11 +102,20 @@ export const About: React.FC = () => {
               </div>
 
               <div className="metric-item">
-                <span className="metric-value">100%</span>
+                <span className="metric-value">20%</span>
                 <span className="metric-label">
-                  END-TO-END PRODUCTION
+                  DEPLOYMENT EFFORT CUT
                   <br />
-                  DELIVERY &amp; MIGRATION OWNERSHIP
+                  DYNAMIC REACT FORMS
+                </span>
+              </div>
+
+              <div className="metric-item">
+                <span className="metric-value">0-Day</span>
+                <span className="metric-label">
+                  NOTICE PERIOD
+                  <br />
+                  IMMEDIATE JOINER
                 </span>
               </div>
             </motion.div>

@@ -22,14 +22,20 @@ export const Hero: React.FC = () => {
               LEFT COLUMN: Greeting, Email Link & Scale Metric
              ============================================================ */}
           <div className="hero-left-col">
-            <div className="eyebrow" style={{ marginBottom: '12px' }}>
-              {profile.eyebrow}
+            <div className="hero-eyebrow-row">
+              <div className="eyebrow">
+                {profile.eyebrow}
+              </div>
+              <div className="hero-availability-pill">
+                <span className="pulse-dot" />
+                <span>{profile.availability}</span>
+              </div>
             </div>
 
             <h1 className="hero-greeting">
               Hey There,
               <span className="hero-name-highlight">I'm Vyshnav</span>
-              <span className="hero-sr-title"> — Full-Stack &amp; Generative AI Developer</span>
+              <span className="hero-sr-title"> — Backend &amp; AI Integration Engineer</span>
             </h1>
 
             <motion.div
@@ -78,7 +84,7 @@ export const Hero: React.FC = () => {
              ============================================================ */}
           <div className="hero-right-col">
             <div className="hero-quote-text">
-              I engineer high-throughput backend services, resilient distributed workflows, and end-to-end production systems.
+              I engineer high-throughput backend services, multi-agent AI systems, and resilient production workflows.
             </div>
 
             <motion.div
@@ -91,7 +97,7 @@ export const Hero: React.FC = () => {
                 <Cpu size={28} className="hero-stamp-inner-icon" />
               </div>
               <div className="hero-stamp-caption">
-                SDE-I · BACKEND &amp; DISTRIBUTED SYSTEMS
+                SDE-I · BACKEND &amp; AI SYSTEMS
               </div>
             </motion.div>
 

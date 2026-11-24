@@ -26,11 +26,11 @@ export const Footer: React.FC = () => {
               <img src="/navbar_logo.png" alt={profile.name} className="footer-logo-img" />
               <div className="footer-availability-badge">
                 <span className="pulse-dot" />
-                <span>Available for Projects</span>
+                <span>{profile.availability}</span>
               </div>
             </div>
             <p className="footer-brand-bio">
-              Software engineer crafting high-throughput backend services, distributed systems, and resilient cloud architectures.
+              Backend &amp; Applied AI Engineer crafting multi-agent RAG systems, high-throughput decision APIs, and resilient cloud architectures.
             </p>
             <div className="footer-meta-info">
               <span className="footer-meta-item">

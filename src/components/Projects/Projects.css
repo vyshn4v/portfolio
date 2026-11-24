@@ -154,6 +154,29 @@
   flex-shrink: 0;
 }
 
+.project-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-period-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  letter-spacing: 0.04em;
+}
+
+.project-actions-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
 .project-live-btn {
   display: inline-flex;
   align-items: center;
@@ -168,7 +191,6 @@
   text-transform: uppercase;
   border-radius: 2px;
   width: fit-content;
-  margin-top: 6px;
   transition: all var(--duration-fast) var(--ease-micro);
 }
 
@@ -177,6 +199,30 @@
   color: var(--color-white);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(215, 114, 12, 0.25);
+}
+
+.project-github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid rgba(15, 37, 36, 0.28);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  width: fit-content;
+  transition: all var(--duration-fast) var(--ease-micro);
+}
+
+.project-github-btn:hover {
+  border-color: var(--color-ink);
+  background-color: rgba(15, 37, 36, 0.06);
+  transform: translateY(-2px);
 }
 
 .project-dev-note {
