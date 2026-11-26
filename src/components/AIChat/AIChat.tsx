@@ -84,6 +84,43 @@ const safeSessionStorage = {
   },
 };
 
+const hasBubblePayload = (
+  msg: Pick<Message, 'sender' | 'text' | 'uiAction'>
+): boolean =>
+  msg.sender === 'user' ||
+  msg.text.trim().length > 0 ||
+  Boolean(msg.uiAction);
+
+const sanitizeRestoredMessages = (raw: unknown): Message[] | null => {
+  if (!Array.isArray(raw)) return null;
+
+  const cleaned = raw
+    .filter((item): item is Message => {
+      if (!item || typeof item !== 'object') return false;
+      const candidate = item as Partial<Message>;
+      const sender = candidate.sender;
+      if (
+        (sender !== 'user' && sender !== 'assistant') ||
+        typeof candidate.id !== 'string' ||
+        typeof candidate.text !== 'string'
+      ) {
+        return false;
+      }
+      return hasBubblePayload({
+        sender,
+        text: candidate.text,
+        uiAction: candidate.uiAction ?? null,
+      });
+    })
+    .map((msg) => ({
+      ...msg,
+      isStreaming: false,
+      statusText: undefined,
+    }));
+
+  return cleaned.length > 0 ? cleaned : null;
+};
+
 interface AIChatProps {
   isReady?: boolean;
 }
@@ -116,9 +153,9 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     try {
       const saved = safeSessionStorage.getItem('vyshnav_yoho_messages');
       if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+        const restored = sanitizeRestoredMessages(JSON.parse(saved));
+        if (restored) {
+          return restored;
         }
       }
     } catch {
@@ -582,14 +619,15 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                   } else if (currentEvent === 'token') {
                     if (data.token) {
                       accumulatedText += data.token;
-                      streamSucceeded = true;
+                      const hasVisibleText = accumulatedText.trim().length > 0;
+                      streamSucceeded = hasVisibleText || Boolean(capturedUiAction);
                       setMessages((prev) =>
                         prev.map((m) =>
                           m.id === botMessageId
                             ? {
                                 ...m,
                                 text: accumulatedText,
-                                statusText: undefined,
+                                statusText: hasVisibleText ? undefined : m.statusText,
                                 isStreaming: true,
                               }
                             : m
@@ -610,26 +648,33 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                       )
                     );
                   } else if (currentEvent === 'done') {
-                    streamSucceeded = true;
                     if (data.conversationId) {
                       setConversationId(data.conversationId);
                     }
                     if (data.uiAction) {
                       capturedUiAction = data.uiAction;
                     }
-                    if (data.reply && !accumulatedText) {
+                    if (data.reply && !accumulatedText.trim()) {
                       accumulatedText = data.reply;
                     }
+                    const finalText = accumulatedText.trim()
+                      ? accumulatedText
+                      : (data.reply || '');
+                    const hasFinalContent =
+                      finalText.trim().length > 0 || Boolean(capturedUiAction);
+                    streamSucceeded = hasFinalContent;
                     setMessages((prev) =>
                       prev.map((m) =>
                         m.id === botMessageId
                           ? {
                               ...m,
-                              text: accumulatedText || data.reply || m.text,
-                              statusText: undefined,
+                              text: finalText || m.text,
+                              statusText: hasFinalContent
+                                ? undefined
+                                : m.statusText || 'Generating response...',
                               uiAction: capturedUiAction || m.uiAction,
                               intent: data.intent,
-                              isStreaming: false,
+                              isStreaming: !hasFinalContent,
                             }
                           : m
                       )
@@ -655,7 +700,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
       }
 
       // If SSE did not produce content or failed, fallback to standard endpoint
-      if (!streamSucceeded || (!accumulatedText && !capturedUiAction)) {
+      if (!streamSucceeded || (!accumulatedText.trim() && !capturedUiAction)) {
         const fallbackResponse = await fetch(API_ENDPOINT, {
           method: 'POST',
           headers: {
@@ -680,7 +725,11 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
           return false;
         }
 
-        const botReply = data.reply || data.message || data.response || 'No response received.';
+        const rawReply = data.reply || data.message || data.response || '';
+        const botReply =
+          typeof rawReply === 'string' && rawReply.trim()
+            ? rawReply
+            : 'No response received.';
 
         if (data.conversationId) {
           setConversationId(data.conversationId);
@@ -944,11 +993,11 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
           >
             <motion.div
               className="ai-chat-window-content"
-              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              initial={prefersReducedMotion ? false : { opacity: 0.25 }}
               animate={{ opacity: 1 }}
               transition={{
-                duration: prefersReducedMotion ? 0.01 : 0.18,
-                delay: prefersReducedMotion ? 0 : 0.08,
+                duration: prefersReducedMotion ? 0 : 0.14,
+                delay: 0,
                 ease: 'easeOut',
               }}
             >
@@ -1070,84 +1119,69 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             <div className="chat-messages-stage">
               <div className="chat-messages-container">
 
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`chat-message-row ${
-                    msg.sender === 'user' ? 'message-row-user' : 'message-row-agent'
-                  }`}
-                >
-                  {msg.sender === 'assistant' && (
-                    <div className="msg-avatar msg-avatar-yoho">
-                      <img
-                        src={YOHO_ICON_SRC}
-                        alt="Yoho"
-                        className="yoho-msg-avatar-img"
-                      />
+              {messages.map((msg) => {
+                const showBubble = hasBubblePayload(msg);
+                return (
+                  <div
+                    key={msg.id}
+                    className={`chat-message-row ${
+                      msg.sender === 'user' ? 'message-row-user' : 'message-row-agent'
+                    }`}
+                  >
+                    {msg.sender === 'assistant' && (
+                      <div className="msg-avatar msg-avatar-yoho">
+                        <img
+                          src={YOHO_ICON_SRC}
+                          alt="Yoho"
+                          className="yoho-msg-avatar-img"
+                        />
+                      </div>
+                    )}
+                    <div className="msg-bubble-wrap">
+                      {showBubble && (
+                        <div
+                          className={`msg-bubble ${
+                            msg.sender === 'user' ? 'bubble-user' : 'bubble-agent'
+                          }`}
+                        >
+                          {/* Text content with markdown formatting and streaming cursor */}
+                          {msg.sender === 'assistant'
+                            ? renderFormattedText(msg.text, msg.isStreaming)
+                            : msg.text}
+
+                          {/* Dynamic In-Chat Schedule Form Widget (Generative UI) */}
+                          {msg.uiAction?.type === 'form_input' && (
+                            <ScheduleFormWidget
+                              uiAction={msg.uiAction}
+                              onSubmit={(messageText) => handleSend(messageText)}
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {/* Dynamic In-Chat OTP Input Widget (Generative UI) */}
+                          {msg.uiAction?.type === 'otp_input' && (
+                            <OtpWidget
+                              uiAction={msg.uiAction}
+                              onSubmit={(code) => handleSend(code)}
+                              isLoading={isLoading}
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      {/* Backend Action Status: under the message icon/bubble, OUTSIDE the speech bubble */}
+                      {msg.statusText && (
+                        <div className="msg-status-under-bubble">
+                          <span className="pipeline-spinner" />
+                          <span className="status-under-text">{msg.statusText}</span>
+                        </div>
+                      )}
+
+                      {showBubble && <span className="msg-timestamp">{msg.timestamp}</span>}
                     </div>
-                  )}
-                  <div className="msg-bubble-wrap">
-                    {(msg.text || msg.uiAction || msg.sender === 'user') && (
-                      <div
-                        className={`msg-bubble ${
-                          msg.sender === 'user' ? 'bubble-user' : 'bubble-agent'
-                        }`}
-                      >
-                        {/* Text content with markdown formatting and streaming cursor */}
-                        {msg.sender === 'assistant'
-                          ? renderFormattedText(msg.text, msg.isStreaming)
-                          : msg.text}
-
-                        {/* Dynamic In-Chat Schedule Form Widget (Generative UI) */}
-                        {msg.uiAction?.type === 'form_input' && (
-                          <ScheduleFormWidget
-                            uiAction={msg.uiAction}
-                            onSubmit={(messageText) => handleSend(messageText)}
-                            isLoading={isLoading}
-                          />
-                        )}
-
-                        {/* Dynamic In-Chat OTP Input Widget (Generative UI) */}
-                        {msg.uiAction?.type === 'otp_input' && (
-                          <OtpWidget
-                            uiAction={msg.uiAction}
-                            onSubmit={(code) => handleSend(code)}
-                            isLoading={isLoading}
-                          />
-                        )}
-                      </div>
-                    )}
-
-                    {/* Backend Action Status: under the message icon/bubble, OUTSIDE the speech bubble */}
-                    {msg.statusText && (
-                      <div className="msg-status-under-bubble">
-                        <span className="pipeline-spinner" />
-                        <span className="status-under-text">{msg.statusText}</span>
-                      </div>
-                    )}
-
-                    <span className="msg-timestamp">{msg.timestamp}</span>
                   </div>
-                </div>
-              ))}
-
-              {/* Typing indicator fallback when no streaming message is present yet */}
-              {isLoading && !messages.some((m) => m.isStreaming) && (
-                <div className="chat-message-row message-row-agent">
-                  <div className="msg-avatar msg-avatar-yoho">
-                    <img
-                      src={YOHO_ICON_SRC}
-                      alt="Yoho"
-                      className="yoho-msg-avatar-img"
-                    />
-                  </div>
-                  <div className="msg-bubble bubble-agent typing-bubble">
-                    <span className="typing-dot" />
-                    <span className="typing-dot" />
-                    <span className="typing-dot" />
-                  </div>
-                </div>
-              )}
+                );
+              })}
 
               {/* Quick Prompts below if minimal messages */}
               {messages.length <= 2 && !isLoading && (

@@ -117,4 +117,13 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     assert.match(chatTsx, /useReducedMotion\(\)/, 'Should respect OS prefers-reduced-motion');
     assert.match(chatTsx, /e\.key === 'Escape'/, 'Should dismiss open dialog on Escape');
   });
+
+  it('prevents duplicate bot avatars and pre-text empty bubbles across SSE, fallback, and restore flows', () => {
+    assert.doesNotMatch(chatTsx, /typing-bubble/, 'Duplicate typing indicator fallback row should be removed');
+    assert.doesNotMatch(chatCss, /\.typing-bubble\s*\{/, 'Dead typing indicator CSS should be cleaned up');
+    assert.match(chatTsx, /hasBubblePayload/, 'Should share hasBubblePayload guard for visible message content');
+    assert.match(chatTsx, /msg\.text\.trim\(\)\.length > 0/, 'Should require non-whitespace text before rendering an assistant bubble');
+    assert.match(chatTsx, /sanitizeRestoredMessages/, 'Should sanitize restored sessionStorage messages on load');
+    assert.match(chatTsx, /delay:\s*0\b/, 'Chat window contents should reveal without an empty-box delay');
+  });
 });
