@@ -125,33 +125,6 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     assert.match(chatTsx, /msg\.text\.trim\(\)\.length > 0/, 'Should require non-whitespace text before rendering an assistant bubble');
     assert.match(chatTsx, /sanitizeRestoredMessages/, 'Should sanitize restored sessionStorage messages on load');
     assert.match(chatTsx, /delay:\s*0\b/, 'Chat window contents should reveal without an empty-box delay');
-  });
-
-  it('provides an interactive Yoho profile bento card on header avatar hover/focus/tap', () => {
-    const profileTsx = readProjectFile('src/components/AIChat/YohoProfileCard.tsx');
-    const profileCss = readProjectFile('src/components/AIChat/YohoProfileCard.css');
-
-    assert.match(
-      chatTsx,
-      /<YohoAvatarProfileCard[\s\S]*?avatarSrc=\{YOHO_ICON_SRC\}[\s\S]*?onSelectAction=/,
-      'AIChat header should mount YohoAvatarProfileCard with interactive action callback'
-    );
-    assert.match(profileTsx, /aria-label="Yoho AI profile card"/, 'Trigger button should declare accessible label');
-    assert.match(profileTsx, /aria-expanded=\{isOpen\}/, 'Trigger should expose aria-expanded state');
-    assert.match(profileTsx, /role="region"/, 'Interactive card with starter action buttons should use region role');
-    assert.match(profileTsx, /popover=\{supportsPopover/, 'Profile card should use native Popover API when supported');
-    assert.match(profileTsx, /popoverTarget=\{supportsPopover/, 'Trigger should declare popoverTarget to preserve click-after-hover persistence');
-    assert.match(profileTsx, /<strong className="yoho-profile-name">Yoho<\/strong>/, 'Profile card should display Yoho name');
-    assert.match(profileTsx, /yoho-chat-bg\.avif/, 'Character spotlight should showcase high-res transparent Yoho mascot');
-    assert.match(profileTsx, /yoho-profile-bento-grid/, 'Profile traits should use expressive Bento grid tiles');
-    assert.match(profileTsx, />Work<[\s\S]*?>Availability<[\s\S]*?>Nature<[\s\S]*Friendly/i, 'Bento tiles should display Work, Availability, and Friendly nature');
-    assert.match(profileTsx, /label:\s*'Knowledge'/, 'Profile card should provide interactive Knowledge starter action');
-    assert.match(profileTsx, /label:\s*'Scheduling'/, 'Profile card should provide interactive Scheduling starter action');
-    assert.match(profileCss, /color-mix\(in oklab,/, 'Card surface tints should mix cleanly in oklab');
-    assert.match(profileCss, /filter:\s*drop-shadow\(/, 'Transparent Yoho artwork should use drop-shadow depth');
-    assert.match(profileCss, /@supports \(position-area:\s*block-end\) and \(anchor-name:\s*--yoho-avatar-anchor\)/, 'Card CSS should progressively enhance with CSS Anchor Positioning');
-    assert.match(profileCss, /@starting-style/, 'Card CSS should animate entry cleanly with @starting-style');
-    assert.match(profileCss, /@media \(prefers-reduced-motion:\s*no-preference\)/, 'Card transitions should respect prefers-reduced-motion');
-    assert.match(profileCss, /@media \(forced-colors:\s*active\)/, 'Card CSS should support forced-colors mode');
+    assert.doesNotMatch(chatTsx, /YohoAvatarProfileCard|YohoProfileCard/, 'Removed header profile card should stay absent');
   });
 });

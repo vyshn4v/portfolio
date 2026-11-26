@@ -4,7 +4,6 @@ import { X, RotateCcw, AlertCircle, Maximize2, Minimize2, ArrowUp, Loader2 } fro
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { OtpWidget, type UIAction } from './OtpWidget';
 import { ScheduleFormWidget } from './ScheduleFormWidget';
-import { YohoAvatarProfileCard } from './YohoProfileCard';
 import './AIChat.css';
 
 interface Message {
@@ -442,24 +441,6 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        const openProfileCard = document.querySelector<HTMLElement>(
-          '[data-yoho-profile-card="true"][data-open="true"]'
-        );
-        if (openProfileCard) {
-          e.preventDefault();
-          try {
-            if (
-              typeof openProfileCard.hidePopover === 'function' &&
-              openProfileCard.matches(':popover-open')
-            ) {
-              openProfileCard.hidePopover();
-            }
-          } catch {
-            // Safely ignore popover close errors on teardown
-          }
-          openProfileCard.dispatchEvent(new CustomEvent('yoho-profile-dismiss'));
-          return;
-        }
         setIsOpen(false);
       }
     };
@@ -492,11 +473,11 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
       }
     };
 
-    window.addEventListener('keydown', handleEscape, true);
+    window.addEventListener('keydown', handleEscape);
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     return () => {
-      window.removeEventListener('keydown', handleEscape, true);
+      window.removeEventListener('keydown', handleEscape);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchmove', handleTouchMove);
     };
@@ -1085,12 +1066,14 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
               title={!isMobile ? 'Drag to move' : undefined}
             >
               <div className="chat-header-info">
-                <YohoAvatarProfileCard
-                  avatarSrc={YOHO_ICON_SRC}
-                  isChatOpen={isOpen}
-                  onSelectAction={(prompt) => handleSend(prompt)}
-                  isActionDisabled={isLoading}
-                />
+                <div className="agent-avatar-wrap">
+                  <img
+                    src={YOHO_ICON_SRC}
+                    alt="Yoho Ghost Coder"
+                    className="yoho-header-avatar"
+                  />
+                  <span className="agent-status-indicator" />
+                </div>
                 <div>
                   <div className="chat-header-title">
                     <span>Yoho · AI Agent</span>
