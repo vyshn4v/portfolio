@@ -533,6 +533,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     setMessages((prev) => [...prev, userMessage, botPlaceholder]);
     setIsLoading(true);
 
+    const updateBotMessage = (updater: (msg: Message) => Message) => {
+      setMessages((prev) =>
+        prev.map((m) => (m.id === botMessageId ? updater(m) : m))
+      );
+    };
+
     try {
       const payload: { message: string; conversationId?: string } = {
         message: query,
@@ -543,226 +549,175 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
         ? API_ENDPOINT
         : `${API_ENDPOINT.replace(/\/+$/, '')}/stream`;
 
-      let streamSucceeded = false;
+      const streamResponse = await fetch(streamUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'text/event-stream',
+        },
+        body: JSON.stringify(payload),
+        signal: abortController.signal,
+      });
+
+      if (!streamResponse.ok) {
+        throw new Error(`Server returned HTTP ${streamResponse.status}`);
+      }
+      if (!streamResponse.body) {
+        throw new Error('Streaming response body is unavailable');
+      }
+
+      const reader = streamResponse.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      // Keep currentEvent outside the chunk loop so event/data pairs across chunks stay intact
+      let currentEvent = 'message';
       let accumulatedText = '';
       let capturedUiAction: UIAction | null = null;
+      let capturedIntent: string | undefined;
+      let streamCompleted = false;
 
-      try {
-        const streamResponse = await fetch(streamUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'text/event-stream',
-          },
-          body: JSON.stringify(payload),
-          signal: abortController.signal,
-        });
-
-        if (streamResponse.ok && streamResponse.body) {
-          const reader = streamResponse.body.getReader();
-          const decoder = new TextDecoder('utf-8');
-          let buffer = '';
-          // Move currentEvent outside the reader loop so its value persists across chunks
-          let currentEvent = 'message';
-
-          while (true) {
-            if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-              try { reader.cancel(); } catch { /* ignore */ }
-              return false;
-            }
-
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-              return false;
-            }
-
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || '';
-
-            for (const rawLine of lines) {
-              const line = rawLine.trim();
-              if (!line) {
-                // Reset only when parser reaches the event delimiter (blank line)
-                currentEvent = 'message';
-                continue;
-              }
-              if (line.startsWith('event:')) {
-                currentEvent = line.slice(6).trim();
-                continue;
-              }
-              if (line.startsWith('data:')) {
-                const dataStr = line.slice(5).trim();
-                try {
-                  const data = JSON.parse(dataStr);
-
-                  if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-                    return false;
-                  }
-
-                  if (currentEvent === 'status') {
-                    if (data.status) {
-                      const st = formatStatus(data);
-                      setMessages((prev) =>
-                        prev.map((m) =>
-                          m.id === botMessageId
-                            ? { ...m, statusText: st }
-                            : m
-                        )
-                      );
-                    }
-                    if (data.conversationId) {
-                      setConversationId(data.conversationId);
-                    }
-                  } else if (currentEvent === 'token') {
-                    if (data.token) {
-                      accumulatedText += data.token;
-                      const hasVisibleText = accumulatedText.trim().length > 0;
-                      streamSucceeded = hasVisibleText || Boolean(capturedUiAction);
-                      setMessages((prev) =>
-                        prev.map((m) =>
-                          m.id === botMessageId
-                            ? {
-                                ...m,
-                                text: accumulatedText,
-                                statusText: hasVisibleText ? undefined : m.statusText,
-                                isStreaming: true,
-                              }
-                            : m
-                        )
-                      );
-                    }
-                    if (data.conversationId) {
-                      setConversationId(data.conversationId);
-                    }
-                  } else if (currentEvent === 'ui_action') {
-                    capturedUiAction = data;
-                    streamSucceeded = true;
-                    setMessages((prev) =>
-                      prev.map((m) =>
-                        m.id === botMessageId
-                          ? { ...m, uiAction: data }
-                          : m
-                      )
-                    );
-                  } else if (currentEvent === 'done') {
-                    if (data.conversationId) {
-                      setConversationId(data.conversationId);
-                    }
-                    if (data.uiAction) {
-                      capturedUiAction = data.uiAction;
-                    }
-                    if (data.reply && !accumulatedText.trim()) {
-                      accumulatedText = data.reply;
-                    }
-                    const finalText = accumulatedText.trim()
-                      ? accumulatedText
-                      : (data.reply || '');
-                    const hasFinalContent =
-                      finalText.trim().length > 0 || Boolean(capturedUiAction);
-                    streamSucceeded = hasFinalContent;
-                    setMessages((prev) =>
-                      prev.map((m) =>
-                        m.id === botMessageId
-                          ? {
-                              ...m,
-                              text: finalText || m.text,
-                              statusText: hasFinalContent
-                                ? undefined
-                                : m.statusText || 'Generating response...',
-                              uiAction: capturedUiAction || m.uiAction,
-                              intent: data.intent,
-                              isStreaming: !hasFinalContent,
-                            }
-                          : m
-                      )
-                    );
-                  }
-                } catch {
-                  // ignore non-json SSE lines
-                }
-              }
-            }
-          }
-        }
-      } catch (streamErr) {
-        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+      const processSseLine = (rawLine: string): boolean => {
+        const line = rawLine.trim();
+        if (!line) {
+          // Reset only when parser reaches the event delimiter (blank line)
+          currentEvent = 'message';
           return false;
         }
-        console.warn('SSE stream error, trying standard fallback:', streamErr);
-        streamSucceeded = false;
+        if (line.startsWith('event:')) {
+          currentEvent = line.slice(6).trim();
+          return false;
+        }
+        if (!line.startsWith('data:')) {
+          return false;
+        }
+
+        const dataStr = line.slice(5).trim();
+        let data: Record<string, unknown>;
+        try {
+          data = JSON.parse(dataStr);
+        } catch {
+          return false;
+        }
+
+        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+          return true;
+        }
+
+        if (typeof data.conversationId === 'string' && data.conversationId) {
+          setConversationId(data.conversationId);
+        }
+
+        if (currentEvent === 'status') {
+          if (typeof data.status === 'string' && data.status) {
+            const st = formatStatus({
+              node: typeof data.node === 'string' ? data.node : undefined,
+              status: data.status,
+            });
+            updateBotMessage((m) => ({ ...m, statusText: st }));
+          }
+        } else if (currentEvent === 'token') {
+          if (typeof data.token === 'string' && data.token) {
+            accumulatedText += data.token;
+            const hasVisibleText = accumulatedText.trim().length > 0;
+            updateBotMessage((m) => ({
+              ...m,
+              text: accumulatedText,
+              statusText: hasVisibleText ? undefined : m.statusText,
+              isStreaming: true,
+            }));
+          }
+        } else if (currentEvent === 'ui_action') {
+          capturedUiAction = data as unknown as UIAction;
+          updateBotMessage((m) => ({ ...m, uiAction: capturedUiAction }));
+        } else if (currentEvent === 'error') {
+          const errMessage =
+            (typeof data.error === 'string' && data.error) ||
+            (typeof data.message === 'string' && data.message) ||
+            'Streaming request failed';
+          throw new Error(errMessage);
+        } else if (currentEvent === 'done') {
+          streamCompleted = true;
+          if (data.uiAction) {
+            capturedUiAction = data.uiAction as UIAction;
+          }
+          if (typeof data.intent === 'string') {
+            capturedIntent = data.intent;
+          }
+          const doneReply = typeof data.reply === 'string' ? data.reply : '';
+          if (doneReply && !accumulatedText.trim()) {
+            accumulatedText = doneReply;
+          }
+          const finalText = accumulatedText.trim()
+            ? accumulatedText
+            : doneReply.trim()
+              ? doneReply
+              : capturedUiAction
+                ? ''
+                : 'No response received.';
+
+          updateBotMessage((m) => ({
+            ...m,
+            text: finalText || m.text,
+            statusText: undefined,
+            uiAction: capturedUiAction || m.uiAction,
+            intent: capturedIntent,
+            isStreaming: false,
+          }));
+        }
+
+        return false;
+      };
+
+      while (true) {
+        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+          void reader.cancel().catch(() => {});
+          return false;
+        }
+
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const rawLine of lines) {
+          if (processSseLine(rawLine)) return false;
+        }
       }
 
       if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
         return false;
       }
 
-      // If SSE did not produce content or failed, fallback to standard endpoint
-      if (!streamSucceeded || (!accumulatedText.trim() && !capturedUiAction)) {
-        const fallbackResponse = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            Accept: '*/*',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-          signal: abortController.signal,
-        });
-
-        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-          return false;
+      // Flush any trailing decoded SSE line lacking a terminal newline
+      buffer += decoder.decode();
+      if (buffer) {
+        for (const rawLine of buffer.split('\n')) {
+          if (processSseLine(rawLine)) return false;
         }
-
-        if (!fallbackResponse.ok) {
-          throw new Error(`Server returned HTTP ${fallbackResponse.status}`);
-        }
-
-        const data = await fallbackResponse.json();
-
-        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-          return false;
-        }
-
-        const rawReply = data.reply || data.message || data.response || '';
-        const botReply =
-          typeof rawReply === 'string' && rawReply.trim()
-            ? rawReply
-            : 'No response received.';
-
-        if (data.conversationId) {
-          setConversationId(data.conversationId);
-        }
-
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === botMessageId
-              ? {
-                  ...m,
-                  text: botReply,
-                  statusText: undefined,
-                  uiAction: data.uiAction || null,
-                  intent: data.intent,
-                  isStreaming: false,
-                }
-              : m
-          )
-        );
-      } else {
-        // Ensure final state is cleaned up
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === botMessageId
-              ? {
-                  ...m,
-                  statusText: undefined,
-                  isStreaming: false,
-                }
-              : m
-          )
-        );
       }
+
+      if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+        return false;
+      }
+
+      if (!streamCompleted) {
+        const finalText = accumulatedText.trim()
+          ? accumulatedText
+          : capturedUiAction
+            ? ''
+            : 'No response received.';
+        updateBotMessage((m) => ({
+          ...m,
+          text: finalText || m.text,
+          statusText: undefined,
+          uiAction: capturedUiAction || m.uiAction,
+          intent: capturedIntent,
+          isStreaming: false,
+        }));
+      }
+
       return true;
     } catch (err: unknown) {
       if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
@@ -771,18 +726,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
       console.error('AI chat error:', err);
       const fallbackErrorMessage = 'Something went wrong, please try sometimes later.';
       setError(fallbackErrorMessage);
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === botMessageId
-            ? {
-                ...m,
-                text: fallbackErrorMessage,
-                statusText: undefined,
-                isStreaming: false,
-              }
-            : m
-        )
-      );
+      updateBotMessage((m) => ({
+        ...m,
+        text: fallbackErrorMessage,
+        statusText: undefined,
+        isStreaming: false,
+      }));
       return false;
     } finally {
       if (activeRequestIdRef.current === currentRequestId) {

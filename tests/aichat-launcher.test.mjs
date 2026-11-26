@@ -127,4 +127,12 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     assert.match(chatTsx, /delay:\s*0\b/, 'Chat window contents should reveal without an empty-box delay');
     assert.doesNotMatch(chatTsx, /YohoAvatarProfileCard|YohoProfileCard/, 'Removed header profile card should stay absent');
   });
+
+  it('uses only the single SSE streaming endpoint without firing a second REST fallback call', () => {
+    const fetchCalls = chatTsx.match(/\bfetch\(/g) || [];
+    assert.equal(fetchCalls.length, 1, 'handleSend should issue only one HTTP fetch call');
+    assert.match(chatTsx, /fetch\(streamUrl,/, 'Single fetch call must target the SSE stream endpoint');
+    assert.doesNotMatch(chatTsx, /fallbackResponse/, 'Secondary REST fallback fetch should be removed');
+    assert.match(chatTsx, /if\s*\(!streamResponse\.ok\)/, 'SSE failure status should throw cleanly');
+  });
 });
