@@ -126,4 +126,26 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     assert.match(chatTsx, /sanitizeRestoredMessages/, 'Should sanitize restored sessionStorage messages on load');
     assert.match(chatTsx, /delay:\s*0\b/, 'Chat window contents should reveal without an empty-box delay');
   });
+
+  it('provides an interactive Yoho profile name card on header avatar hover/focus/tap', () => {
+    const profileTsx = readProjectFile('src/components/AIChat/YohoProfileCard.tsx');
+    const profileCss = readProjectFile('src/components/AIChat/YohoProfileCard.css');
+
+    assert.match(chatTsx, /<YohoAvatarProfileCard\s+avatarSrc=\{YOHO_ICON_SRC\}\s+isChatOpen=\{isOpen\}\s*\/>/, 'AIChat header should mount YohoAvatarProfileCard');
+    assert.match(profileTsx, /aria-label="Yoho AI profile card"/, 'Trigger button should declare accessible label');
+    assert.match(profileTsx, /aria-expanded=\{isOpen\}/, 'Trigger should expose aria-expanded state');
+    assert.match(profileTsx, /role="tooltip"/, 'Profile card should declare tooltip role');
+    assert.match(profileTsx, /popover=\{supportsPopover/, 'Profile card should use native Popover API when supported');
+    assert.match(profileTsx, /popoverTarget=\{supportsPopover/, 'Trigger should declare popoverTarget to preserve click-after-hover persistence');
+    assert.match(profileTsx, /<strong className="yoho-profile-name">Yoho<\/strong>/, 'Profile card should display Yoho name');
+    assert.match(profileTsx, /label:\s*'Work'/, 'Profile card should show Work details');
+    assert.match(profileTsx, /label:\s*'Availability'/, 'Profile card should show Availability details');
+    assert.match(profileTsx, /label:\s*'Nature'[\s\S]*Friendly/i, 'Profile card should show Friendly nature');
+    assert.match(profileTsx, /'Knowledge'/, 'Profile card should list Knowledge action');
+    assert.match(profileTsx, /'Scheduling'/, 'Profile card should list Scheduling action');
+    assert.match(profileCss, /@supports \(position-area:\s*block-end\) and \(anchor-name:\s*--yoho-avatar-anchor\)/, 'Card CSS should progressively enhance with CSS Anchor Positioning');
+    assert.match(profileCss, /@starting-style/, 'Card CSS should animate entry cleanly with @starting-style');
+    assert.match(profileCss, /@media \(prefers-reduced-motion:\s*no-preference\)/, 'Card transitions should respect prefers-reduced-motion');
+    assert.match(profileCss, /@media \(forced-colors:\s*active\)/, 'Card CSS should support forced-colors mode');
+  });
 });

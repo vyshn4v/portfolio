@@ -1,0 +1,267 @@
+/* ============================================================
+   YOHO HEADER AVATAR TRIGGER & PROFILE NAME CARD
+   ============================================================ */
+
+.yoho-avatar-anchor-group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.agent-avatar-trigger {
+  padding: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  z-index: 2;
+  transition:
+    transform var(--duration-fast) var(--ease-micro),
+    box-shadow var(--duration-fast) var(--ease-micro);
+}
+
+.agent-avatar-trigger:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px rgba(215, 114, 12, 0.36);
+}
+
+.agent-avatar-trigger:focus-visible {
+  outline: 2px solid var(--color-orange-warm);
+  outline-offset: 2px;
+}
+
+/* Floating Editorial Profile Name Card */
+.yoho-profile-card {
+  width: min(308px, calc(100vw - 24px));
+  padding: 0;
+  border: var(--chat-accent-border, 2px solid var(--color-orange));
+  border-radius: var(--chat-corner-radius, 12px);
+  corner-shape: squircle;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  box-shadow: 0 18px 42px rgba(15, 37, 36, 0.24), 0 0 18px rgba(215, 114, 12, 0.22);
+  pointer-events: auto;
+  overflow: hidden;
+  font-family: var(--font-body);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+  transform-origin: top left;
+}
+
+.yoho-profile-card:not([popover]) {
+  display: none;
+}
+
+.yoho-profile-card:not([popover]).is-open {
+  display: block;
+  position: fixed;
+  z-index: 20;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.yoho-profile-card:popover-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@starting-style {
+  .yoho-profile-card:popover-open {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .yoho-profile-card {
+    transition:
+      opacity 0.16s ease-out,
+      transform 0.16s var(--ease-micro),
+      display 0.16s ease-out,
+      overlay 0.16s ease-out;
+    transition-behavior: allow-discrete;
+  }
+}
+
+@supports (position-area: block-end) and (anchor-name: --yoho-avatar-anchor) {
+  .agent-avatar-trigger {
+    anchor-name: --yoho-avatar-anchor;
+  }
+
+  .yoho-profile-card {
+    position-anchor: --yoho-avatar-anchor;
+    inset: auto;
+    margin: 8px 0;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+  }
+}
+
+/* Top Identity Banner */
+.yoho-profile-banner {
+  background: var(--color-ink);
+  color: var(--color-bg);
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1.5px solid var(--color-orange);
+}
+
+.yoho-profile-identity {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.yoho-profile-card-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--color-orange);
+  background: #0f101f;
+  flex-shrink: 0;
+  display: block;
+}
+
+.yoho-profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.yoho-profile-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-bg);
+}
+
+.yoho-profile-role-pill {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 1.5px 6px;
+  border-radius: 6px;
+  background: rgba(215, 114, 12, 0.22);
+  color: var(--color-orange-warm);
+  border: 1px solid rgba(230, 165, 77, 0.4);
+  line-height: 1.2;
+}
+
+.yoho-profile-tagline {
+  margin: 2px 0 0;
+  font-size: 11px;
+  line-height: 1.25;
+  color: rgba(247, 246, 240, 0.72);
+}
+
+.yoho-profile-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.42);
+  border-radius: 6px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.yoho-profile-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.85);
+}
+
+/* Profile Metadata Body */
+.yoho-profile-body {
+  padding: 11px 13px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.yoho-profile-meta-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.yoho-profile-meta-row {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+
+.yoho-profile-meta-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-orange-text);
+}
+
+.yoho-profile-meta-value {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--color-ink);
+  font-weight: 500;
+}
+
+.yoho-profile-actions-block {
+  padding-top: 8px;
+  border-top: 1px solid rgba(15, 37, 36, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.yoho-profile-actions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.yoho-profile-action-chip {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+  background: rgba(15, 37, 36, 0.05);
+  border: 1px solid rgba(215, 114, 12, 0.35);
+  border-radius: 6px;
+  padding: 2.5px 7px;
+  line-height: 1.2;
+}
+
+@media (forced-colors: active) {
+  .yoho-profile-card {
+    border-color: ButtonText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .yoho-profile-banner {
+    border-bottom-color: ButtonText;
+  }
+}
