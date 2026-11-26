@@ -58,7 +58,7 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     assert.match(windowRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Chat window should use shared --chat-corner-radius');
     assert.match(stageBgRule, /background-image:\s*url\('\/yoho-chat-bg\.png'\);/, 'Chat background stage should provide PNG fallback');
     assert.match(stageBgRule, /image-set\(/, 'Chat background stage should provide resolution/format optimized image-set');
-    assert.match(stageBgRule, /opacity:\s*0\.35;/, 'Yoho background watermark should be clearly visible');
+    assert.match(stageBgRule, /opacity:\s*0\.6;/, 'Yoho background watermark should be clearly visible');
     assert.match(backdropRule, /overflow:\s*hidden;/, 'Backdrop must establish a scroll container');
     assert.match(backdropRule, /overscroll-behavior:\s*contain;/, 'Backdrop must contain background scroll');
     assert.match(messagesRule, /overscroll-behavior:\s*contain;/, 'Messages container must prevent scroll chaining');

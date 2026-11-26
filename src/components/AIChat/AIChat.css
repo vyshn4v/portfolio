@@ -497,10 +497,10 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.6;
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: min(210px, 58%) auto;
+  background-size: min(230px, 62%) auto;
   /* Standard fallback for browsers without image-set() */
   background-image: url('/yoho-chat-bg.png');
   background-image: image-set(
@@ -601,9 +601,7 @@
 }
 
 .bubble-agent {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.8);
   color: var(--color-ink);
   border: 1px solid rgba(198, 190, 165, 0.65);
   box-shadow: 0 2px 8px rgba(15, 37, 36, 0.04);
@@ -612,12 +610,16 @@
 
 .msg-timestamp {
   font-size: 10px;
-  color: rgba(15, 37, 36, 0.85);
+  color: var(--color-ink);
+  background: rgba(247, 246, 240, 0.82);
+  border-radius: 4px;
+  width: fit-content;
   font-family: var(--font-mono);
-  padding: 0 4px;
+  padding: 1px 5px;
 }
 
 .message-row-user .msg-timestamp {
+  align-self: flex-end;
   text-align: right;
 }
 
@@ -786,7 +788,11 @@
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
-  color: rgba(15, 37, 36, 0.85);
+  color: var(--color-ink);
+  background: rgba(247, 246, 240, 0.82);
+  border-radius: 4px;
+  padding: 1px 5px;
+  width: fit-content;
   letter-spacing: 0.06em;
 }
 
@@ -798,9 +804,7 @@
 
 .quick-prompt-btn {
   text-align: left;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(198, 190, 165, 0.72);
   border-radius: var(--chat-control-radius);
   padding: 7px 10px;
