@@ -813,6 +813,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
               <span>Meet Yoho</span>
             </div>
             <motion.button
+              type="button"
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.94 }}
               transition={{ duration: 0.12 }}
@@ -823,11 +824,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
               <div className="launcher-yoho-wrap">
                 <img
                   src={YOHO_ICON_SRC}
-                  alt="Yoho Ghost Coder Icon"
+                  alt=""
+                  aria-hidden="true"
                   className="yoho-chat-btn-img"
                 />
               </div>
-              <span className="launcher-status-dot" title="Online" />
+              <span className="launcher-status-dot" aria-hidden="true" />
             </motion.button>
           </motion.div>
         ) : (
