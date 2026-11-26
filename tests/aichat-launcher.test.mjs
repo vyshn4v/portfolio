@@ -35,7 +35,9 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     const btnRule = getCssRuleBody(chatCss, '.ai-chat-launcher-btn');
     const windowRule = getCssRuleBody(chatCss, '.ai-chat-window');
     const headerRule = getCssRuleBody(chatCss, '.chat-header');
+    const backdropRule = getCssRuleBody(chatCss, '.ai-chat-backdrop');
     const stageBgRule = getCssRuleBody(chatCss, '.chat-messages-stage::before');
+    const messagesRule = getCssRuleBody(chatCss, '.chat-messages-container');
     const bubbleRule = getCssRuleBody(chatCss, '.msg-bubble');
     const inputBoxRule = getCssRuleBody(chatCss, '.chat-input-box');
     const sendBtnRule = getCssRuleBody(chatCss, '.chat-send-btn');
@@ -56,6 +58,11 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     assert.match(windowRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Chat window should use shared --chat-corner-radius');
     assert.match(stageBgRule, /background-image:\s*url\('\/yoho-chat-bg\.png'\);/, 'Chat background stage should provide PNG fallback');
     assert.match(stageBgRule, /image-set\(/, 'Chat background stage should provide resolution/format optimized image-set');
+    assert.match(stageBgRule, /opacity:\s*0\.35;/, 'Yoho background watermark should be clearly visible');
+    assert.match(backdropRule, /overflow:\s*hidden;/, 'Backdrop must establish a scroll container');
+    assert.match(backdropRule, /overscroll-behavior:\s*contain;/, 'Backdrop must contain background scroll');
+    assert.match(messagesRule, /overscroll-behavior:\s*contain;/, 'Messages container must prevent scroll chaining');
+    assert.doesNotMatch(chatTsx, /document\.(body|documentElement)\.style\.overflow/, 'Must not mutate html/body overflow to lock scroll');
     assert.doesNotMatch(chatTsx, /yoho-mainframe-banner/, 'Foreground mainframe banner should be replaced by background stage');
     assert.match(bubbleRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Message bubbles should use tightened inner radius');
     assert.match(inputBoxRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Input box should use tightened inner radius');

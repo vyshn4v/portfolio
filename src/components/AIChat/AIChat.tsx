@@ -407,8 +407,43 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
         setIsOpen(false);
       }
     };
+
+    const isScrollableAtBoundary = (el: HTMLElement | null, deltaY: number): boolean => {
+      if (!el) return true;
+      if (el.scrollHeight <= el.clientHeight) return true;
+      const atTop = el.scrollTop <= 0 && deltaY < 0;
+      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1 && deltaY > 0;
+      return atTop || atBottom;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      const target = e.target as HTMLElement | null;
+      const scrollable = target?.closest(
+        '.chat-messages-container, .chat-textarea, .schedule-field-textarea'
+      ) as HTMLElement | null;
+      if (isScrollableAtBoundary(scrollable, e.deltaY)) {
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      const scrollable = target?.closest(
+        '.chat-messages-container, .chat-textarea, .schedule-field-textarea'
+      ) as HTMLElement | null;
+      if (!scrollable || scrollable.scrollHeight <= scrollable.clientHeight) {
+        e.preventDefault();
+      }
+    };
+
     window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, [isOpen]);
 
   const handleSend = async (textToSend?: string): Promise<boolean> => {
@@ -877,7 +912,9 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             </motion.button>
           </div>
         ) : (
-          <motion.div
+          <>
+            <div className="ai-chat-backdrop" aria-hidden="true" />
+            <motion.div
             ref={windowRef}
             key="chat-window"
             layoutId={prefersReducedMotion ? undefined : 'yoho-chat-surface'}
@@ -1183,6 +1220,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             </div>
             </motion.div>
           </motion.div>
+          </>
         )}
       </LayoutGroup>
     </div>
