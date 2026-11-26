@@ -7,7 +7,7 @@
   padding: 14px 16px;
   background: rgba(15, 37, 36, 0.05);
   border: 1px solid rgba(15, 37, 36, 0.12);
-  border-radius: 14px;
+  border-radius: var(--chat-inner-radius, 10px);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -29,7 +29,7 @@
 .schedule-form-icon-wrap {
   width: 28px;
   height: 28px;
-  border-radius: 8px;
+  border-radius: var(--chat-control-radius, 8px);
   background: rgba(215, 114, 12, 0.14);
   color: var(--color-orange);
   display: flex;
@@ -131,7 +131,7 @@
 .schedule-field-textarea {
   width: 100%;
   padding: 8px 12px 8px 32px;
-  border-radius: 8px;
+  border-radius: var(--chat-control-radius, 8px);
   border: 1.5px solid rgba(15, 37, 36, 0.16);
   background: #ffffff;
   color: var(--color-ink);
@@ -221,7 +221,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: 6px;
   background: rgba(16, 185, 129, 0.15);
   color: #047857;
   font-family: var(--font-mono);

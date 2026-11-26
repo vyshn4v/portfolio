@@ -20,9 +20,9 @@ function readProjectFile(relativePath) {
  */
 function getCssRuleBody(cssText, selector) {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = new RegExp(`${escapedSelector}\\s*\\{([^}]*)\\}`, 'm');
+  const pattern = new RegExp(`^${escapedSelector}\\s*\\{([^}]*)\\}`, 'm');
   const match = cssText.match(pattern);
-  assert.ok(match, `Expected CSS rule for "${selector}" to exist`);
+  assert.ok(match, `Expected top-level CSS rule for "${selector}" to exist`);
   return match[1];
 }
 
@@ -30,16 +30,34 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
   const chatCss = readProjectFile('src/components/AIChat/AIChat.css');
   const chatTsx = readProjectFile('src/components/AIChat/AIChat.tsx');
 
-  it('uses shared rounded corners across button and chat window plus accessible touch target minimums (>= 44px)', () => {
+  it('uses shared rounded corners across button, chat window, and inner components', () => {
     const rootRule = getCssRuleBody(chatCss, '.ai-chat-root');
     const btnRule = getCssRuleBody(chatCss, '.ai-chat-launcher-btn');
     const windowRule = getCssRuleBody(chatCss, '.ai-chat-window');
+    const headerRule = getCssRuleBody(chatCss, '.chat-header');
+    const mainframeRule = getCssRuleBody(chatCss, '.yoho-mainframe-aspect');
+    const bubbleRule = getCssRuleBody(chatCss, '.msg-bubble');
+    const inputBoxRule = getCssRuleBody(chatCss, '.chat-input-box');
+    const sendBtnRule = getCssRuleBody(chatCss, '.chat-send-btn');
 
     assert.match(rootRule, /--chat-corner-radius:\s*12px;/, 'Shared token should define 12px corner radius');
+    assert.match(rootRule, /--chat-inner-radius:\s*10px;/, 'Shared inner token should define 10px corner radius');
+    assert.match(rootRule, /--chat-control-radius:\s*8px;/, 'Shared control token should define 8px corner radius');
+    assert.match(rootRule, /--chat-accent-border:\s*2px solid var\(--color-orange\);/, 'Shared accent border should match button');
+
     assert.match(btnRule, /min-inline-size:\s*48px;/, 'Launcher button should enforce >= 44px min-inline-size');
     assert.match(btnRule, /min-block-size:\s*48px;/, 'Launcher button should enforce >= 44px min-block-size');
+    assert.match(btnRule, /border:\s*var\(--chat-accent-border\);/, 'Launcher button should use shared accent border');
+    assert.match(windowRule, /border:\s*var\(--chat-accent-border\);/, 'Chat window should share button accent border');
+    assert.match(headerRule, /background:\s*var\(--color-ink\);/, 'Chat header should match button background');
+    assert.match(headerRule, /border-bottom:\s*var\(--chat-accent-border\);/, 'Chat header should share button orange border');
+
     assert.match(btnRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Launcher button should use shared --chat-corner-radius');
     assert.match(windowRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Chat window should use shared --chat-corner-radius');
+    assert.match(mainframeRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Mainframe card should use tightened inner radius');
+    assert.match(bubbleRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Message bubbles should use tightened inner radius');
+    assert.match(inputBoxRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Input box should use tightened inner radius');
+    assert.match(sendBtnRule, /border-radius:\s*var\(--chat-control-radius\);/, 'Send button should use tightened control radius');
     assert.match(btnRule, /corner-shape:\s*squircle;/, 'Launcher button should enhance corners with squircle');
     assert.match(windowRule, /corner-shape:\s*squircle;/, 'Chat window should match button corner-shape');
     assert.doesNotMatch(btnRule, /border-radius:\s*(50%|999px)/, 'Launcher button must not be circular or pill-shaped');
@@ -50,7 +68,17 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     const focusRule = getCssRuleBody(chatCss, '.ai-chat-launcher-btn:focus-visible');
     assert.match(focusRule, /outline:\s*2px solid var\(--color-ink\);/);
     assert.match(focusRule, /outline-offset:\s*3px;/);
-    assert.match(chatCss, /@media\s*\(forced-colors:\s*active\)[\s\S]*\.ai-chat-launcher-btn[\s\S]*border-color:\s*ButtonText;/);
+    assert.match(chatCss, /@media\s*\(forced-colors:\s*active\)[\s\S]*\.ai-chat-window[\s\S]*border-color:\s*ButtonText;/);
+  });
+
+  it('aligns inner widget cards and badges with reduced chat radii', () => {
+    const otpCss = readProjectFile('src/components/AIChat/OtpWidget.css');
+    const formCss = readProjectFile('src/components/AIChat/ScheduleFormWidget.css');
+
+    assert.match(getCssRuleBody(otpCss, '.otp-widget-card'), /border-radius:\s*var\(--chat-inner-radius,\s*10px\);/);
+    assert.match(getCssRuleBody(formCss, '.schedule-form-card'), /border-radius:\s*var\(--chat-inner-radius,\s*10px\);/);
+    assert.match(getCssRuleBody(otpCss, '.otp-submitted-badge'), /border-radius:\s*6px;/);
+    assert.match(getCssRuleBody(formCss, '.schedule-submitted-badge'), /border-radius:\s*6px;/);
   });
 
   it('places both Meet Yoho text and icon inside a single accessible button', () => {
