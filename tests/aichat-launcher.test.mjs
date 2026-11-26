@@ -35,7 +35,7 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     const btnRule = getCssRuleBody(chatCss, '.ai-chat-launcher-btn');
     const windowRule = getCssRuleBody(chatCss, '.ai-chat-window');
     const headerRule = getCssRuleBody(chatCss, '.chat-header');
-    const mainframeRule = getCssRuleBody(chatCss, '.yoho-mainframe-aspect');
+    const stageBgRule = getCssRuleBody(chatCss, '.chat-messages-stage::before');
     const bubbleRule = getCssRuleBody(chatCss, '.msg-bubble');
     const inputBoxRule = getCssRuleBody(chatCss, '.chat-input-box');
     const sendBtnRule = getCssRuleBody(chatCss, '.chat-send-btn');
@@ -54,7 +54,9 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
 
     assert.match(btnRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Launcher button should use shared --chat-corner-radius');
     assert.match(windowRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Chat window should use shared --chat-corner-radius');
-    assert.match(mainframeRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Mainframe card should use tightened inner radius');
+    assert.match(stageBgRule, /background-image:\s*url\('\/yoho-chat-bg\.png'\);/, 'Chat background stage should provide PNG fallback');
+    assert.match(stageBgRule, /image-set\(/, 'Chat background stage should provide resolution/format optimized image-set');
+    assert.doesNotMatch(chatTsx, /yoho-mainframe-banner/, 'Foreground mainframe banner should be replaced by background stage');
     assert.match(bubbleRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Message bubbles should use tightened inner radius');
     assert.match(inputBoxRule, /border-radius:\s*var\(--chat-inner-radius\);/, 'Input box should use tightened inner radius');
     assert.match(sendBtnRule, /border-radius:\s*var\(--chat-control-radius\);/, 'Send button should use tightened control radius');

@@ -19,7 +19,6 @@ interface Message {
 
 const API_ENDPOINT = import.meta.env.VITE_API_URL || 'https://api-pulse.vyshnavpc.com/api/chat';
 const YOHO_ICON_SRC = '/Kawaii Ghost Coder Icon.png';
-const YOHO_MAINFRAME_SRC = '/Cute Coding Ghost with Glowing Headphones.png';
 
 // Strict minimum and maximum boundaries for desktop chat window
 const MIN_WINDOW_WIDTH = 400;
@@ -1031,17 +1030,8 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             </div>
 
             {/* Messages Scroll Area */}
-            <div className="chat-messages-container">
-              {/* Yoho Main Frame inside Chat */}
-              <div className="yoho-mainframe-banner">
-                <div className="yoho-mainframe-aspect">
-                  <img
-                    src={YOHO_MAINFRAME_SRC}
-                    alt="Yoho Coding Ghost Main Frame"
-                    className="yoho-mainframe-img"
-                  />
-                </div>
-              </div>
+            <div className="chat-messages-stage">
+              <div className="chat-messages-container">
 
               {messages.map((msg) => (
                 <div
@@ -1141,6 +1131,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
               )}
 
               <div ref={messagesEndRef} />
+              </div>
             </div>
 
             {/* Error Notification Bar */}
