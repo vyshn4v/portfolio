@@ -1085,7 +1085,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
               title={!isMobile ? 'Drag to move' : undefined}
             >
               <div className="chat-header-info">
-                <YohoAvatarProfileCard avatarSrc={YOHO_ICON_SRC} isChatOpen={isOpen} />
+                <YohoAvatarProfileCard
+                  avatarSrc={YOHO_ICON_SRC}
+                  isChatOpen={isOpen}
+                  onSelectAction={(prompt) => handleSend(prompt)}
+                  isActionDisabled={isLoading}
+                />
                 <div>
                   <div className="chat-header-title">
                     <span>Yoho · AI Agent</span>

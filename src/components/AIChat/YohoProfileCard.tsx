@@ -1,27 +1,56 @@
 import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import {
+  ArrowUpRight,
+  BookOpen,
+  Briefcase,
+  Calendar,
+  Cpu,
+  Layers,
+  Smile,
+  Sparkles,
+  Zap,
+} from 'lucide-react';
 import './YohoProfileCard.css';
 
 interface YohoAvatarProfileCardProps {
   avatarSrc: string;
   isChatOpen: boolean;
+  onSelectAction?: (prompt: string) => void;
+  isActionDisabled?: boolean;
 }
 
-interface ProfileField {
+interface CapabilityAction {
+  id: string;
   label: string;
-  value: string;
+  prompt: string;
+  Icon: React.FC<{ size?: number; strokeWidth?: number }>;
 }
 
-const YOHO_PROFILE_FIELDS: readonly ProfileField[] = [
-  { label: 'Work', value: 'Portfolio Q&A, Architecture & Lead Intake' },
-  { label: 'Availability', value: '24/7 Online · Instant reply' },
-  { label: 'Nature', value: 'Friendly, concise & engineering-focused' },
-];
-
-const YOHO_CAPABILITY_ACTIONS: readonly string[] = [
-  'Knowledge',
-  'Scheduling',
-  'Architecture',
-  'Consultations',
+const YOHO_CAPABILITY_ACTIONS: readonly CapabilityAction[] = [
+  {
+    id: 'knowledge',
+    label: 'Knowledge',
+    prompt: 'What did Vyshnav build at Neutrinos?',
+    Icon: BookOpen,
+  },
+  {
+    id: 'scheduling',
+    label: 'Scheduling',
+    prompt: 'Schedule a technical consultation with Vyshnav',
+    Icon: Calendar,
+  },
+  {
+    id: 'architecture',
+    label: 'Architecture',
+    prompt: 'How was Yoho AI-Agent architected?',
+    Icon: Cpu,
+  },
+  {
+    id: 'stack',
+    label: 'Tech Stack',
+    prompt: 'Tell me about the Domain Scanner SaaS platform',
+    Icon: Layers,
+  },
 ];
 
 const HOVER_CLOSE_DELAY_MS = 160;
@@ -50,11 +79,13 @@ function getPopoverCapabilities() {
 
 /**
  * Renders the interactive chat-header avatar button and a hovered/focused
- * editorial profile name card summarizing Yoho's role, availability, nature, and actions.
+ * editorial Bento character card with live status, traits, and clickable starter actions.
  */
 export const YohoAvatarProfileCard: React.FC<YohoAvatarProfileCardProps> = ({
   avatarSrc,
   isChatOpen,
+  onSelectAction,
+  isActionDisabled = false,
 }) => {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -96,8 +127,8 @@ export const YohoAvatarProfileCard: React.FC<YohoAvatarProfileCardProps> = ({
     if (!triggerEl) return;
 
     const triggerRect = triggerEl.getBoundingClientRect();
-    const cardWidth = Math.min(308, window.innerWidth - 24);
-    const estimatedHeight = cardEl?.offsetHeight || 228;
+    const cardWidth = Math.min(336, window.innerWidth - 24);
+    const estimatedHeight = cardEl?.offsetHeight || 320;
 
     const left = Math.max(
       12,
@@ -247,12 +278,21 @@ export const YohoAvatarProfileCard: React.FC<YohoAvatarProfileCardProps> = ({
     setIsFocused(true);
   };
 
-  const handleTriggerBlur = (e: React.FocusEvent<HTMLButtonElement>) => {
+  const handleContainerBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     const nextFocused = e.relatedTarget as Node | null;
-    if (nextFocused && cardRef.current?.contains(nextFocused)) {
+    if (
+      nextFocused &&
+      (triggerRef.current?.contains(nextFocused) || cardRef.current?.contains(nextFocused))
+    ) {
       return;
     }
     setIsFocused(false);
+  };
+
+  const handleCapabilityClick = (prompt: string) => {
+    if (isActionDisabled) return;
+    dismissAll();
+    onSelectAction?.(prompt);
   };
 
   const fallbackInlineStyle: React.CSSProperties | undefined =
@@ -268,7 +308,7 @@ export const YohoAvatarProfileCard: React.FC<YohoAvatarProfileCardProps> = ({
       : undefined;
 
   return (
-    <div className="yoho-avatar-anchor-group">
+    <div className="yoho-avatar-anchor-group" onBlur={handleContainerBlur}>
       <button
         ref={triggerRef}
         type="button"
@@ -282,7 +322,6 @@ export const YohoAvatarProfileCard: React.FC<YohoAvatarProfileCardProps> = ({
         onMouseEnter={handleMouseEnterHoverArea}
         onMouseLeave={scheduleHoverLeave}
         onFocus={handleTriggerFocus}
-        onBlur={handleTriggerBlur}
         onClick={handleTriggerClick}
       >
         <img
@@ -296,7 +335,8 @@ export const YohoAvatarProfileCard: React.FC<YohoAvatarProfileCardProps> = ({
       <div
         ref={cardRef}
         id={cardId}
-        role="tooltip"
+        role="region"
+        aria-label="Yoho AI agent profile card"
         popover={supportsPopover ? (supportsHint ? 'hint' : 'auto') : undefined}
         data-yoho-profile-card="true"
         data-open={isOpen ? 'true' : 'false'}
@@ -305,46 +345,103 @@ export const YohoAvatarProfileCard: React.FC<YohoAvatarProfileCardProps> = ({
         onMouseEnter={handleMouseEnterHoverArea}
         onMouseLeave={scheduleHoverLeave}
       >
+        {/* Atmospheric Dark Character Showcase Header */}
         <div className="yoho-profile-banner">
-          <div className="yoho-profile-identity">
-            <img
-              src={avatarSrc}
-              alt=""
-              className="yoho-profile-card-avatar"
-            />
-            <div>
+          <div className="yoho-profile-banner-top">
+            <span className="yoho-profile-serial">AGENT // YOHO-01</span>
+            <span className="yoho-profile-live-pill">
+              <span className="yoho-profile-live-dot" aria-hidden="true" />
+              24/7 Online
+            </span>
+          </div>
+
+          <div className="yoho-profile-hero-row">
+            <div className="yoho-profile-intro">
               <div className="yoho-profile-name-row">
                 <strong className="yoho-profile-name">Yoho</strong>
-                <span className="yoho-profile-role-pill">AI AGENT</span>
+                <span className="yoho-profile-role-pill">AI PARTNER</span>
               </div>
-              <p className="yoho-profile-tagline">Autonomous Portfolio AI</p>
+              <p className="yoho-profile-tagline">
+                Friendly ghost-coder built to share Vyshnav&apos;s work &amp; book consultations.
+              </p>
+            </div>
+
+            <div className="yoho-profile-mascot-stage" aria-hidden="true">
+              <picture>
+                <source srcSet="/yoho-chat-bg.avif 1x, /yoho-chat-bg-2x.avif 2x" type="image/avif" />
+                <source srcSet="/yoho-chat-bg.webp 1x, /yoho-chat-bg-2x.webp 2x" type="image/webp" />
+                <img
+                  src="/yoho-chat-bg.png"
+                  srcSet="/yoho-chat-bg.png 1x, /yoho-chat-bg-2x.png 2x"
+                  alt=""
+                  className="yoho-profile-mascot-art"
+                />
+              </picture>
             </div>
           </div>
-          <span className="yoho-profile-live-pill">
-            <span className="yoho-profile-live-dot" aria-hidden="true" />
-            Online
-          </span>
         </div>
 
+        {/* Expressive Bento Trait Tiles */}
         <div className="yoho-profile-body">
-          <dl className="yoho-profile-meta-list">
-            {YOHO_PROFILE_FIELDS.map((field) => (
-              <div key={field.label} className="yoho-profile-meta-row">
-                <dt className="yoho-profile-meta-label">{field.label}</dt>
-                <dd className="yoho-profile-meta-value">{field.value}</dd>
+          <div className="yoho-profile-bento-grid">
+            <div className="yoho-bento-tile">
+              <div className="yoho-bento-tile-head">
+                <span className="yoho-bento-icon is-ink" aria-hidden="true">
+                  <Briefcase size={12} strokeWidth={2.2} />
+                </span>
+                <span className="yoho-bento-label">Work</span>
               </div>
-            ))}
-          </dl>
+              <p className="yoho-bento-value">Backend &amp; AI Portfolio Guide</p>
+            </div>
 
+            <div className="yoho-bento-tile">
+              <div className="yoho-bento-tile-head">
+                <span className="yoho-bento-icon is-emerald" aria-hidden="true">
+                  <Zap size={12} strokeWidth={2.2} />
+                </span>
+                <span className="yoho-bento-label">Availability</span>
+              </div>
+              <p className="yoho-bento-value">24/7 Live · Instant Reply</p>
+            </div>
+
+            <div className="yoho-bento-tile is-wide is-nature">
+              <div className="yoho-bento-tile-head">
+                <span className="yoho-bento-icon is-orange" aria-hidden="true">
+                  <Smile size={12} strokeWidth={2.2} />
+                </span>
+                <span className="yoho-bento-label">Nature</span>
+                <span className="yoho-nature-sparkle">
+                  <Sparkles size={10} strokeWidth={2.2} />
+                  Helpful
+                </span>
+              </div>
+              <p className="yoho-bento-value">
+                Friendly, witty &amp; straight-to-the-point engineering clarity
+              </p>
+            </div>
+          </div>
+
+          {/* Clickable Starter Capabilities */}
           <div className="yoho-profile-actions-block">
-            <span className="yoho-profile-meta-label">Actions</span>
-            <ul className="yoho-profile-actions-list" aria-label="Yoho capabilities">
-              {YOHO_CAPABILITY_ACTIONS.map((action) => (
-                <li key={action} className="yoho-profile-action-chip">
-                  {action}
-                </li>
+            <div className="yoho-actions-header">
+              <span className="yoho-bento-label">Actions</span>
+              <span className="yoho-actions-hint">Click to ask</span>
+            </div>
+            <div className="yoho-profile-actions-grid">
+              {YOHO_CAPABILITY_ACTIONS.map(({ id, label, prompt, Icon }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className="yoho-profile-action-btn"
+                  disabled={isActionDisabled}
+                  onClick={() => handleCapabilityClick(prompt)}
+                >
+                  <Icon size={12} strokeWidth={2.1} />
+                  <span>{label}</span>
+                  <ArrowUpRight size={11} strokeWidth={2.2} className="yoho-action-arrow" />
+                </button>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </div>

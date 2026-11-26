@@ -1,5 +1,5 @@
 /* ============================================================
-   YOHO HEADER AVATAR TRIGGER & PROFILE NAME CARD
+   YOHO HEADER AVATAR TRIGGER & EDITORIAL BENTO PROFILE CARD
    ============================================================ */
 
 .yoho-avatar-anchor-group {
@@ -22,8 +22,8 @@
 }
 
 .agent-avatar-trigger:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 0 2px rgba(215, 114, 12, 0.36);
+  transform: scale(1.06);
+  box-shadow: 0 0 0 2.5px rgba(215, 114, 12, 0.42);
 }
 
 .agent-avatar-trigger:focus-visible {
@@ -31,16 +31,19 @@
   outline-offset: 2px;
 }
 
-/* Floating Editorial Profile Name Card */
+/* Floating Editorial Bento Character Card */
 .yoho-profile-card {
-  width: min(308px, calc(100vw - 24px));
+  width: min(336px, calc(100vw - 24px));
   padding: 0;
   border: var(--chat-accent-border, 2px solid var(--color-orange));
   border-radius: var(--chat-corner-radius, 12px);
   corner-shape: squircle;
   background: var(--color-bg);
   color: var(--color-ink);
-  box-shadow: 0 18px 42px rgba(15, 37, 36, 0.24), 0 0 18px rgba(215, 114, 12, 0.22);
+  box-shadow:
+    0 20px 44px rgba(15, 37, 36, 0.28),
+    0 4px 14px rgba(15, 37, 36, 0.12),
+    0 0 20px rgba(215, 114, 12, 0.22);
   pointer-events: auto;
   overflow: hidden;
   font-family: var(--font-body);
@@ -98,68 +101,36 @@
   }
 }
 
-/* Top Identity Banner */
+/* Dark Atmospheric Character Banner */
 .yoho-profile-banner {
-  background: var(--color-ink);
+  position: relative;
+  isolation: isolate;
+  padding: 11px 13px 12px;
   color: var(--color-bg);
-  padding: 11px 13px;
+  border-bottom: 1.5px solid var(--color-orange);
+  background:
+    radial-gradient(circle at 88% 28%, rgba(215, 114, 12, 0.28), transparent 52%),
+    radial-gradient(circle at 18% 92%, rgba(47, 105, 100, 0.34), transparent 55%),
+    radial-gradient(rgba(247, 246, 240, 0.08) 1px, transparent 0) 0 0 / 12px 12px,
+    var(--color-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.yoho-profile-banner-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  border-bottom: 1.5px solid var(--color-orange);
+  gap: 8px;
 }
 
-.yoho-profile-identity {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-width: 0;
-}
-
-.yoho-profile-card-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1.5px solid var(--color-orange);
-  background: #0f101f;
-  flex-shrink: 0;
-  display: block;
-}
-
-.yoho-profile-name-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.yoho-profile-name {
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--color-bg);
-}
-
-.yoho-profile-role-pill {
+.yoho-profile-serial {
   font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 1.5px 6px;
-  border-radius: 6px;
-  background: rgba(215, 114, 12, 0.22);
-  color: var(--color-orange-warm);
-  border: 1px solid rgba(230, 165, 77, 0.4);
-  line-height: 1.2;
-}
-
-.yoho-profile-tagline {
-  margin: 2px 0 0;
-  font-size: 11px;
-  line-height: 1.25;
-  color: rgba(247, 246, 240, 0.72);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(247, 246, 240, 0.65);
 }
 
 .yoho-profile-live-pill {
@@ -167,14 +138,13 @@
   align-items: center;
   gap: 5px;
   font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 9.5px;
+  font-weight: 700;
   color: #34D399;
   background: rgba(16, 185, 129, 0.16);
-  border: 1px solid rgba(16, 185, 129, 0.42);
+  border: 1px solid rgba(16, 185, 129, 0.44);
   border-radius: 6px;
   padding: 2px 7px;
-  flex-shrink: 0;
   line-height: 1.2;
 }
 
@@ -183,85 +153,277 @@
   height: 5px;
   border-radius: 50%;
   background: #10B981;
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.85);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.9);
 }
 
-/* Profile Metadata Body */
-.yoho-profile-body {
-  padding: 11px 13px 12px;
-  display: flex;
-  flex-direction: column;
+.yoho-profile-hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px;
+  align-items: center;
   gap: 10px;
 }
 
-.yoho-profile-meta-list {
-  margin: 0;
+.yoho-profile-intro {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+}
+
+.yoho-profile-name-row {
+  display: flex;
+  align-items: center;
   gap: 7px;
 }
 
-.yoho-profile-meta-row {
-  display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
-  gap: 10px;
-  align-items: baseline;
+.yoho-profile-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-bg);
 }
 
-.yoho-profile-meta-label {
+.yoho-profile-role-pill {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(215, 114, 12, 0.24);
+  color: var(--color-orange-warm);
+  border: 1px solid rgba(230, 165, 77, 0.45);
+  line-height: 1.15;
+}
+
+.yoho-profile-tagline {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.38;
+  color: rgba(247, 246, 240, 0.84);
+}
+
+.yoho-profile-mascot-stage {
+  width: 70px;
+  height: 64px;
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--color-bg) 8%, transparent);
+  border: 1px solid rgba(230, 165, 77, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.yoho-profile-mascot-art {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 5px 10px rgba(215, 114, 12, 0.35));
+  transition: transform 0.22s var(--ease-micro);
+}
+
+.yoho-profile-card:hover .yoho-profile-mascot-art {
+  transform: translateY(-2px) rotate(-3deg) scale(1.04);
+}
+
+/* Bento Trait Grid */
+.yoho-profile-body {
+  padding: 11px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.yoho-profile-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.yoho-bento-tile {
+  padding: 8px 9px;
+  border-radius: var(--chat-control-radius, 8px);
+  background: color-mix(in oklab, var(--color-bg-subtle) 65%, var(--color-white) 35%);
+  border: 1px solid color-mix(in oklab, var(--color-ink) 12%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.yoho-bento-tile.is-wide {
+  grid-column: 1 / -1;
+}
+
+.yoho-bento-tile.is-nature {
+  background: color-mix(in oklab, var(--color-orange) 8%, var(--color-bg) 92%);
+  border-color: color-mix(in oklab, var(--color-orange) 28%, transparent);
+}
+
+.yoho-bento-tile-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.yoho-bento-icon {
+  width: 19px;
+  height: 19px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.yoho-bento-icon.is-ink {
+  background: color-mix(in oklab, var(--color-ink) 11%, transparent);
+  color: var(--color-ink);
+}
+
+.yoho-bento-icon.is-emerald {
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+}
+
+.yoho-bento-icon.is-orange {
+  background: color-mix(in oklab, var(--color-orange) 18%, transparent);
+  color: var(--color-orange-text);
+}
+
+.yoho-bento-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-orange-text);
 }
 
-.yoho-profile-meta-value {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.35;
-  color: var(--color-ink);
-  font-weight: 500;
+.yoho-nature-sparkle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--color-orange-text);
+  background: color-mix(in oklab, var(--color-orange) 14%, var(--color-white) 86%);
+  border: 1px solid color-mix(in oklab, var(--color-orange) 30%, transparent);
+  border-radius: 999px;
+  padding: 1px 6px;
 }
 
+.yoho-bento-value {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.32;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* Clickable Actions Footer */
 .yoho-profile-actions-block {
-  padding-top: 8px;
-  border-top: 1px solid rgba(15, 37, 36, 0.1);
+  padding-top: 2px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.yoho-profile-actions-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.yoho-actions-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.yoho-profile-action-chip {
+.yoho-actions-hint {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--color-ink-muted);
+}
+
+.yoho-profile-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.yoho-profile-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--chat-control-radius, 8px);
+  border: 1px solid color-mix(in oklab, var(--color-ink) 16%, transparent);
+  background: var(--color-white);
+  color: var(--color-ink);
   font-family: var(--font-mono);
   font-size: 10.5px;
   font-weight: 600;
-  color: var(--color-ink);
-  background: rgba(15, 37, 36, 0.05);
-  border: 1px solid rgba(215, 114, 12, 0.35);
-  border-radius: 6px;
-  padding: 2.5px 7px;
-  line-height: 1.2;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color var(--duration-fast) var(--ease-micro),
+    background-color var(--duration-fast) var(--ease-micro),
+    transform var(--duration-fast) var(--ease-micro);
+}
+
+.yoho-profile-action-btn:hover:not(:disabled) {
+  border-color: var(--color-orange);
+  background: color-mix(in oklab, var(--color-orange) 10%, var(--color-white) 90%);
+  transform: translateY(-1px);
+}
+
+.yoho-profile-action-btn:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.yoho-profile-action-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.yoho-action-arrow {
+  margin-left: auto;
+  color: var(--color-orange-text);
+  opacity: 0.78;
+  transition: transform var(--duration-fast) var(--ease-micro);
+}
+
+.yoho-profile-action-btn:hover:not(:disabled) .yoho-action-arrow {
+  transform: translate(1px, -1px);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yoho-profile-mascot-art,
+  .yoho-profile-action-btn,
+  .yoho-action-arrow {
+    transition: none;
+  }
+
+  .yoho-profile-card:hover .yoho-profile-mascot-art,
+  .yoho-profile-action-btn:hover:not(:disabled) {
+    transform: none;
+  }
 }
 
 @media (forced-colors: active) {
-  .yoho-profile-card {
+  .yoho-profile-card,
+  .yoho-bento-tile,
+  .yoho-profile-action-btn {
     border-color: ButtonText;
     background: Canvas;
     color: CanvasText;
   }
 
   .yoho-profile-banner {
+    background: Canvas;
+    color: CanvasText;
     border-bottom-color: ButtonText;
   }
 }
