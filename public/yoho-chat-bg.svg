@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" fill="none">
+  <defs>
+    <linearGradient id="yoho-body-grad" x1="120" y1="32" x2="175" y2="235" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="68%" stop-color="#F2F5FC" />
+      <stop offset="100%" stop-color="#CED7EE" />
+    </linearGradient>
+    <linearGradient id="yoho-band-grad" x1="72" y1="18" x2="188" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7687AC" />
+      <stop offset="55%" stop-color="#485378" />
+      <stop offset="100%" stop-color="#2E3654" />
+    </linearGradient>
+    <linearGradient id="yoho-earcup-grad" x1="168" y1="68" x2="218" y2="146" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#536089" />
+      <stop offset="100%" stop-color="#272F4B" />
+    </linearGradient>
+    <linearGradient id="yoho-laptop-grad" x1="22" y1="138" x2="112" y2="208" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5E6B94" />
+      <stop offset="100%" stop-color="#313958" />
+    </linearGradient>
+    <linearGradient id="yoho-spark-grad" x1="24" y1="24" x2="64" y2="76" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE082" />
+      <stop offset="100%" stop-color="#F5B83D" />
+    </linearGradient>
+  </defs>
+
+  <!-- Soft ground shadow -->
+  <ellipse cx="132" cy="264" rx="56" ry="8" fill="#2A3150" opacity="0.55" />
+
+  <!-- Left excitement sparks -->
+  <g stroke="#1E2440" stroke-width="2" stroke-linejoin="round" fill="url(#yoho-spark-grad)">
+    <rect x="46" y="23" width="8" height="22" rx="4" transform="rotate(-18 50 34)" />
+    <rect x="29" y="40" width="8" height="20" rx="4" transform="rotate(-48 33 50)" />
+    <rect x="22" y="65" width="20" height="7" rx="3.5" transform="rotate(-8 32 68.5)" />
+  </g>
+
+  <!-- Peeking left earcup -->
+  <ellipse cx="48" cy="108" rx="9" ry="18" fill="#3B4568" stroke="#1E2440" stroke-width="3" />
+
+  <!-- Ghost body -->
+  <path
+    d="M52 126 C52 68 82 32 128 32 C174 32 204 68 204 128 C204 166 210 198 222 216 C227 223 220 232 210 231 C198 230 190 239 180 239 C168 239 162 229 149 234 C138 238 128 248 115 245 C103 242 97 228 85 230 C71 232 60 220 56 202 C52 184 52 154 52 126 Z"
+    fill="url(#yoho-body-grad)"
+    stroke="#1E2440"
+    stroke-width="3.2"
+    stroke-linejoin="round"
+  />
+
+  <!-- Soft interior tail shadow folds -->
+  <path
+    d="M150 230 C162 214 169 200 171 186 M98 228 C108 216 114 202 115 190"
+    stroke="#C3CCE6"
+    stroke-width="4"
+    stroke-linecap="round"
+    opacity="0.7"
+  />
+
+  <!-- Headphone band -->
+  <path
+    d="M52 108 C54 52 88 18 134 18 C176 18 204 46 207 88 L194 92 C190 57 166 31 132 31 C94 31 67 60 64 106 Z"
+    fill="url(#yoho-band-grad)"
+    stroke="#1E2440"
+    stroke-width="3"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M78 44 C98 28 126 22 156 28"
+    stroke="#A7B5D8"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    opacity="0.75"
+  />
+
+  <!-- Facial features: eyebrows, eyes, blush, mouth -->
+  <path d="M84 82 Q93 76 102 82" stroke="#1E2440" stroke-width="3" stroke-linecap="round" />
+  <path d="M140 82 Q149 76 158 82" stroke="#1E2440" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Left eye -->
+  <ellipse cx="93" cy="107" rx="14" ry="15.5" fill="#1B2038" />
+  <circle cx="88" cy="101" r="5" fill="#FFFFFF" />
+  <circle cx="99" cy="113" r="2.2" fill="#FFFFFF" />
+
+  <!-- Right eye -->
+  <ellipse cx="149" cy="107" rx="14" ry="15.5" fill="#1B2038" />
+  <circle cx="144" cy="101" r="5" fill="#FFFFFF" />
+  <circle cx="155" cy="113" r="2.2" fill="#FFFFFF" />
+
+  <!-- Blush cheeks -->
+  <ellipse cx="77" cy="130" rx="10" ry="5.5" fill="#FF9CA8" opacity="0.85" />
+  <ellipse cx="160" cy="130" rx="10" ry="5.5" fill="#FF9CA8" opacity="0.85" />
+
+  <!-- Happy open smile -->
+  <path
+    d="M111 118 Q121 121 131 118 C132 132 128 140 121 140 C114 140 110 132 111 118 Z"
+    fill="#1B2038"
+    stroke="#1B2038"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+  <path d="M115 133 Q121 128 127 133 Q124 139 121 139 Q118 139 115 133 Z" fill="#F28B82" />
+
+  <!-- Right headphone earcup with glowing code icon -->
+  <ellipse cx="192" cy="112" rx="28" ry="37" fill="#2A3250" stroke="#1E2440" stroke-width="3.2" />
+  <ellipse cx="197" cy="112" rx="24" ry="33" fill="url(#yoho-earcup-grad)" stroke="#1E2440" stroke-width="2.5" />
+  <ellipse cx="198" cy="112" rx="18" ry="25" fill="none" stroke="#8EC5FF" stroke-width="3" />
+  <g stroke="#BCE0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M192 106 L186 112 L192 118" />
+    <path d="M204 106 L210 112 L204 118" />
+    <path d="M200 104 L196 120" />
+  </g>
+
+  <!-- Laptop -->
+  <g>
+    <!-- Keyboard base -->
+    <path
+      d="M78 197 L134 191 C138 191 140 195 136 198 L82 208 C77 209 74 205 76 200 Z"
+      fill="#2C3452"
+      stroke="#1E2440"
+      stroke-width="3"
+      stroke-linejoin="round"
+    />
+    <!-- Laptop lid -->
+    <path
+      d="M17 146 C16 140 20 136 26 136 L94 144 C99 145 102 149 103 154 L112 199 C113 204 109 208 103 207 L29 197 C24 196 21 192 20 187 Z"
+      fill="url(#yoho-laptop-grad)"
+      stroke="#1E2440"
+      stroke-width="3.2"
+      stroke-linejoin="round"
+    />
+    <!-- Lid inner rim -->
+    <path
+      d="M23 144 L94 151 L104 200 L29 191 Z"
+      fill="none"
+      stroke="#7E8DB8"
+      stroke-width="1.5"
+      opacity="0.55"
+    />
+    <!-- Glowing code symbol on laptop back -->
+    <g stroke="#9DD0FF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M53 166 L44 172 L53 179" />
+      <path d="M72 168 L81 174 L72 181" />
+      <path d="M66 164 L59 183" />
+    </g>
+  </g>
+
+  <!-- Cute ghost arm resting on laptop -->
+  <path
+    d="M140 165 C124 166 111 176 112 187 C113 196 125 198 142 192"
+    fill="#FFFFFF"
+    stroke="#1E2440"
+    stroke-width="3.2"
+    stroke-linecap="round"
+  />
+</svg>
