@@ -56,11 +56,9 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
 
     assert.match(btnRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Launcher button should use shared --chat-corner-radius');
     assert.match(windowRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Chat window should use shared --chat-corner-radius');
-    assert.match(stageBgRule, /background-image:\s*url\('\/yoho-chat-bg\.svg'\);/, 'Chat background stage should render crisp vector SVG');
+    assert.match(stageBgRule, /background-image:\s*url\('\/yoho-chat-bg\.png'\);/, 'Chat background stage should provide PNG fallback');
+    assert.match(stageBgRule, /image-set\(/, 'Chat background stage should provide resolution/format optimized image-set');
     assert.match(stageBgRule, /opacity:\s*0\.35;/, 'Yoho background watermark should be clearly visible');
-    const yohoSvg = readProjectFile('public/yoho-chat-bg.svg');
-    assert.match(yohoSvg, /<svg\s+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/, 'Yoho SVG asset should be valid vector SVG');
-    assert.doesNotMatch(yohoSvg, /<script|<image|foreignObject/i, 'Yoho SVG must stay pure vector without scripts or embedded raster images');
     assert.match(backdropRule, /overflow:\s*hidden;/, 'Backdrop must establish a scroll container');
     assert.match(backdropRule, /overscroll-behavior:\s*contain;/, 'Backdrop must contain background scroll');
     assert.match(messagesRule, /overscroll-behavior:\s*contain;/, 'Messages container must prevent scroll chaining');
