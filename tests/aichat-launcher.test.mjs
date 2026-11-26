@@ -30,15 +30,20 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
   const chatCss = readProjectFile('src/components/AIChat/AIChat.css');
   const chatTsx = readProjectFile('src/components/AIChat/AIChat.tsx');
 
-  it('uses rounded corners and accessible touch target minimums (>= 44px)', () => {
+  it('uses shared rounded corners across button and chat window plus accessible touch target minimums (>= 44px)', () => {
+    const rootRule = getCssRuleBody(chatCss, '.ai-chat-root');
     const btnRule = getCssRuleBody(chatCss, '.ai-chat-launcher-btn');
+    const windowRule = getCssRuleBody(chatCss, '.ai-chat-window');
 
+    assert.match(rootRule, /--chat-corner-radius:\s*12px;/, 'Shared token should define 12px corner radius');
     assert.match(btnRule, /min-inline-size:\s*48px;/, 'Launcher button should enforce >= 44px min-inline-size');
     assert.match(btnRule, /min-block-size:\s*48px;/, 'Launcher button should enforce >= 44px min-block-size');
-    assert.match(btnRule, /--launcher-radius:\s*12px;/, 'Launcher token should define rounded corners');
-    assert.match(btnRule, /border-radius:\s*var\(--launcher-radius\);/, 'Launcher button should consume --launcher-radius');
+    assert.match(btnRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Launcher button should use shared --chat-corner-radius');
+    assert.match(windowRule, /border-radius:\s*var\(--chat-corner-radius\);/, 'Chat window should use shared --chat-corner-radius');
     assert.match(btnRule, /corner-shape:\s*squircle;/, 'Launcher button should enhance corners with squircle');
+    assert.match(windowRule, /corner-shape:\s*squircle;/, 'Chat window should match button corner-shape');
     assert.doesNotMatch(btnRule, /border-radius:\s*(50%|999px)/, 'Launcher button must not be circular or pill-shaped');
+    assert.match(chatTsx, /const CHAT_CORNER_RADIUS = 12;/, 'AIChat.tsx should define shared CHAT_CORNER_RADIUS = 12');
   });
 
   it('defines clear :focus-visible outline and forced-colors border support', () => {

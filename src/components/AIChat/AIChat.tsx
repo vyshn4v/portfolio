@@ -26,6 +26,7 @@ const MIN_WINDOW_WIDTH = 400;
 const MIN_WINDOW_HEIGHT = 480;
 const MAX_WINDOW_WIDTH = 780;
 const MAX_WINDOW_HEIGHT = 840;
+const CHAT_CORNER_RADIUS = 12;
 
 const QUICK_PROMPTS = [
   'What did Vyshnav build at Neutrinos?',
@@ -849,7 +850,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                 setIsOpen(true);
               }}
               className="ai-chat-launcher-btn"
-              style={{ borderRadius: 12 }}
+              style={{ borderRadius: CHAT_CORNER_RADIUS }}
               aria-label="Meet Yoho — Open AI Chat"
             >
               <motion.span
@@ -900,9 +901,9 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                     height: `${bounds.height}px`,
                     right: 'auto',
                     bottom: 'auto',
-                    borderRadius: 20,
+                    borderRadius: CHAT_CORNER_RADIUS,
                   }
-                : { borderRadius: 16 }
+                : { borderRadius: CHAT_CORNER_RADIUS }
             }
           >
             <motion.div

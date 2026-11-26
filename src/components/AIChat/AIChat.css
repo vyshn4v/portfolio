@@ -1,5 +1,6 @@
 /* Floating AI Chat Container in Bottom-Right Corner */
 .ai-chat-root {
+  --chat-corner-radius: 12px;
   position: fixed;
   right: 24px;
   bottom: 24px;
@@ -19,12 +20,11 @@
 }
 
 .ai-chat-launcher-btn {
-  --launcher-radius: 12px;
   position: relative;
   min-inline-size: 48px;
   min-block-size: 48px;
   padding: 6px 8px 6px 14px;
-  border-radius: var(--launcher-radius);
+  border-radius: var(--chat-corner-radius);
   corner-shape: squircle;
   background: var(--color-ink);
   color: var(--color-bg);
@@ -165,7 +165,8 @@
   position: fixed;
   background: var(--color-bg);
   border: 1px solid rgba(198, 190, 165, 0.8);
-  border-radius: 20px;
+  border-radius: var(--chat-corner-radius);
+  corner-shape: squircle;
   box-shadow: 0 20px 48px rgba(15, 37, 36, 0.2), 0 4px 16px rgba(15, 37, 36, 0.08);
   display: flex;
   flex-direction: column;
@@ -968,6 +969,5 @@
     height: calc(100vh - 120px) !important;
     min-height: 380px !important;
     max-height: 560px !important;
-    border-radius: 16px;
   }
 }
