@@ -26,7 +26,7 @@ function getCssRuleBody(cssText, selector) {
   return match[1];
 }
 
-describe('AIChat unified rounded-corner launcher button', () => {
+describe('AIChat unified rounded-corner launcher button & expansion morph', () => {
   const chatCss = readProjectFile('src/components/AIChat/AIChat.css');
   const chatTsx = readProjectFile('src/components/AIChat/AIChat.tsx');
 
@@ -64,5 +64,15 @@ describe('AIChat unified rounded-corner launcher button', () => {
     assert.match(launcherMarkup, /<span className="ai-chat-launcher-label">Meet Yoho<\/span>/, 'Visible "Meet Yoho" label must be inside the button');
     assert.match(launcherMarkup, /<img[\s\S]*?className="yoho-chat-btn-img"/, 'Yoho icon image must be inside the button');
     assert.match(launcherMarkup, /alt=""/, 'Decorative icon image should use empty alt text');
+  });
+
+  it('morphs directly from button to chat window via shared layoutId without blocking exit delay', () => {
+    assert.doesNotMatch(chatTsx, /<AnimatePresence\s+mode="wait">/, 'Must not block chat opening with AnimatePresence mode="wait"');
+    assert.match(chatTsx, /<LayoutGroup\s+id="yoho-chat-morph">/, 'Should wrap toggle in LayoutGroup for shared morph');
+    const layoutIdMatches = chatTsx.match(/layoutId=\{prefersReducedMotion \? undefined : 'yoho-chat-surface'\}/g) || [];
+    assert.equal(layoutIdMatches.length, 2, 'Both launcher button and chat window should share the same layoutId');
+    assert.match(chatTsx, /layoutDependency=\{isOpen\}/, 'Should scope layout projection to isOpen changes so drag/resize stay unaffected');
+    assert.match(chatTsx, /useReducedMotion\(\)/, 'Should respect OS prefers-reduced-motion');
+    assert.match(chatTsx, /e\.key === 'Escape'/, 'Should dismiss open dialog on Escape');
   });
 });

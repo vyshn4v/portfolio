@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, LayoutGroup, useReducedMotion } from 'framer-motion';
 import { X, RotateCcw, AlertCircle, Maximize2, Minimize2, ArrowUp, Loader2 } from 'lucide-react';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { OtpWidget, type UIAction } from './OtpWidget';
@@ -137,8 +137,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
+  const launcherBtnRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef<boolean>(false);
 
   const isMobile = useMediaQuery('(max-width: 640px)');
+  const prefersReducedMotion = useReducedMotion();
+  const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
 
   const getDefaultBounds = () => {
@@ -384,9 +388,27 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   }, [conversationId]);
 
   useEffect(() => {
+    const wasOpen = wasOpenRef.current;
+    wasOpenRef.current = isOpen;
+
     if (isOpen && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 150);
+      const timer = setTimeout(() => inputRef.current?.focus(), 150);
+      return () => clearTimeout(timer);
     }
+    if (!isOpen && wasOpen) {
+      launcherBtnRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
   }, [isOpen]);
 
   const handleSend = async (textToSend?: string): Promise<boolean> => {
@@ -797,52 +819,75 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     return null;
   }
 
+  const morphTransition = prefersReducedMotion
+    ? { duration: 0.01 }
+    : { duration: 0.34, ease: [0.16, 1, 0.3, 1] as const };
+
   return (
     <div className="ai-chat-root">
-      <AnimatePresence mode="wait">
+      <LayoutGroup id="yoho-chat-morph">
         {!isOpen ? (
-          <motion.div
-            key="chat-launcher"
-            initial={{ scale: 0.85, opacity: 0, y: 16 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="ai-chat-launcher-wrap"
-          >
+          <div className="ai-chat-launcher-wrap">
             <motion.button
+              ref={launcherBtnRef}
+              key="chat-launcher"
               type="button"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              transition={{ duration: 0.12 }}
-              onClick={() => setIsOpen(true)}
+              layoutId={prefersReducedMotion ? undefined : 'yoho-chat-surface'}
+              layoutDependency={isOpen}
+              initial={hasOpenedOnce || prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+              transition={{
+                layout: morphTransition,
+                opacity: { duration: 0.2 },
+                y: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                scale: { duration: 0.12 },
+              }}
+              onClick={() => {
+                setHasOpenedOnce(true);
+                setIsOpen(true);
+              }}
               className="ai-chat-launcher-btn"
+              style={{ borderRadius: 12 }}
               aria-label="Meet Yoho — Open AI Chat"
             >
-              <span className="ai-chat-launcher-label">Meet Yoho</span>
-              <span className="launcher-avatar-box" aria-hidden="true">
-                <span className="launcher-yoho-wrap">
-                  <img
-                    src={YOHO_ICON_SRC}
-                    alt=""
-                    aria-hidden="true"
-                    className="yoho-chat-btn-img"
-                  />
+              <motion.span
+                className="ai-chat-launcher-inner"
+                initial={hasOpenedOnce && !prefersReducedMotion ? { opacity: 0 } : false}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0.01 : 0.14,
+                  delay: hasOpenedOnce && !prefersReducedMotion ? 0.12 : 0,
+                }}
+              >
+                <span className="ai-chat-launcher-label">Meet Yoho</span>
+                <span className="launcher-avatar-box" aria-hidden="true">
+                  <span className="launcher-yoho-wrap">
+                    <img
+                      src={YOHO_ICON_SRC}
+                      alt=""
+                      aria-hidden="true"
+                      className="yoho-chat-btn-img"
+                    />
+                  </span>
+                  <span className="launcher-status-dot" />
                 </span>
-                <span className="launcher-status-dot" />
-              </span>
+              </motion.span>
             </motion.button>
-          </motion.div>
+          </div>
         ) : (
           <motion.div
             ref={windowRef}
             key="chat-window"
+            layoutId={prefersReducedMotion ? undefined : 'yoho-chat-surface'}
+            layoutDependency={isOpen}
             className="ai-chat-window"
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.94 }}
+            initial={prefersReducedMotion ? { opacity: 0 } : undefined}
+            animate={{ opacity: 1 }}
             transition={{
-              opacity: { duration: 0.18, ease: 'easeOut' },
-              scale: { duration: 0.18, ease: [0.16, 1, 0.3, 1] },
+              layout: morphTransition,
+              opacity: { duration: prefersReducedMotion ? 0.01 : 0.15 },
             }}
             role="dialog"
             aria-label="Yoho AI Agent Chat Window"
@@ -855,10 +900,21 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                     height: `${bounds.height}px`,
                     right: 'auto',
                     bottom: 'auto',
+                    borderRadius: 20,
                   }
-                : undefined
+                : { borderRadius: 16 }
             }
           >
+            <motion.div
+              className="ai-chat-window-content"
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: prefersReducedMotion ? 0.01 : 0.18,
+                delay: prefersReducedMotion ? 0 : 0.08,
+                ease: 'easeOut',
+              }}
+            >
             {/* Edge & Corner Resize Handles (Desktop Only) */}
             {!isMobile && (
               <>
@@ -1133,9 +1189,10 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                 <span>Yoho explores Vyshnav's work & schedules meetings</span>
               </div>
             </div>
+            </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </LayoutGroup>
     </div>
   );
 };
