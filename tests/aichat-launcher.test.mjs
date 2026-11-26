@@ -26,30 +26,19 @@ function getCssRuleBody(cssText, selector) {
   return match[1];
 }
 
-describe('AIChat launcher button square styling & accessibility', () => {
+describe('AIChat unified rounded-corner launcher button', () => {
   const chatCss = readProjectFile('src/components/AIChat/AIChat.css');
   const chatTsx = readProjectFile('src/components/AIChat/AIChat.tsx');
 
-  it('uses equal square dimensions (>= 44px touch target) and non-circular border-radius', () => {
+  it('uses rounded corners and accessible touch target minimums (>= 44px)', () => {
     const btnRule = getCssRuleBody(chatCss, '.ai-chat-launcher-btn');
 
-    assert.match(btnRule, /width:\s*54px;/, 'Launcher button should have 54px width');
-    assert.match(btnRule, /height:\s*54px;/, 'Launcher button should have 54px height');
-    assert.match(btnRule, /min-inline-size:\s*54px;/, 'Launcher button should enforce >= 44px min-inline-size');
-    assert.match(btnRule, /min-block-size:\s*54px;/, 'Launcher button should enforce >= 44px min-block-size');
-
-    assert.match(btnRule, /--launcher-radius:\s*[0-8]px;/, 'Launcher token should define crisp square corners');
+    assert.match(btnRule, /min-inline-size:\s*48px;/, 'Launcher button should enforce >= 44px min-inline-size');
+    assert.match(btnRule, /min-block-size:\s*48px;/, 'Launcher button should enforce >= 44px min-block-size');
+    assert.match(btnRule, /--launcher-radius:\s*12px;/, 'Launcher token should define rounded corners');
     assert.match(btnRule, /border-radius:\s*var\(--launcher-radius\);/, 'Launcher button should consume --launcher-radius');
+    assert.match(btnRule, /corner-shape:\s*squircle;/, 'Launcher button should enhance corners with squircle');
     assert.doesNotMatch(btnRule, /border-radius:\s*(50%|999px)/, 'Launcher button must not be circular or pill-shaped');
-  });
-
-  it('derives inner image wrapper and image radii concentrically instead of using 50%', () => {
-    const wrapRule = getCssRuleBody(chatCss, '.launcher-yoho-wrap');
-    const imgRule = getCssRuleBody(chatCss, '.yoho-chat-btn-img');
-
-    assert.doesNotMatch(wrapRule, /border-radius:\s*50%/, 'Wrapper must not clip to a circle');
-    assert.doesNotMatch(imgRule, /border-radius:\s*50%/, 'Image must not clip to a circle');
-    assert.match(imgRule, /border-radius:\s*inherit;/, 'Image should inherit the wrapper square radius');
   });
 
   it('defines clear :focus-visible outline and forced-colors border support', () => {
@@ -59,14 +48,21 @@ describe('AIChat launcher button square styling & accessibility', () => {
     assert.match(chatCss, /@media\s*\(forced-colors:\s*active\)[\s\S]*\.ai-chat-launcher-btn[\s\S]*border-color:\s*ButtonText;/);
   });
 
-  it('renders an explicit button type and accessible name without redundant image text', () => {
+  it('places both Meet Yoho text and icon inside a single accessible button', () => {
+    assert.doesNotMatch(chatTsx, /ai-chat-launcher-hint/, 'Separate non-interactive hint pill should be removed');
+
     const launcherMatch = chatTsx.match(/<motion\.button[\s\S]*?className="ai-chat-launcher-btn"[\s\S]*?<\/motion\.button>/);
     assert.ok(launcherMatch, 'Expected launcher <motion.button> markup to exist in AIChat.tsx');
 
     const launcherMarkup = launcherMatch[0];
     assert.match(launcherMarkup, /type="button"/, 'Launcher button should explicitly set type="button"');
-    assert.match(launcherMarkup, /aria-label="Open Yoho AI Chat"/, 'Launcher button should have an accessible label');
+    assert.match(
+      launcherMarkup,
+      /aria-label="Meet Yoho — Open AI Chat"/,
+      'Accessible name must start with the visible text "Meet Yoho" (WCAG 2.5.3)'
+    );
+    assert.match(launcherMarkup, /<span className="ai-chat-launcher-label">Meet Yoho<\/span>/, 'Visible "Meet Yoho" label must be inside the button');
+    assert.match(launcherMarkup, /<img[\s\S]*?className="yoho-chat-btn-img"/, 'Yoho icon image must be inside the button');
     assert.match(launcherMarkup, /alt=""/, 'Decorative icon image should use empty alt text');
-    assert.match(launcherMarkup, /aria-hidden="true"/, 'Decorative elements inside button should be hidden from screen readers');
   });
 });

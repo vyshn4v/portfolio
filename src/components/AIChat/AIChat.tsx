@@ -809,27 +809,27 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="ai-chat-launcher-wrap"
           >
-            <div className="ai-chat-launcher-hint">
-              <span>Meet Yoho</span>
-            </div>
             <motion.button
               type="button"
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.94 }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
               transition={{ duration: 0.12 }}
               onClick={() => setIsOpen(true)}
               className="ai-chat-launcher-btn"
-              aria-label="Open Yoho AI Chat"
+              aria-label="Meet Yoho — Open AI Chat"
             >
-              <div className="launcher-yoho-wrap">
-                <img
-                  src={YOHO_ICON_SRC}
-                  alt=""
-                  aria-hidden="true"
-                  className="yoho-chat-btn-img"
-                />
-              </div>
-              <span className="launcher-status-dot" aria-hidden="true" />
+              <span className="ai-chat-launcher-label">Meet Yoho</span>
+              <span className="launcher-avatar-box" aria-hidden="true">
+                <span className="launcher-yoho-wrap">
+                  <img
+                    src={YOHO_ICON_SRC}
+                    alt=""
+                    aria-hidden="true"
+                    className="yoho-chat-btn-img"
+                  />
+                </span>
+                <span className="launcher-status-dot" />
+              </span>
             </motion.button>
           </motion.div>
         ) : (
