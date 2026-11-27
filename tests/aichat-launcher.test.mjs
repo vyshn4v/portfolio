@@ -135,4 +135,11 @@ describe('AIChat unified rounded-corner launcher button & expansion morph', () =
     assert.doesNotMatch(chatTsx, /fallbackResponse/, 'Secondary REST fallback fetch should be removed');
     assert.match(chatTsx, /if\s*\(!streamResponse\.ok\)/, 'SSE failure status should throw cleanly');
   });
+
+  it('allows zoom gestures and walks scrollable chat ancestors before blocking background scroll', () => {
+    assert.match(chatTsx, /if\s*\(e\.ctrlKey\)\s*return;/, 'handleWheel should return early on ctrl+wheel / pinch-to-zoom');
+    assert.match(chatTsx, /hasScrollableChatAncestor/, 'Should check ancestor chat containers recursively for scrollable space');
+    assert.match(chatTsx, /current\.parentElement\?\.closest\(/, 'Should continue walking ancestor scrollable containers upward');
+    assert.match(chatTsx, /canScrollInDirection/, 'Both wheel and touch handlers should verify scrollability in the gesture direction');
+  });
 });

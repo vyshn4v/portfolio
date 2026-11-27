@@ -445,41 +445,85 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
       }
     };
 
-    const isScrollableAtBoundary = (el: HTMLElement | null, deltaY: number): boolean => {
-      if (!el) return true;
-      if (el.scrollHeight <= el.clientHeight) return true;
-      const atTop = el.scrollTop <= 0 && deltaY < 0;
-      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1 && deltaY > 0;
-      return atTop || atBottom;
+    const SCROLLABLE_CHAT_SELECTOR =
+      '.chat-messages-container, .chat-textarea, .schedule-field-textarea';
+    let lastTouchY: number | null = null;
+
+    const resolveTargetElement = (target: EventTarget | null): HTMLElement | null => {
+      if (target instanceof HTMLElement) return target;
+      if (target instanceof Node) return target.parentElement;
+      return null;
+    };
+
+    const canScrollInDirection = (el: HTMLElement, deltaY: number): boolean => {
+      if (el.scrollHeight <= el.clientHeight) return false;
+      if (deltaY < 0) return el.scrollTop > 0;
+      if (deltaY > 0) return el.scrollTop + el.clientHeight < el.scrollHeight - 1;
+      return true;
+    };
+
+    const hasScrollableChatAncestor = (
+      target: EventTarget | null,
+      deltaY: number
+    ): boolean => {
+      let current = resolveTargetElement(target)?.closest(
+        SCROLLABLE_CHAT_SELECTOR
+      ) as HTMLElement | null;
+
+      while (current) {
+        if (canScrollInDirection(current, deltaY)) {
+          return true;
+        }
+        current = current.parentElement?.closest(
+          SCROLLABLE_CHAT_SELECTOR
+        ) as HTMLElement | null;
+      }
+      return false;
     };
 
     const handleWheel = (e: WheelEvent) => {
-      const target = e.target as HTMLElement | null;
-      const scrollable = target?.closest(
-        '.chat-messages-container, .chat-textarea, .schedule-field-textarea'
-      ) as HTMLElement | null;
-      if (isScrollableAtBoundary(scrollable, e.deltaY)) {
+      // Allow browser zoom / trackpad pinch-to-zoom gestures uninterrupted
+      if (e.ctrlKey) return;
+      if (!hasScrollableChatAncestor(e.target, e.deltaY)) {
         e.preventDefault();
       }
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      lastTouchY = e.touches.length === 1 ? e.touches[0].clientY : null;
+    };
+
     const handleTouchMove = (e: TouchEvent) => {
-      const target = e.target as HTMLElement | null;
-      const scrollable = target?.closest(
-        '.chat-messages-container, .chat-textarea, .schedule-field-textarea'
-      ) as HTMLElement | null;
-      if (!scrollable || scrollable.scrollHeight <= scrollable.clientHeight) {
+      if (e.touches.length > 1) return;
+      const curY = e.touches[0]?.clientY;
+      const deltaY =
+        typeof curY === 'number' && lastTouchY !== null ? lastTouchY - curY : 0;
+      if (typeof curY === 'number') {
+        lastTouchY = curY;
+      }
+
+      if (!hasScrollableChatAncestor(e.target, deltaY)) {
         e.preventDefault();
       }
+    };
+
+    const handleTouchEnd = () => {
+      lastTouchY = null;
     };
 
     window.addEventListener('keydown', handleEscape);
     window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
     return () => {
       window.removeEventListener('keydown', handleEscape);
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
     };
   }, [isOpen]);
 
