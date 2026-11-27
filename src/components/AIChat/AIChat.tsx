@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, LayoutGroup, useReducedMotion } from 'framer-motion';
 import { X, RotateCcw, AlertCircle, Maximize2, Minimize2, ArrowUp, Loader2 } from 'lucide-react';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { OtpWidget, type UIAction } from './OtpWidget';
@@ -19,13 +19,13 @@ interface Message {
 
 const API_ENDPOINT = import.meta.env.VITE_API_URL || 'https://api-pulse.vyshnavpc.com/api/chat';
 const YOHO_ICON_SRC = '/Kawaii Ghost Coder Icon.png';
-const YOHO_MAINFRAME_SRC = '/Cute Coding Ghost with Glowing Headphones.png';
 
 // Strict minimum and maximum boundaries for desktop chat window
 const MIN_WINDOW_WIDTH = 400;
 const MIN_WINDOW_HEIGHT = 480;
 const MAX_WINDOW_WIDTH = 780;
 const MAX_WINDOW_HEIGHT = 840;
+const CHAT_CORNER_RADIUS = 12;
 
 const QUICK_PROMPTS = [
   'What did Vyshnav build at Neutrinos?',
@@ -84,6 +84,43 @@ const safeSessionStorage = {
   },
 };
 
+const hasBubblePayload = (
+  msg: Pick<Message, 'sender' | 'text' | 'uiAction'>
+): boolean =>
+  msg.sender === 'user' ||
+  msg.text.trim().length > 0 ||
+  Boolean(msg.uiAction);
+
+const sanitizeRestoredMessages = (raw: unknown): Message[] | null => {
+  if (!Array.isArray(raw)) return null;
+
+  const cleaned = raw
+    .filter((item): item is Message => {
+      if (!item || typeof item !== 'object') return false;
+      const candidate = item as Partial<Message>;
+      const sender = candidate.sender;
+      if (
+        (sender !== 'user' && sender !== 'assistant') ||
+        typeof candidate.id !== 'string' ||
+        typeof candidate.text !== 'string'
+      ) {
+        return false;
+      }
+      return hasBubblePayload({
+        sender,
+        text: candidate.text,
+        uiAction: candidate.uiAction ?? null,
+      });
+    })
+    .map((msg) => ({
+      ...msg,
+      isStreaming: false,
+      statusText: undefined,
+    }));
+
+  return cleaned.length > 0 ? cleaned : null;
+};
+
 interface AIChatProps {
   isReady?: boolean;
 }
@@ -116,9 +153,9 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     try {
       const saved = safeSessionStorage.getItem('vyshnav_yoho_messages');
       if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+        const restored = sanitizeRestoredMessages(JSON.parse(saved));
+        if (restored) {
+          return restored;
         }
       }
     } catch {
@@ -137,8 +174,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
+  const launcherBtnRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef<boolean>(false);
 
   const isMobile = useMediaQuery('(max-width: 640px)');
+  const prefersReducedMotion = useReducedMotion();
+  const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
 
   const getDefaultBounds = () => {
@@ -384,9 +425,106 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
   }, [conversationId]);
 
   useEffect(() => {
+    const wasOpen = wasOpenRef.current;
+    wasOpenRef.current = isOpen;
+
     if (isOpen && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 150);
+      const timer = setTimeout(() => inputRef.current?.focus(), 150);
+      return () => clearTimeout(timer);
     }
+    if (!isOpen && wasOpen) {
+      launcherBtnRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    const SCROLLABLE_CHAT_SELECTOR =
+      '.chat-messages-container, .chat-textarea, .schedule-field-textarea';
+    let lastTouchY: number | null = null;
+
+    const resolveTargetElement = (target: EventTarget | null): HTMLElement | null => {
+      if (target instanceof HTMLElement) return target;
+      if (target instanceof Node) return target.parentElement;
+      return null;
+    };
+
+    const canScrollInDirection = (el: HTMLElement, deltaY: number): boolean => {
+      if (el.scrollHeight <= el.clientHeight) return false;
+      if (deltaY < 0) return el.scrollTop > 0;
+      if (deltaY > 0) return el.scrollTop + el.clientHeight < el.scrollHeight - 1;
+      return true;
+    };
+
+    const hasScrollableChatAncestor = (
+      target: EventTarget | null,
+      deltaY: number
+    ): boolean => {
+      let current = resolveTargetElement(target)?.closest(
+        SCROLLABLE_CHAT_SELECTOR
+      ) as HTMLElement | null;
+
+      while (current) {
+        if (canScrollInDirection(current, deltaY)) {
+          return true;
+        }
+        current = current.parentElement?.closest(
+          SCROLLABLE_CHAT_SELECTOR
+        ) as HTMLElement | null;
+      }
+      return false;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      // Allow browser zoom / trackpad pinch-to-zoom gestures uninterrupted
+      if (e.ctrlKey) return;
+      if (!hasScrollableChatAncestor(e.target, e.deltaY)) {
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      lastTouchY = e.touches.length === 1 ? e.touches[0].clientY : null;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 1) return;
+      const curY = e.touches[0]?.clientY;
+      const deltaY =
+        typeof curY === 'number' && lastTouchY !== null ? lastTouchY - curY : 0;
+      if (typeof curY === 'number') {
+        lastTouchY = curY;
+      }
+
+      if (!hasScrollableChatAncestor(e.target, deltaY)) {
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchEnd = () => {
+      lastTouchY = null;
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
+    };
   }, [isOpen]);
 
   const handleSend = async (textToSend?: string): Promise<boolean> => {
@@ -439,6 +577,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     setMessages((prev) => [...prev, userMessage, botPlaceholder]);
     setIsLoading(true);
 
+    const updateBotMessage = (updater: (msg: Message) => Message) => {
+      setMessages((prev) =>
+        prev.map((m) => (m.id === botMessageId ? updater(m) : m))
+      );
+    };
+
     try {
       const payload: { message: string; conversationId?: string } = {
         message: query,
@@ -449,214 +593,175 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
         ? API_ENDPOINT
         : `${API_ENDPOINT.replace(/\/+$/, '')}/stream`;
 
-      let streamSucceeded = false;
+      const streamResponse = await fetch(streamUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'text/event-stream',
+        },
+        body: JSON.stringify(payload),
+        signal: abortController.signal,
+      });
+
+      if (!streamResponse.ok) {
+        throw new Error(`Server returned HTTP ${streamResponse.status}`);
+      }
+      if (!streamResponse.body) {
+        throw new Error('Streaming response body is unavailable');
+      }
+
+      const reader = streamResponse.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      // Keep currentEvent outside the chunk loop so event/data pairs across chunks stay intact
+      let currentEvent = 'message';
       let accumulatedText = '';
       let capturedUiAction: UIAction | null = null;
+      let capturedIntent: string | undefined;
+      let streamCompleted = false;
 
-      try {
-        const streamResponse = await fetch(streamUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'text/event-stream',
-          },
-          body: JSON.stringify(payload),
-          signal: abortController.signal,
-        });
-
-        if (streamResponse.ok && streamResponse.body) {
-          const reader = streamResponse.body.getReader();
-          const decoder = new TextDecoder('utf-8');
-          let buffer = '';
-          // Move currentEvent outside the reader loop so its value persists across chunks
-          let currentEvent = 'message';
-
-          while (true) {
-            if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-              try { reader.cancel(); } catch { /* ignore */ }
-              return false;
-            }
-
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-              return false;
-            }
-
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || '';
-
-            for (const rawLine of lines) {
-              const line = rawLine.trim();
-              if (!line) {
-                // Reset only when parser reaches the event delimiter (blank line)
-                currentEvent = 'message';
-                continue;
-              }
-              if (line.startsWith('event:')) {
-                currentEvent = line.slice(6).trim();
-                continue;
-              }
-              if (line.startsWith('data:')) {
-                const dataStr = line.slice(5).trim();
-                try {
-                  const data = JSON.parse(dataStr);
-
-                  if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-                    return false;
-                  }
-
-                  if (currentEvent === 'status') {
-                    if (data.status) {
-                      const st = formatStatus(data);
-                      setMessages((prev) =>
-                        prev.map((m) =>
-                          m.id === botMessageId
-                            ? { ...m, statusText: st }
-                            : m
-                        )
-                      );
-                    }
-                    if (data.conversationId) {
-                      setConversationId(data.conversationId);
-                    }
-                  } else if (currentEvent === 'token') {
-                    if (data.token) {
-                      accumulatedText += data.token;
-                      streamSucceeded = true;
-                      setMessages((prev) =>
-                        prev.map((m) =>
-                          m.id === botMessageId
-                            ? {
-                                ...m,
-                                text: accumulatedText,
-                                statusText: undefined,
-                                isStreaming: true,
-                              }
-                            : m
-                        )
-                      );
-                    }
-                    if (data.conversationId) {
-                      setConversationId(data.conversationId);
-                    }
-                  } else if (currentEvent === 'ui_action') {
-                    capturedUiAction = data;
-                    streamSucceeded = true;
-                    setMessages((prev) =>
-                      prev.map((m) =>
-                        m.id === botMessageId
-                          ? { ...m, uiAction: data }
-                          : m
-                      )
-                    );
-                  } else if (currentEvent === 'done') {
-                    streamSucceeded = true;
-                    if (data.conversationId) {
-                      setConversationId(data.conversationId);
-                    }
-                    if (data.uiAction) {
-                      capturedUiAction = data.uiAction;
-                    }
-                    if (data.reply && !accumulatedText) {
-                      accumulatedText = data.reply;
-                    }
-                    setMessages((prev) =>
-                      prev.map((m) =>
-                        m.id === botMessageId
-                          ? {
-                              ...m,
-                              text: accumulatedText || data.reply || m.text,
-                              statusText: undefined,
-                              uiAction: capturedUiAction || m.uiAction,
-                              intent: data.intent,
-                              isStreaming: false,
-                            }
-                          : m
-                      )
-                    );
-                  }
-                } catch {
-                  // ignore non-json SSE lines
-                }
-              }
-            }
-          }
-        }
-      } catch (streamErr) {
-        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+      const processSseLine = (rawLine: string): boolean => {
+        const line = rawLine.trim();
+        if (!line) {
+          // Reset only when parser reaches the event delimiter (blank line)
+          currentEvent = 'message';
           return false;
         }
-        console.warn('SSE stream error, trying standard fallback:', streamErr);
-        streamSucceeded = false;
+        if (line.startsWith('event:')) {
+          currentEvent = line.slice(6).trim();
+          return false;
+        }
+        if (!line.startsWith('data:')) {
+          return false;
+        }
+
+        const dataStr = line.slice(5).trim();
+        let data: Record<string, unknown>;
+        try {
+          data = JSON.parse(dataStr);
+        } catch {
+          return false;
+        }
+
+        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+          return true;
+        }
+
+        if (typeof data.conversationId === 'string' && data.conversationId) {
+          setConversationId(data.conversationId);
+        }
+
+        if (currentEvent === 'status') {
+          if (typeof data.status === 'string' && data.status) {
+            const st = formatStatus({
+              node: typeof data.node === 'string' ? data.node : undefined,
+              status: data.status,
+            });
+            updateBotMessage((m) => ({ ...m, statusText: st }));
+          }
+        } else if (currentEvent === 'token') {
+          if (typeof data.token === 'string' && data.token) {
+            accumulatedText += data.token;
+            const hasVisibleText = accumulatedText.trim().length > 0;
+            updateBotMessage((m) => ({
+              ...m,
+              text: accumulatedText,
+              statusText: hasVisibleText ? undefined : m.statusText,
+              isStreaming: true,
+            }));
+          }
+        } else if (currentEvent === 'ui_action') {
+          capturedUiAction = data as unknown as UIAction;
+          updateBotMessage((m) => ({ ...m, uiAction: capturedUiAction }));
+        } else if (currentEvent === 'error') {
+          const errMessage =
+            (typeof data.error === 'string' && data.error) ||
+            (typeof data.message === 'string' && data.message) ||
+            'Streaming request failed';
+          throw new Error(errMessage);
+        } else if (currentEvent === 'done') {
+          streamCompleted = true;
+          if (data.uiAction) {
+            capturedUiAction = data.uiAction as UIAction;
+          }
+          if (typeof data.intent === 'string') {
+            capturedIntent = data.intent;
+          }
+          const doneReply = typeof data.reply === 'string' ? data.reply : '';
+          if (doneReply && !accumulatedText.trim()) {
+            accumulatedText = doneReply;
+          }
+          const finalText = accumulatedText.trim()
+            ? accumulatedText
+            : doneReply.trim()
+              ? doneReply
+              : capturedUiAction
+                ? ''
+                : 'No response received.';
+
+          updateBotMessage((m) => ({
+            ...m,
+            text: finalText || m.text,
+            statusText: undefined,
+            uiAction: capturedUiAction || m.uiAction,
+            intent: capturedIntent,
+            isStreaming: false,
+          }));
+        }
+
+        return false;
+      };
+
+      while (true) {
+        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+          void reader.cancel().catch(() => {});
+          return false;
+        }
+
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const rawLine of lines) {
+          if (processSseLine(rawLine)) return false;
+        }
       }
 
       if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
         return false;
       }
 
-      // If SSE did not produce content or failed, fallback to standard endpoint
-      if (!streamSucceeded || (!accumulatedText && !capturedUiAction)) {
-        const fallbackResponse = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            Accept: '*/*',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-          signal: abortController.signal,
-        });
-
-        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-          return false;
+      // Flush any trailing decoded SSE line lacking a terminal newline
+      buffer += decoder.decode();
+      if (buffer) {
+        for (const rawLine of buffer.split('\n')) {
+          if (processSseLine(rawLine)) return false;
         }
-
-        if (!fallbackResponse.ok) {
-          throw new Error(`Server returned HTTP ${fallbackResponse.status}`);
-        }
-
-        const data = await fallbackResponse.json();
-
-        if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
-          return false;
-        }
-
-        const botReply = data.reply || data.message || data.response || 'No response received.';
-
-        if (data.conversationId) {
-          setConversationId(data.conversationId);
-        }
-
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === botMessageId
-              ? {
-                  ...m,
-                  text: botReply,
-                  statusText: undefined,
-                  uiAction: data.uiAction || null,
-                  intent: data.intent,
-                  isStreaming: false,
-                }
-              : m
-          )
-        );
-      } else {
-        // Ensure final state is cleaned up
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === botMessageId
-              ? {
-                  ...m,
-                  statusText: undefined,
-                  isStreaming: false,
-                }
-              : m
-          )
-        );
       }
+
+      if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
+        return false;
+      }
+
+      if (!streamCompleted) {
+        const finalText = accumulatedText.trim()
+          ? accumulatedText
+          : capturedUiAction
+            ? ''
+            : 'No response received.';
+        updateBotMessage((m) => ({
+          ...m,
+          text: finalText || m.text,
+          statusText: undefined,
+          uiAction: capturedUiAction || m.uiAction,
+          intent: capturedIntent,
+          isStreaming: false,
+        }));
+      }
+
       return true;
     } catch (err: unknown) {
       if (abortController.signal.aborted || activeRequestIdRef.current !== currentRequestId) {
@@ -665,18 +770,12 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
       console.error('AI chat error:', err);
       const fallbackErrorMessage = 'Something went wrong, please try sometimes later.';
       setError(fallbackErrorMessage);
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === botMessageId
-            ? {
-                ...m,
-                text: fallbackErrorMessage,
-                statusText: undefined,
-                isStreaming: false,
-              }
-            : m
-        )
-      );
+      updateBotMessage((m) => ({
+        ...m,
+        text: fallbackErrorMessage,
+        statusText: undefined,
+        isStreaming: false,
+      }));
       return false;
     } finally {
       if (activeRequestIdRef.current === currentRequestId) {
@@ -797,50 +896,77 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
     return null;
   }
 
+  const morphTransition = prefersReducedMotion
+    ? { duration: 0.01 }
+    : { duration: 0.34, ease: [0.16, 1, 0.3, 1] as const };
+
   return (
     <div className="ai-chat-root">
-      <AnimatePresence mode="wait">
+      <LayoutGroup id="yoho-chat-morph">
         {!isOpen ? (
-          <motion.div
-            key="chat-launcher"
-            initial={{ scale: 0.85, opacity: 0, y: 16 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="ai-chat-launcher-wrap"
-          >
-            <div className="ai-chat-launcher-hint">
-              <span>Meet Yoho</span>
-            </div>
+          <div className="ai-chat-launcher-wrap">
             <motion.button
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.94 }}
-              transition={{ duration: 0.12 }}
-              onClick={() => setIsOpen(true)}
+              ref={launcherBtnRef}
+              key="chat-launcher"
+              type="button"
+              layoutId={prefersReducedMotion ? undefined : 'yoho-chat-surface'}
+              layoutDependency={isOpen}
+              initial={hasOpenedOnce || prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+              transition={{
+                layout: morphTransition,
+                opacity: { duration: 0.2 },
+                y: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                scale: { duration: 0.12 },
+              }}
+              onClick={() => {
+                setHasOpenedOnce(true);
+                setIsOpen(true);
+              }}
               className="ai-chat-launcher-btn"
-              aria-label="Open Yoho AI Chat"
+              style={{ borderRadius: CHAT_CORNER_RADIUS }}
+              aria-label="Meet Yoho — Open AI Chat"
             >
-              <div className="launcher-yoho-wrap">
-                <img
-                  src={YOHO_ICON_SRC}
-                  alt="Yoho Ghost Coder Icon"
-                  className="yoho-chat-btn-img"
-                />
-              </div>
-              <span className="launcher-status-dot" title="Online" />
+              <motion.span
+                className="ai-chat-launcher-inner"
+                initial={hasOpenedOnce && !prefersReducedMotion ? { opacity: 0 } : false}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0.01 : 0.14,
+                  delay: hasOpenedOnce && !prefersReducedMotion ? 0.12 : 0,
+                }}
+              >
+                <span className="ai-chat-launcher-label">Meet Yoho</span>
+                <span className="launcher-avatar-box" aria-hidden="true">
+                  <span className="launcher-yoho-wrap">
+                    <img
+                      src={YOHO_ICON_SRC}
+                      alt=""
+                      aria-hidden="true"
+                      className="yoho-chat-btn-img"
+                    />
+                  </span>
+                  <span className="launcher-status-dot" />
+                </span>
+              </motion.span>
             </motion.button>
-          </motion.div>
+          </div>
         ) : (
-          <motion.div
+          <>
+            <div className="ai-chat-backdrop" aria-hidden="true" />
+            <motion.div
             ref={windowRef}
             key="chat-window"
+            layoutId={prefersReducedMotion ? undefined : 'yoho-chat-surface'}
+            layoutDependency={isOpen}
             className="ai-chat-window"
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.94 }}
+            initial={prefersReducedMotion ? { opacity: 0 } : undefined}
+            animate={{ opacity: 1 }}
             transition={{
-              opacity: { duration: 0.18, ease: 'easeOut' },
-              scale: { duration: 0.18, ease: [0.16, 1, 0.3, 1] },
+              layout: morphTransition,
+              opacity: { duration: prefersReducedMotion ? 0.01 : 0.15 },
             }}
             role="dialog"
             aria-label="Yoho AI Agent Chat Window"
@@ -853,10 +979,21 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                     height: `${bounds.height}px`,
                     right: 'auto',
                     bottom: 'auto',
+                    borderRadius: CHAT_CORNER_RADIUS,
                   }
-                : undefined
+                : { borderRadius: CHAT_CORNER_RADIUS }
             }
           >
+            <motion.div
+              className="ai-chat-window-content"
+              initial={prefersReducedMotion ? false : { opacity: 0.25 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.14,
+                delay: 0,
+                ease: 'easeOut',
+              }}
+            >
             {/* Edge & Corner Resize Handles (Desktop Only) */}
             {!isMobile && (
               <>
@@ -972,96 +1109,72 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
             </div>
 
             {/* Messages Scroll Area */}
-            <div className="chat-messages-container">
-              {/* Yoho Main Frame inside Chat */}
-              <div className="yoho-mainframe-banner">
-                <div className="yoho-mainframe-aspect">
-                  <img
-                    src={YOHO_MAINFRAME_SRC}
-                    alt="Yoho Coding Ghost Main Frame"
-                    className="yoho-mainframe-img"
-                  />
-                </div>
-              </div>
+            <div className="chat-messages-stage">
+              <div className="chat-messages-container">
 
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`chat-message-row ${
-                    msg.sender === 'user' ? 'message-row-user' : 'message-row-agent'
-                  }`}
-                >
-                  {msg.sender === 'assistant' && (
-                    <div className="msg-avatar msg-avatar-yoho">
-                      <img
-                        src={YOHO_ICON_SRC}
-                        alt="Yoho"
-                        className="yoho-msg-avatar-img"
-                      />
+              {messages.map((msg) => {
+                const showBubble = hasBubblePayload(msg);
+                return (
+                  <div
+                    key={msg.id}
+                    className={`chat-message-row ${
+                      msg.sender === 'user' ? 'message-row-user' : 'message-row-agent'
+                    }`}
+                  >
+                    {msg.sender === 'assistant' && (
+                      <div className="msg-avatar msg-avatar-yoho">
+                        <img
+                          src={YOHO_ICON_SRC}
+                          alt="Yoho"
+                          className="yoho-msg-avatar-img"
+                        />
+                      </div>
+                    )}
+                    <div className="msg-bubble-wrap">
+                      {showBubble && (
+                        <div
+                          className={`msg-bubble ${
+                            msg.sender === 'user' ? 'bubble-user' : 'bubble-agent'
+                          }`}
+                        >
+                          {/* Text content with markdown formatting and streaming cursor */}
+                          {msg.sender === 'assistant'
+                            ? renderFormattedText(msg.text, msg.isStreaming)
+                            : msg.text}
+
+                          {/* Dynamic In-Chat Schedule Form Widget (Generative UI) */}
+                          {msg.uiAction?.type === 'form_input' && (
+                            <ScheduleFormWidget
+                              uiAction={msg.uiAction}
+                              onSubmit={(messageText) => handleSend(messageText)}
+                              isLoading={isLoading}
+                            />
+                          )}
+
+                          {/* Dynamic In-Chat OTP Input Widget (Generative UI) */}
+                          {msg.uiAction?.type === 'otp_input' && (
+                            <OtpWidget
+                              uiAction={msg.uiAction}
+                              onSubmit={(code) => handleSend(code)}
+                              isLoading={isLoading}
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      {/* Backend Action Status: under the message icon/bubble, OUTSIDE the speech bubble */}
+                      {msg.statusText && (
+                        <div className="msg-status-under-bubble">
+                          <span className="pipeline-spinner" />
+                          <span className="status-under-text">{msg.statusText}</span>
+                        </div>
+                      )}
+
+                      {showBubble && <span className="msg-timestamp">{msg.timestamp}</span>}
                     </div>
-                  )}
-                  <div className="msg-bubble-wrap">
-                    {(msg.text || msg.uiAction || msg.sender === 'user') && (
-                      <div
-                        className={`msg-bubble ${
-                          msg.sender === 'user' ? 'bubble-user' : 'bubble-agent'
-                        }`}
-                      >
-                        {/* Text content with markdown formatting and streaming cursor */}
-                        {msg.sender === 'assistant'
-                          ? renderFormattedText(msg.text, msg.isStreaming)
-                          : msg.text}
-
-                        {/* Dynamic In-Chat Schedule Form Widget (Generative UI) */}
-                        {msg.uiAction?.type === 'form_input' && (
-                          <ScheduleFormWidget
-                            uiAction={msg.uiAction}
-                            onSubmit={(messageText) => handleSend(messageText)}
-                            isLoading={isLoading}
-                          />
-                        )}
-
-                        {/* Dynamic In-Chat OTP Input Widget (Generative UI) */}
-                        {msg.uiAction?.type === 'otp_input' && (
-                          <OtpWidget
-                            uiAction={msg.uiAction}
-                            onSubmit={(code) => handleSend(code)}
-                            isLoading={isLoading}
-                          />
-                        )}
-                      </div>
-                    )}
-
-                    {/* Backend Action Status: under the message icon/bubble, OUTSIDE the speech bubble */}
-                    {msg.statusText && (
-                      <div className="msg-status-under-bubble">
-                        <span className="pipeline-spinner" />
-                        <span className="status-under-text">{msg.statusText}</span>
-                      </div>
-                    )}
-
-                    <span className="msg-timestamp">{msg.timestamp}</span>
                   </div>
-                </div>
-              ))}
-
-              {/* Typing indicator fallback when no streaming message is present yet */}
-              {isLoading && !messages.some((m) => m.isStreaming) && (
-                <div className="chat-message-row message-row-agent">
-                  <div className="msg-avatar msg-avatar-yoho">
-                    <img
-                      src={YOHO_ICON_SRC}
-                      alt="Yoho"
-                      className="yoho-msg-avatar-img"
-                    />
-                  </div>
-                  <div className="msg-bubble bubble-agent typing-bubble">
-                    <span className="typing-dot" />
-                    <span className="typing-dot" />
-                    <span className="typing-dot" />
-                  </div>
-                </div>
-              )}
+                );
+              })}
 
               {/* Quick Prompts below if minimal messages */}
               {messages.length <= 2 && !isLoading && (
@@ -1082,6 +1195,7 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
               )}
 
               <div ref={messagesEndRef} />
+              </div>
             </div>
 
             {/* Error Notification Bar */}
@@ -1131,9 +1245,11 @@ export const AIChat: React.FC<AIChatProps> = ({ isReady = true }) => {
                 <span>Yoho explores Vyshnav's work & schedules meetings</span>
               </div>
             </div>
+            </motion.div>
           </motion.div>
+          </>
         )}
-      </AnimatePresence>
+      </LayoutGroup>
     </div>
   );
 };
